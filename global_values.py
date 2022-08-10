@@ -52,4 +52,4 @@ fonts = {}
 
 #sounds
 sound_dict = {}
-game_sound_dict = {}
+channel_list = None

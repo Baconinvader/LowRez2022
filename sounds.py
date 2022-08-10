@@ -7,10 +7,13 @@ class ChannelList():
     """
     Class for list of channels
     """
-    def __init__(self):
+    def __init__(self, channel_amount=8):
         self.channel_list = []
-        self.sound_playing_list = [None for _ in range(10)]
-        for i in range(10):
+        
+
+        self.sound_playing_list = [None for _ in range(channel_amount)]
+        p.mixer.set_num_channels(channel_amount)
+        for i in range(channel_amount):
             channel = p.mixer.Channel(i)
             self.channel_list.append(channel)
             self.next_available_channel = 0
@@ -32,7 +35,12 @@ class ChannelList():
 
                 if type(sound) == GameSound:
                     sound = GameSound.sound
-                    #TODO
+
+                    dist = util.get_distance(g.player.rect.centerx, g.player.rect.centery, sound.x, sound.y)
+
+                    #set sound volume (might cause an issue when multiple copies of the same sound play?)
+                    vol = min(1, (1/dist)*2)
+                    sound.set_volume(vol)
 
 class GameSound():
     """
@@ -42,17 +50,26 @@ class GameSound():
         self.name = name
 
         self.sound = g.sound_dict[self.name]
-        self.pos = pos
+        self.x, self.y = pos
 
 
 def load_sounds():
+    """
+    Load all sounds from the sound directory
+    """
     path = g.SOUNDS_DIR
     for sound_file in os.listdir(path):
-        sound = p.mixer.Sound(os.path.join(g.SOUNDS_DIR, file_name))
+        sound = p.mixer.Sound(os.path.join(g.SOUNDS_DIR, sound_file))
 
         g.sound_dict[sound_file[:-4]] = sound
 
-        game_sound = GameSound(sound_file[:-4])
         print(sound_file)
+
+def play_sound(name):
+    """
+    Play a sound without involving the channel list (not 2D)
+    """
+    sound = g.sound_dict[name]
+    sound.play()
 
     

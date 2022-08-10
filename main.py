@@ -13,6 +13,7 @@ import sounds
 
 p.mixer.init()
 sounds.load_sounds()
+g.channel_list = sounds.ChannelList()
 
 g.global_pipe = actions.Pipe("global")
 

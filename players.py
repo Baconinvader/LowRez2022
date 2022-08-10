@@ -86,7 +86,7 @@ class Inventory:
 class Player(creatures.Creature):
     def __init__(self):
         self.target_x = None
-        rect = p.Rect(0,32,16,32)
+        rect = p.Rect(4,28,16,32)
         super().__init__(rect, g.current_level, "player", solid=True)
         self.collision_dict = {"class_Entity":False, "class_LargeEnemy":True}
 
