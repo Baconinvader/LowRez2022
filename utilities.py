@@ -19,7 +19,6 @@ def check_collision(rect, obj=None, mask=None, collision_dict={}, exceptions=[],
         for entity in obj.level.entities:
             check_collision = True
             for name in reversed(entity.class_names):
-                #print("-->",name)
                 col_val = collision_dict.get(name, None) 
                 if col_val is not None:
                     check_collision = col_val  

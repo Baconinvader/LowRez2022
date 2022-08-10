@@ -1,4 +1,5 @@
 import global_values as g
+import utilities as util
 
 import pygame as p
 import os
@@ -21,8 +22,12 @@ class ChannelList():
     def play(self, sound):
         channel = self.channel_list[self.next_available_channel]
 
+        self.sound_playing_list[self.next_available_channel] = sound
         if type(sound) == GameSound:
-            sound = GameSound.sound
+            sound = sound.sound
+        elif type(sound) == p.mixer.Sound:
+            channel.set_volume(1)
+
 
         channel.play(sound)
         self.next_available_channel = (self.next_available_channel + 1) % len(self.channel_list)
@@ -34,22 +39,21 @@ class ChannelList():
                 sound = self.sound_playing_list[i]
 
                 if type(sound) == GameSound:
-                    sound = GameSound.sound
 
                     dist = util.get_distance(g.player.rect.centerx, g.player.rect.centery, sound.x, sound.y)
 
-                    #set sound volume (might cause an issue when multiple copies of the same sound play?)
-                    vol = min(1, (1/dist)*2)
-                    sound.set_volume(vol)
+                    vol = min(1, (1/dist)*sound.volume)
+                    channel.set_volume(vol)
 
 class GameSound():
     """
     Class for 2D sound
     """
-    def __init__(self, name, pos):
+    def __init__(self, name, pos, volume=3):
         self.name = name
 
         self.sound = g.sound_dict[self.name]
+        self.volume = volume
         self.x, self.y = pos
 
 
@@ -65,11 +69,14 @@ def load_sounds():
 
         print(sound_file)
 
-def play_sound(name):
+def play_sound(name, pos=None, volume=3):
     """
-    Play a sound without involving the channel list (not 2D)
+    Play a sound, optional a 2D one
     """
-    sound = g.sound_dict[name]
-    sound.play()
+    if pos: #2D sound
+        sound = GameSound(name, pos, volume=volume)
+    else: #non-2D sound
+        sound = g.sound_dict[name]
+    g.channel_list.play(sound)
 
     

@@ -125,7 +125,6 @@ rect = p.Rect(0, 0, 8, 8)
 rect.bottomleft = g.screen_rect.bottomleft
 controls.Button(rect, exit_menu, g.spritesheets["button_ss"].anims[1][0], g.spritesheets["button_ss"].anims[1][1], g.spritesheets["button_ss"].anims[1][2], set(("inventory",)))
 
-
 def handle_input():
     global RUNNING
     for event in p.event.get():
@@ -184,6 +183,8 @@ def update():
     while i < len(g.pipe_list):
         g.pipe_list[i].update()
         i += 1
+
+    g.channel_list.update()
 
     in_main = "main" in g.active_states
     for element in g.element_list:
