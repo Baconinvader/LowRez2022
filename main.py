@@ -235,7 +235,7 @@ while RUNNING:
     update()
     draw()
 
-    g.dt = g.game_clock.tick()/1000
+    g.dt = g.game_clock.tick(g.FPS)/1000
     #print(g.dt)
 
     #upscale and display

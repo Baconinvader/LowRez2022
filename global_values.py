@@ -5,6 +5,7 @@ import pygame as p
 #obviously
 WIDTH = 64
 HEIGHT = 64
+FPS = 60
 screen_rect = p.Rect(0,0,WIDTH,HEIGHT)
 
 #display
