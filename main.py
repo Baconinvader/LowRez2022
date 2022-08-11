@@ -137,18 +137,26 @@ def handle_input():
             if event.button == 3:
 
                 command_triggered = False
+                clicked_structure = None
+                #get smallest clicked strueture
                 for structure in g.current_level.structures:
                     if structure.can_interact and structure.rect.collidepoint((g.tmx, g.tmy)):
-                        structure.interact()
-                        command_triggered = True
-                        break
+                        if not clicked_structure or (clicked_structure.rect.w*clicked_structure.rect.h) > (structure.rect.w*structure.rect.h):
+                            clicked_structure = structure
+                        
+                if clicked_structure:
+                    clicked_structure.interact()
+                    command_triggered = True
 
+
+                #move player
                 if not command_triggered:
                     if not g.player.control_locks:
                         g.player.set_target_x(g.tmx)
 
 
             elif event.button == 1:
+                #click button
                 button_pressed = False
                 for button in reversed(g.elements["class_Button"]):
                     if button.active and button.rect.collidepoint((g.mx, g.my)):
@@ -156,11 +164,13 @@ def handle_input():
                         button.press()
                         break
 
+                #use item
                 if "inventory" in g.active_states:
                     if inventory_control.highlighted_slot is not None:
                         g.player.inventory.select_index(inventory_control.highlighted_slot)
                         button_pressed = True
 
+                #use weapon
                 if not button_pressed:
                     if g.player.inventory.selected_item:
                         g.player.attack()

@@ -13,7 +13,8 @@
         
         ["Pickup", 16, null, "Medkit"],
         ["Pickup", 48, null, "HandgunAmmunition"],
-        ["Pickup", 56, null, "ShotgunAmmunition"]
+        ["Pickup", 56, null, "ShotgunAmmunition"],
+        ["Pickup", 80, null, "HealthDrink"]
     ],
 
     "comments": [["KeyDoor", 96, -32, "Cryo III", "medkit"], ["EnemySpawn", 224, -60, "LargeEnemy"]]

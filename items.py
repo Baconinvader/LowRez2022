@@ -4,6 +4,7 @@ import entities
 import particles
 import creatures
 import levels
+import actions
 
 import pygame as p
 import random as r
@@ -48,6 +49,15 @@ class Medkit(Consumable):
     def consume(self):
         super().consume()
         g.player.change_health(3)
+
+class HealthDrink(Consumable):
+    def __init__(self):
+        super().__init__("health drink")
+
+    def consume(self):
+        super().consume()
+        actions.VarChangeAction( g.player.pipe, 5, g.player, "health", g.player.health+5, blocking=False, blockable=False, force=False, max_val=g.player.max_health)
+
 
 class Ammunition(Item):
     def __init__(self, name, gun_name, ammunition_amount):

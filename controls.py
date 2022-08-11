@@ -126,7 +126,7 @@ class HealthControl(Control):
     def draw(self):
         p.draw.rect(g.screen, "green", self.rect)
 
-        health_string = str(g.player.health)
+        health_string = str(int(g.player.health))
 
         gfx.draw_text("font1_1", health_string, self.rect.center, cx=True, cy=True)
 

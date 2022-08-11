@@ -129,14 +129,20 @@ class Action:
         self.__dict__ = gfx.unpickle_state(state)
 
 class VarChangeAction(Action):
-    def __init__(self, pipe, timer, obj, prop, val, change_type=0, revert=False, blocking=True, blockable=True):
+    def __init__(self, pipe, timer, obj, prop, val, change_type=0, revert=False, blocking=True, blockable=True, force=True, min_val=None, max_val=None):
         super().__init__(pipe, timer, blocking=blocking, blockable=blockable)
         self.obj = obj
         self.prop = prop
         self.val = val
 
+        self.min_val = min_val
+        self.max_val = max_val
+
         #can be continuous (0), start (1) or end (2)
         self.change_type = change_type
+        #if true, interpolate between start value and end value
+        #if false, add change value each frame
+        self.force = force
 
         self.revert = revert
 
@@ -144,22 +150,40 @@ class VarChangeAction(Action):
         super().start()
         self.start_val = getattr(self.obj, self.prop)
         if self.change_type == 1:
-            setattr(self.obj, self.prop, self.val)
+            self.set_var(self.val)
+
+        if not self.force:
+            self.change = (self.val-self.start_val)/self.timer
 
     def finish(self):
         super().finish()
         if self.change_type == 0 or self.change_type == 2:
-            setattr(self.obj, self.prop, self.val)
+            self.set_var(self.val)
 
         if self.revert:
-            setattr(self.obj, self.prop, self.start_val)
+            self.set_var(self.start_val)
 
     def update(self):
         super().update()
         if self.change_type == 0:
-            new_value = util.interpolate(self.start_val, self.val, self.progress)
-            #print(new_value)
-            setattr(self.obj, self.prop, new_value)
+            if self.force:
+                new_value = util.interpolate(self.start_val, self.val, self.progress)
+            else:
+                current_value = getattr(self.obj, self.prop)
+                new_value = current_value + (self.change*g.dt)
+            self.set_var(new_value)
+            
+
+    def set_var(self, val):
+        try:
+            if self.min_val is not None and val < self.min_val:
+                val = self.min_val
+            elif self.max_val is not None and val > self.max_val:
+                val = self.max_val
+        except:
+            pass
+
+        setattr(self.obj, self.prop, val)
 
 class FuncCallEffect(Action):
     """
