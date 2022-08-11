@@ -8,6 +8,7 @@ import graphics as gfx
 import entities
 import particles
 import actions
+import sounds
 
 class Creature(entities.Entity):
     def __init__(self, rect, level, name, max_health=10, solid=True):
@@ -91,7 +92,7 @@ class Enemy(Creature):
     """
     Base class for all enemies
     """
-    def __init__(self, rect, level, name, respawn_time=0, speed=0.006, damage=1, attack_time=1, max_health=10):
+    def __init__(self, rect, level, name, respawn_time=0, speed=0.006, damage=1, attack_time=2, max_health=10):
         super().__init__(rect, level, name, max_health=max_health)
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "attacking":2}, 0.25)
 
@@ -198,8 +199,12 @@ class BasicEnemy(Enemy):
                 actions.FuncCallEffect(self.pipe, self.attack_time, self, "attack", change_type=1)
                 print("ATTACK")
 
+                
+
     def attack(self):
         super().attack()
+        sounds.play_sound("bleep1", self.rect.center)
+
         if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 20:
             g.player.take_damage(self.damage)
 
