@@ -1,0 +1,10 @@
+{
+    "name":"Cmd II",
+    "position":[16,-1],
+    "show_space":false,
+    "structures":[
+        ["Door", null, -32, "Deck"]
+    ],
+
+    "comments": []
+}

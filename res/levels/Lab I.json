@@ -1,0 +1,12 @@
+{
+    "name":"Lab I",
+    "position":[5,-2],
+    "show_space":false,
+    "structures":[
+        
+        ["Pickup", 0, null, "HealthDrink"],
+        ["Door", 0, -32, "Lab II"]
+    ],
+
+    "comments": []
+}

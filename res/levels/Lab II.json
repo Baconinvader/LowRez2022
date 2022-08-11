@@ -1,0 +1,18 @@
+{
+    "name":"Lab II",
+    "position":[4,-3],
+    "show_space":false,
+    "structures":[
+        ["Door", null, -32, "Lab IV"],
+        ["KeypadDoor", null, -32, "Lab III", "256"],
+
+        ["EnemySpawn", 164, -32, "BasicEnemy"],
+        ["EnemySpawn", 128, -32, "BasicEnemy"],
+
+        ["Pickup", 80, null, "HealthDrink"],
+        ["Pickup", 100, null, "HealthDrink"],
+        ["Pickup", 64, null, "Medkit"]
+    ],
+
+    "comments": []
+}

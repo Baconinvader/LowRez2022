@@ -41,6 +41,8 @@ class ChannelList():
                 if type(sound) == GameSound:
 
                     dist = util.get_distance(g.player.rect.centerx, g.player.rect.centery, sound.x, sound.y)
+                    if dist < 1:
+                        dist = 1
 
                     vol = min(1, (1/dist)*sound.volume)
                     channel.set_volume(vol)

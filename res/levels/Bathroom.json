@@ -1,0 +1,14 @@
+{
+    "name":"Bathroom",
+    "position":[2,-1],
+    "show_space":false,
+    "structures":[
+        ["EnemySpawn", 0, 0, "BasicEnemy"],
+
+        ["Pickup", 0, null, "HealthDrink"],
+        ["Pickup", 8, null, "HealthDrink"],
+        ["Pickup", 16, null, "Medkit"]
+    ],
+
+    "comments": []
+}

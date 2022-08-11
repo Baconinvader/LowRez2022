@@ -1,0 +1,9 @@
+{
+    "name":"Cryo II",
+    "position":[0,0],
+    "show_space":false,
+    "structures":[
+        ["Door", null, -32, "Cryo III"],
+        ["KeypadDoor", 112, -32, "Reception", "451"]
+    ]
+}

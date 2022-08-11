@@ -96,7 +96,7 @@ class Player(creatures.Creature):
         self.inventory = Inventory(8)
 
         handgun = items.Gun("handgun", self, 1, 0.5, 200)
-        shotgun = items.Gun("shotgun", self, 0.5, 1, 100, projectiles=5, spread=0.5, max_ammunition=25, recharge=0)
+        shotgun = items.Gun("shotgun", self, 0.8, 1, 100, projectiles=5, spread=0.5, max_ammunition=25, recharge=0)
         stungun = items.Gun("stungun", self, 0.0, 1.5, 64, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
         revolver = items.Gun("revolver", self, 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=15)
         self.inventory.add_item(handgun)

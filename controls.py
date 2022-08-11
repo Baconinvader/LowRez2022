@@ -177,7 +177,7 @@ class MapControl(Control):
     def draw(self):
         surf = p.Surface((self.rect.w, self.rect.h))
         surf.fill("black")
-        offset_x = (g.player.level.world_x)
+        offset_x = (g.player.level.world_x) + (g.player.rect.centerx//self.pixel_size)
         offset_y = (g.player.level.world_y)
         for level in g.levels.values():
             lx = level.world_x
@@ -185,15 +185,19 @@ class MapControl(Control):
             lw = level.rect.w//self.pixel_size
             lh = level.rect.h//self.pixel_size
             if level == g.player.level:
-                colour = "red"
+                colour = "blue"
             else:
-                colour = "white"
+                lum = int(255/lw)
+                cr = min(int(lum*0.75), 255)
+                cg = min(int(lum*2), 255)
+                cb = min(int(lum*0.75), 255)
+                colour = (cr,cg,cb)
 
             p.draw.rect(surf, colour, p.Rect(lx-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2), lw, lh))
 
             if level == g.player.level:
                 px = lx+int( (g.player.x+1) //self.pixel_size)
-                surf.set_at((px-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2)), "green")
+                surf.set_at((px-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2)), "red")
         
         g.screen.blit(surf, self.rect)
 

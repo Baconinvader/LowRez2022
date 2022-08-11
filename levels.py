@@ -30,7 +30,7 @@ class Level:
 
         for structure_dat in self.level_dat["structures"]:
             structure_class, *args = structure_dat
-            if args[0] < 0:
+            if args[0] is not None and args[0] < 0:
                 args[0] = self.rect.w+args[0]
             if args[1] is not None and args[1] < 0:
                 args[1] = self.rect.h+args[1]
@@ -187,6 +187,12 @@ class KeyPickup(LockedPickup):
 
 class Door(Structure):
     def __init__(self, level, x, y, change_level, create_exit=True):
+        if x is None:
+            x = 0
+            self.auto_place = True
+        else:
+            self.auto_place = False
+
         rect = p.Rect(x, y, 16, 32)
         self.open_anim = g.spritesheets["structure_16_32_ss"].create_animation(0, 0.25, repeat=False)
         self.closed_surface = g.spritesheets["structure_16_32_ss"].anims[0][0]
@@ -224,17 +230,35 @@ class Door(Structure):
         """
         Create exit door
         """
+        #automatically place this door based on it's connection
+        if self.auto_place:
+            #same y, different x
+            if self.change_level.world_y == self.level.world_y:
+                if self.change_level.world_x > self.level.world_x:
+                    self.x = self.level.rect.w-self.rect.w
+                else:
+                    self.x = 0
+            else:
+                #different y, maybe different x
+                self.x = (self.change_level.world_x - self.level.world_x)*64
+                self.x += 32
+                if self.change_level.world_y < self.level.world_y:
+                    self.x -= (self.rect.w/2)
+                else:
+                    self.x += (self.rect.w/2)
+
+
         if self.change_level.world_y == self.level.world_y:
             #same y, different x
             if self.change_level.world_x < self.level.world_x:
                 #left
-                x = self.change_level.w - self.rect.w
+                x = self.change_level.rect.w - self.rect.w
             else:
                 #right
                 x = 0
         else:
             #different y, maybe different x
-            x = (self.level.world_x + self.x) - self.change_level.world_x
+            x = ( (self.level.world_x*64) + self.x) - (self.change_level.world_x*64)
             
         if type(self) == Door:
             self.exit_door = Door(self.change_level, x, self.y, self.level, create_exit=False)

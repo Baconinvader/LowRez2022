@@ -1,0 +1,10 @@
+{
+    "name":"Quarters I",
+    "position":[9,-2],
+    "show_space":false,
+    "structures":[
+        ["Door", 0, -32, "Quarters II"]
+    ],
+
+    "comments": []
+}

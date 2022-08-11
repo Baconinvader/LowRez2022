@@ -1,0 +1,11 @@
+{
+    "name":"Eng I",
+    "position":[13,1],
+    "show_space":false,
+    "structures":[
+        ["Door", null, -32, "Eng II"],
+        ["KeyDoor", null, -32, "Eng IV", "K. Reactor"]
+    ],
+
+    "comments": []
+}

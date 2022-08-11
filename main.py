@@ -39,7 +39,7 @@ g.fonts = {
 g.game_clock = p.time.Clock()
 
 for file_name in os.listdir(g.LEVELS_DIR):
-    if file_name.endswith(".json"):
+    if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
         levels.Level(file_name[:-5])
 
 g.current_level = g.levels["Cryo I"]

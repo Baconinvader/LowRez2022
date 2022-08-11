@@ -1,0 +1,10 @@
+{
+    "name":"Cryo I",
+    "position":[-1,0],
+    "show_space":false,
+    "structures":[
+        ["Door", null, -32, "Cryo II"]
+    ],
+
+    "comments": []
+}

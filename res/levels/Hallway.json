@@ -1,0 +1,20 @@
+{
+    "name":"Hallway",
+    "position":[3,-1],
+    "show_space":true,
+    "structures":[
+        ["KeyDoor", 0, -32, "Bathroom", "K. Bathroom"],
+        ["KeypadDoor", 560, -32, "Cmd I", "117"],
+        ["Door", null, -32, "Lab I"],
+        ["Door", null, -32, "Lab V"],
+        ["Door", null, -32, "Quarters I"],
+        ["Door", null, -32, "Eng I"],
+
+        ["EnemySpawn", 128, -32, "BasicEnemy"],
+        ["EnemySpawn", 196, -32, "BasicEnemy"],
+        ["EnemySpawn", 224, -32, "BasicEnemy"]
+        
+    ],
+
+    "comments": []
+}
