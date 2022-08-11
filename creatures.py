@@ -13,7 +13,7 @@ class Creature(entities.Entity):
     def __init__(self, rect, level, name, max_health=10, solid=True):
         
         self.direction = "right"
-        self.speed = 2.4
+        self.speed = 15  # units per second
         self.max_health = max_health
         self.health = self.max_health
 

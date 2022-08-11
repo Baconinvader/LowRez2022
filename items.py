@@ -150,5 +150,6 @@ def create_item(name):
     """
     Create item from name
     """
+    # XXX be careful what you name your items (._.)
     new_item = eval(f"{name}()")
     return new_item

@@ -47,7 +47,7 @@ for level in g.levels.values():
     level.linkup()
 
 g.player = players.Player()
-g.camera = cameras.Camera(g.player, (-32, -48))
+g.camera = cameras.Camera(g.player, (-32, -48 + 3))
 
 #menu
 def start_game():
