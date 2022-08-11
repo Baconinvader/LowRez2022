@@ -67,9 +67,11 @@ class Camera(elements.Element):
         y = int(y)
         g.screen.set_at((x,y), colour)
 
-    def draw_rotated_gfx(self, rotating_gfx, angle, pos, ox=0.5, oy=0.5):
+    def draw_rotated_gfx(self, rotating_gfx, angle, pos, ox=0.5, oy=0.5, xflip=False, yflip=False):
         surf = gfx.get_surface(rotating_gfx)
-        rotated_surface = p.transform.rotate(surf, m.degrees(-angle) )
+        if xflip or yflip:
+            surf = p.transform.flip(surf, xflip, yflip)
+        rotated_surface = p.transform.rotate(surf, m.degrees(-angle))
 
         #create offset
         rw = rotated_surface.get_width()

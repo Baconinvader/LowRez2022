@@ -59,12 +59,14 @@ class Creature(entities.Entity):
 
         return result
 
+    def get_direction_for_rendering(self):
+        return self.direction
+
     def draw(self):
-        if self.direction == "right":
+        if self.get_direction_for_rendering() == "right":
             flip_h = False
         else:
             flip_h = True
-
 
         surf = gfx.get_surface(self.gfx)
         if flip_h:

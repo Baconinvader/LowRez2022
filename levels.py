@@ -106,7 +106,11 @@ class Structure(entities.Entity):
         g.camera.draw_gfx(self.gfx, self.rect.topleft)
 
         if self.can_interact:
-            g.camera.draw_gfx("interact_icon", self.rect.move((-2, -6)).midtop )
+            icon_name = "interact_icon" if self.rect.width % 2 == 1 else "interact_icon_large"
+            icon_surf = gfx.get_surface(icon_name)
+            icon_x = self.rect.centerx - icon_surf.get_width() // 2
+            icon_y = self.rect.y - icon_surf.get_height() - 3
+            g.camera.draw_gfx(icon_name, (icon_x, icon_y))
 
 class Pickup(Structure):
     """

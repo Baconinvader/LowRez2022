@@ -160,7 +160,7 @@ class ItemControl(Control):
                     p.draw.rect(g.screen, "brown", p.Rect(self.rect.x+icon_width+x, self.rect.y, 1, self.rect.h))
 
                 ammunition_string = f"x{int(item.ammunition)}"
-                gfx.draw_text("font1_1", ammunition_string , self.rect.move((icon_width, -self.rect.h/2)).topleft)
+                gfx.draw_text("font1_1", ammunition_string, self.rect.move((icon_width + 1, -self.rect.h/2 + 1)).topleft)
 
                 
 
