@@ -86,11 +86,11 @@ class Inventory:
 class Player(creatures.Creature):
     def __init__(self):
         self.target_x = None
-        rect = p.Rect(4,28,16,32)
+        rect = p.Rect(0, 32, 16, 32)
         super().__init__(rect, g.current_level, "player", solid=True)
         self.collision_dict = {"class_Entity":False, "class_LargeEnemy":True}
 
-        self.speed = 0.35
+        self.speed = 42  # units per second
 
         self.inventory = Inventory(8)
 
@@ -118,7 +118,7 @@ class Player(creatures.Creature):
     def update(self):
         super().update()
         if self.target_x is not None:
-            result = self.move_towards(self.target_x, self.y, self.speed)
+            result = self.move_towards(self.target_x, self.y, self.speed * g.dt)
             if result:
                 self.target_x = None
             if self.x == self.target_x:

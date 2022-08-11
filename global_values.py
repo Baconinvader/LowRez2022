@@ -12,6 +12,7 @@ screen_rect = p.Rect(0,0,WIDTH,HEIGHT)
 screen = None
 SCREEN_WIDTH = 64*8
 SCREEN_HEIGHT = 64*8
+CAPTION = "Invasion of Planet Bacon"
 full_screen = None
 
 #res
