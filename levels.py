@@ -12,9 +12,10 @@ import json
 
 class Level:
     def __init__(self, name):
-        path =  os.path.join(g.LEVELS_DIR, name)
+        path = os.path.join(g.LEVELS_DIR, name)
         print(path+".png")
         self.level_image = gfx.load_image(name, path=g.LEVELS_DIR)
+        self.level_image_render_offset = (0, 3)
         self.rect = p.Rect(0, 0, self.level_image.get_width(), self.level_image.get_height() )
 
         with open(path+".json") as level_file:
@@ -31,7 +32,7 @@ class Level:
             structure_class, *args = structure_dat
             if args[0] < 0:
                 args[0] = self.rect.w+args[0]
-            if args[1] < 0:
+            if args[1] is not None and args[1] < 0:
                 args[1] = self.rect.h+args[1]
             args.insert(0, self)
 
@@ -54,7 +55,9 @@ class Level:
                     structure.create_exit_door()
 
     def draw(self):
-        g.camera.draw_gfx(self.level_image, self.rect.topleft)
+        x = self.rect.x + self.level_image_render_offset[0]
+        y = self.rect.y = self.level_image_render_offset[1]
+        g.camera.draw_gfx(self.level_image, (x, y))
 
     def __getstate__(self):
         print("LEVEL")
@@ -101,26 +104,38 @@ class Structure(entities.Entity):
 
     def draw(self):
         g.camera.draw_gfx(self.gfx, self.rect.topleft)
+
         if self.can_interact:
-            g.camera.draw_gfx("interact_icon", self.rect.move((-2, -6)).midtop )
+            icon_name = "interact_icon" if self.rect.width % 2 == 1 else "interact_icon_large"
+            icon_surf = gfx.get_surface(icon_name)
+            icon_x = self.rect.centerx - icon_surf.get_width() // 2
+            icon_y = self.rect.y - icon_surf.get_height() - 3
+            g.camera.draw_gfx(icon_name, (icon_x, icon_y))
 
 class Pickup(Structure):
     """
     Structure of an item that can be picked up
     """
-    def __init__(self, level, x, y, item, width=8, height=8):
-        rect = p.Rect(x, y, width, height)
+    def __init__(self, level, x, y, item, width=-1, height=-1):
         self.item = item
         if type(self.item) == str:
             self.item = items.create_item(self.item)
+        if width == -1:
+            width = self.item.surface.get_width() if self.item.surface is not None else 8
+        if height == -1:
+            height = self.item.surface.get_height() if self.item.surface is not None else 8
+        if y is None:
+            y = level.rect.height - height  # None means "on floor"
+        rect = p.Rect(x, y, width, height)
 
         super().__init__(level, rect, self.item.surface)
 
     def draw(self):
         super().draw()
-        if self.interaction_enabled:
-            outline_rect = self.rect.inflate(2,2)
-            g.camera.draw_rect("green", outline_rect, 1)
+        # disabling this because I don't like it -Ghast
+        # if self.interaction_enabled:
+        #    outline_rect = self.rect.inflate(2,2)
+        #    g.camera.draw_rect("green", outline_rect, 1)
 
     def interact(self):
         controls.Item_Popup(self.item, pickup=self)

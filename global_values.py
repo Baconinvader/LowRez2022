@@ -5,18 +5,20 @@ import pygame as p
 #obviously
 WIDTH = 64
 HEIGHT = 64
+FPS = 60
 screen_rect = p.Rect(0,0,WIDTH,HEIGHT)
 
 #display
 screen = None
 SCREEN_WIDTH = 64*8
 SCREEN_HEIGHT = 64*8
+CAPTION = "Invasion of Planet Bacon"
 full_screen = None
 
 #res
 RES_DIR = "res"
 LEVELS_DIR = os.path.join(RES_DIR, "levels")
-GFX_DIR = os.path.join(RES_DIR, "gfx")
+GFX_DIRS = (os.path.join(RES_DIR, "gfx_new"), os.path.join(RES_DIR, "gfx"))
 FONTS_DIR = os.path.join(RES_DIR, "fonts")
 SOUNDS_DIR = os.path.join(RES_DIR, "sounds")
 

@@ -19,11 +19,13 @@ g.global_pipe = actions.Pipe("global")
 
 g.screen = p.Surface((g.WIDTH, g.HEIGHT))
 g.full_screen = p.display.set_mode((g.SCREEN_WIDTH, g.SCREEN_HEIGHT))
+p.display.set_caption(g.CAPTION)
 
 gfx.Spritesheet("player_ss", 16,32)
 gfx.Spritesheet("basic_enemy_ss", 16,32)
 gfx.Spritesheet("large_enemy_ss", 32,60)
 gfx.Spritesheet("structure_16_32_ss", 16,32)
+gfx.Spritesheet("structure_32_32_ss", 32,32)
 gfx.Spritesheet("corpse_ss", 32, 32)
 gfx.Spritesheet("button_ss", 8,8)
 gfx.Spritesheet("med_button_ss", 12,12)
@@ -45,7 +47,7 @@ for level in g.levels.values():
     level.linkup()
 
 g.player = players.Player()
-g.camera = cameras.Camera(g.player, (-32, -48))
+g.camera = cameras.Camera(g.player, (-32, -48 + 3))
 
 #menu
 def start_game():
@@ -174,9 +176,9 @@ def handle_input():
     g.tmy = g.my + g.camera.y
 
     if g.keys[p.K_a]:
-        g.player.move(-1*0.02, 0)
+        g.player.move(-1*0.02*120*g.dt, 0)
     if g.keys[p.K_d]:
-        g.player.move(1*0.02, 0)
+        g.player.move(1*0.02*120*g.dt, 0)
 
 def update():
     i = 0
@@ -236,8 +238,14 @@ while RUNNING:
     update()
     draw()
 
-    g.dt = g.game_clock.tick()/1000
+    g.dt = g.game_clock.tick(g.FPS) / 1000
+    g.dt = min(0.0333, g.dt)  # game will start slowing down if true FPS drops below 20
     #print(g.dt)
+
+    # update FPS counter once per second
+    cur_time = p.time.get_ticks()
+    if int(cur_time / 1000 - g.dt) < int(cur_time / 1000):
+        p.display.set_caption(f"{g.CAPTION} (FPS={g.game_clock.get_fps():.2f})")
 
     #upscale and display
     g.full_screen.blit(p.transform.scale(g.screen, (g.SCREEN_WIDTH, g.SCREEN_HEIGHT)), (0,0))

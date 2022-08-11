@@ -14,7 +14,7 @@ class Creature(entities.Entity):
     def __init__(self, rect, level, name, max_health=10, solid=True):
         
         self.direction = "right"
-        self.speed = 0.02
+        self.speed = 15  # units per second
         self.max_health = max_health
         self.health = self.max_health
 
@@ -60,12 +60,14 @@ class Creature(entities.Entity):
 
         return result
 
+    def get_direction_for_rendering(self):
+        return self.direction
+
     def draw(self):
-        if self.direction == "right":
+        if self.get_direction_for_rendering() == "right":
             flip_h = False
         else:
             flip_h = True
-
 
         surf = gfx.get_surface(self.gfx)
         if flip_h:
@@ -113,8 +115,8 @@ class Enemy(Creature):
                 self.gfx.set_anim("static")
 
     def move_towards(self, x, y):
-        result_x = super().move_towards(x, self.y, self.speed)
-        result_y = super().move_towards(self.x, y, self.speed)
+        result_x = super().move_towards(x, self.y, self.speed * g.dt)
+        result_y = super().move_towards(self.x, y, self.speed * g.dt)
 
         result = None
         if result_x:
@@ -247,9 +249,9 @@ class LargeEnemy(Enemy):
         #move
         result = None
         if self.direction == "left":
-            result = self.move(-self.speed, 0)
+            result = self.move(-self.speed * g.dt, 0)
         elif self.direction == "right":
-            result = self.move(self.speed, 0)
+            result = self.move(self.speed * g.dt, 0)
 
         #switch
         if result:

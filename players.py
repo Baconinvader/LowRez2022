@@ -87,10 +87,11 @@ class Player(creatures.Creature):
     def __init__(self):
         self.target_x = None
         rect = p.Rect(0,32,16,32)
+
         super().__init__(rect, g.current_level, "player", solid=True)
         self.collision_dict = {"class_Entity":False, "class_LargeEnemy":True}
 
-        self.speed = 0.35
+        self.speed = 42  # units per second
 
         self.inventory = Inventory(8)
 
@@ -118,7 +119,7 @@ class Player(creatures.Creature):
     def update(self):
         super().update()
         if self.target_x is not None:
-            result = self.move_towards(self.target_x, self.y, self.speed)
+            result = self.move_towards(self.target_x, self.y, self.speed * g.dt)
             if result:
                 self.target_x = None
             if self.x == self.target_x:
@@ -167,6 +168,10 @@ class Player(creatures.Creature):
                 elif item.fire_effect == 2:
                     self.flash_effect = particles.create_stun_flash(self.level, (0,0), self.angle)
 
+    def get_direction_for_rendering(self):
+        # player should always appear to face the mouse, regardless of their true direction.
+        return "right" if g.tmx > self.rect.centerx else "left"
+
     def draw(self):
         super().draw()
 
@@ -177,7 +182,7 @@ class Player(creatures.Creature):
             #hand
             elbow_x = self.shoulder_pos[0] + m.cos(self.arm_angle)*self.arm.get_width()
             elbow_y = self.shoulder_pos[1] + m.sin(self.arm_angle)*self.arm.get_width()
-            g.camera.draw_rotated_gfx(self.hand, self.elbow_angle, (elbow_x,elbow_y), ox=0, oy=0.5)
+            g.camera.draw_rotated_gfx(self.hand, self.elbow_angle, (elbow_x,elbow_y), ox=0, oy=0.5, yflip=g.tmx > self.rect.centerx)
 
             #weapon
             hand_x = elbow_x + m.cos(self.elbow_angle)*self.hand.get_width()
@@ -190,7 +195,7 @@ class Player(creatures.Creature):
                 item_surf = p.transform.flip(self.inventory.selected_item.surface, False, True)
                 item_angle = self.arm_angle + (m.pi/4)
     
-            g.camera.draw_rotated_gfx(item_surf, item_angle, (hand_x, hand_y), ox=0.5, oy=0.5)
+            g.camera.draw_rotated_gfx(item_surf, item_angle, (hand_x, hand_y), ox=0.5, oy=0.5, yflip=g.tmx > self.rect.centerx)
 
             #weapon end
             weapon_x = hand_x + m.cos(item_angle)*(item_surf.get_width()/2)

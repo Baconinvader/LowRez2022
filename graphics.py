@@ -164,20 +164,27 @@ class AnimationSystem:
         self.__dict__ = unpickle_state(state)
 
 
-
-def load_image(name, path=g.GFX_DIR, extension=".png", alpha=True):
+def load_image(name, path=g.GFX_DIRS, extension=".png", alpha=True):
     """
     Load image, or take from cache if possible
     """
     if not g.image_cache.get(name, None):
-        image = p.image.load(os.path.join(path, name + extension))
-        if alpha:
-            image = image.convert_alpha()
-        else:
-            image = image.convert()
-        
-        g.image_cache[name] = image
-        g.reverse_image_cache[image] = SurfacePickle(image, name)
+        if not isinstance(path, tuple):
+            path = (path,)
+        for path_to_try in path:
+            filepath = os.path.join(path_to_try, name + extension)
+            if os.path.exists(filepath):
+                image = p.image.load(filepath)
+                if alpha:
+                    image = image.convert_alpha()
+                else:
+                    image = image.convert()
+
+                g.image_cache[name] = image
+                g.reverse_image_cache[image] = SurfacePickle(image, name)
+                break
+        if name not in g.image_cache:
+            raise ValueError(f"failed to find image: {name}")
 
     return g.image_cache[name]
 
