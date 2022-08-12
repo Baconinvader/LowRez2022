@@ -3,6 +3,7 @@
     "position":[12,-4],
     "show_space":false,
     "structures":[
+        ["Pickup", 20, null, "BathroomKey"]
     ],
 
     "comments": []

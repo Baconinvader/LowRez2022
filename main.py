@@ -155,6 +155,9 @@ def handle_input():
                         g.player.set_target_x(g.tmx)
 
 
+                print(">>",command_triggered,clicked_structure,"(",(clicked_structure.level.name if clicked_structure else None),")")
+
+
             elif event.button == 1:
                 #click button
                 button_pressed = False

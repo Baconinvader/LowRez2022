@@ -188,16 +188,22 @@ class MapControl(Control):
                 colour = "blue"
             else:
                 lum = int(255/lw)
-                cr = min(int(lum*0.75), 255)
-                cg = min(int(lum*2), 255)
-                cb = min(int(lum*0.75), 255)
+                cr = max(min(int(lum*0.75), 255), 64)
+                cg = max(min(int(lum*2), 255), 64)
+                cb = max(min(int(lum*0.75), 255), 64)
                 colour = (cr,cg,cb)
+
+            #if level.name == "Eng I":
+            #    print(lx, ly)
+            #    colour = "yellow"
 
             p.draw.rect(surf, colour, p.Rect(lx-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2), lw, lh))
 
             if level == g.player.level:
                 px = lx+int( (g.player.x+1) //self.pixel_size)
                 surf.set_at((px-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2)), "red")
+
+            
         
         g.screen.blit(surf, self.rect)
 

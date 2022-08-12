@@ -1,9 +1,10 @@
 {
     "name":"Cmd II",
-    "position":[16,-1],
+    "position":[14,-1],
     "show_space":false,
     "structures":[
-        ["Door", null, -32, "Deck"]
+        ["Door", null, -32, "Deck"],
+        ["Pickup", 20, null, "ReactorKey"]
     ],
 
     "comments": []

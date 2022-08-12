@@ -156,6 +156,7 @@ class Gun(Item):
                 pass
             bullet.delete()
 
+#guns
 class Handgun(Gun):
     def __init__(self):
         self.__init__("handgun", self, 1, 0.5, 200)
@@ -171,6 +172,17 @@ class Stungun(Gun):
 class Shotgun(Gun):
     def __init__(self):
         self.__init__("revolver", self, 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=15)
+
+#keys
+class BathroomKey(Item):
+    def __init__(self):
+     super().__init__("K. Bathroom")
+class ReactorKey(Item):
+    def __init__(self):
+        super().__init__("K. Reactor")
+class StorageKey(Item):
+    def __init__(self):
+        super().__init__("K. Storage")
 
 def create_item(name):
     """

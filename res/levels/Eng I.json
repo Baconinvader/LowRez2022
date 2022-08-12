@@ -1,6 +1,6 @@
 {
     "name":"Eng I",
-    "position":[13,1],
+    "position":[10,0],
     "show_space":false,
     "structures":[
         ["Door", null, -32, "Eng II"],
