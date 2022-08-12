@@ -220,6 +220,11 @@ class MapControl(Control):
                 px = lx+int( (g.player.x+1) //self.pixel_size)
                 surf.set_at((px-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2)), "red")
 
+            if g.power_diverted:
+                for shuttle in g.elements.get("class_Shuttle",[]):
+                    if shuttle in level.structures:
+                        px = lx+int( (shuttle.x+1) //self.pixel_size)
+                        surf.set_at((px-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2)), "red")
 
 
         g.screen.blit(surf, self.rect)
