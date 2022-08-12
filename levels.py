@@ -333,7 +333,7 @@ class KeypadDoor(LockedDoor):
     def attempt_unlock(self, value=None):
         rect = p.Rect(0, 0, 56, 32)
         rect.center = g.screen_rect.center
-        if value == self.key_string:
+        if value == self.key_string or (g.IS_DEV and p.key.get_pressed()[p.K_u]):
             controls.Popup(rect, "Unlocked", "Door", None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
             self.unlock()  
         else:
