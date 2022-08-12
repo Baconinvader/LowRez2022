@@ -21,7 +21,8 @@ class Creature(entities.Entity):
         self.name = name
         self.anims = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1}, 0.25)
 
-        self.stunned = False
+        self.stunned = 0
+        self.stun_effect = False
 
         super().__init__(rect, level, entity_gfx=self.anims, solid=solid)
 
@@ -41,15 +42,22 @@ class Creature(entities.Entity):
         if self.health <= 0:
             self.die()
 
-    def take_damage(self, amount):
+    def take_damage(self, amount, source=None):
         self.change_health(-amount)
 
     def die(self):
         pass
 
     def stun(self, timer):
-        self.stunned = True
-        actions.VarChangeAction(self.pipe, timer, self, "stunned", False, change_type=2, blocking=False, blockable=False)
+        self.stunned += 1
+        self.stun_effect = True
+        #actions.VarChangeAction(self.pipe, timer, self, "stunned", False, change_type=2, blocking=False, blockable=False)
+        actions.FuncCallEffect(self.pipe, timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
+
+    def remove_stun(self):
+        self.stunned -= 1
+        if not self.stunned:
+            self.stun_effect = False
 
     def move(self, x, y, detail=False):
         result = super().move(x, y, detail=detail)
@@ -77,7 +85,7 @@ class Creature(entities.Entity):
         #gfx.get_mask(self.surface).to_surface()
         g.camera.draw_gfx( self.surface , self.rect.topleft)
 
-        if self.stunned:
+        if self.stun_effect:
             state = r.getstate()
 
             r.seed(self.x + ( int(p.time.get_ticks()*0.006) %3) )
@@ -102,6 +110,7 @@ class Enemy(Creature):
         self.damage = damage
         self.respawn_time = respawn_time
 
+
     def update(self):
         super().update()
         self.update_ai()
@@ -124,6 +133,14 @@ class Enemy(Creature):
         elif result_y:
             result = result_y
         return result
+
+    def take_damage(self, amount, source=None):
+        super().take_damage(amount)
+        stun_timer = amount*0.8
+
+        self.stunned += 1
+        actions.FuncCallEffect(self.pipe, stun_timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
+
 
     def attack(self):
         """

@@ -13,7 +13,7 @@ import json
 class Level:
     def __init__(self, name):
         path = os.path.join(g.LEVELS_DIR, name)
-        print(path+".png")
+        
         self.level_image = gfx.load_image(name, path=g.LEVELS_DIR)
         self.level_image_render_offset = (0, 3)
         self.rect = p.Rect(0, 0, self.level_image.get_width(), self.level_image.get_height() )

@@ -86,6 +86,7 @@ class RevolverAmmunition(Ammunition):
 
 class Gun(Item):
     def __init__(self, name, holder, damage, cooldown, fire_range, projectiles=1, spread=0, max_ammunition=50, recharge=0, stun=0, fire_effect=1):
+        print("ITEM ",name)
         super().__init__(name)
         
         self.damage = damage
@@ -143,7 +144,7 @@ class Gun(Item):
                 if isinstance(result, creatures.Creature):
                     if self.damage > 0:
                         particles.create_blood(bullet.level, (bullet.x, bullet.y), self.holder.angle + m.pi )
-                    result.take_damage(self.damage)
+                    result.take_damage(self.damage, source=self.holder)
                     if self.stun:
                         result.stun(self.stun)
 
@@ -157,20 +158,20 @@ class Gun(Item):
 
 #guns
 class Handgun(Gun):
-    def __init__(self):
-        self.__init__("handgun", self, 1, 0.5, 200)
+    def __init__(self, holder):
+        super().__init__("handgun", holder, 1, 0.5, 200)
 
 class Shotgun(Gun):
-    def __init__(self):
-        self.__init__("shotgun", self, 0.8, 1, 100, projectiles=5, spread=0.5, max_ammunition=25, recharge=0)
+    def __init__(self, holder):
+        super().__init__("shotgun", holder, 0.8, 1, 100, projectiles=5, spread=0.5, max_ammunition=25, recharge=0)
 
 class Stungun(Gun):
-    def __init__(self):
-        self.__init__("stungun", self, 0.0, 1.5, 64, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
+    def __init__(self, holder):
+        super().__init__("stungun", holder, 0.0, 1.5, 64, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
 
-class Shotgun(Gun):
-    def __init__(self):
-        self.__init__("revolver", self, 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=15)
+class Revolver(Gun):
+    def __init__(self, holder):
+        super().__init__("revolver", holder, 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=15)
 
 #keys
 class BathroomKey(Item):
