@@ -184,7 +184,7 @@ class VarChangeAction(Action):
 
         setattr(self.obj, self.prop, val)
 
-class FuncCallEffect(Action):
+class FuncCallAction(Action):
     """
     Action for calling a function/subroutine/method
     """

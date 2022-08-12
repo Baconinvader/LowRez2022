@@ -12,8 +12,9 @@
 
         ["EnemySpawn", 128, -32, "BasicEnemy"],
         ["EnemySpawn", 196, -32, "BasicEnemy"],
-        ["EnemySpawn", 224, -32, "BasicEnemy"]
+        ["EnemySpawn", 224, -32, "BasicEnemy"],
         
+        ["PowerSwitch", 16, -32]
     ],
 
     "comments": []

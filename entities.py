@@ -48,10 +48,11 @@ class Entity(elements.Element):
         if self.level:
             self.level.entities.remove(self)
 
-        self.level = level
+        if level:
+            self.level = level
 
-        #add to new level
-        self.level.entities.append(self)
+            #add to new level
+            self.level.entities.append(self)
 
     def move_towards(self, x, y, speed, detail=False):
         """
@@ -108,7 +109,8 @@ class Entity(elements.Element):
 
     def delete(self):
         if not self.deleted:
-            self.level.entities.remove(self)
+            if self.level:
+                self.level.entities.remove(self)
             super().delete()
 
     def level_left(self):

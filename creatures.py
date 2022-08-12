@@ -52,7 +52,7 @@ class Creature(entities.Entity):
         self.stunned += 1
         self.stun_effect = True
         #actions.VarChangeAction(self.pipe, timer, self, "stunned", False, change_type=2, blocking=False, blockable=False)
-        actions.FuncCallEffect(self.pipe, timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
+        actions.FuncCallAction(self.pipe, timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
 
     def remove_stun(self):
         self.stunned -= 1
@@ -139,7 +139,7 @@ class Enemy(Creature):
         stun_timer = amount*0.8
 
         self.stunned += 1
-        actions.FuncCallEffect(self.pipe, stun_timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
+        actions.FuncCallAction(self.pipe, stun_timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
 
 
     def attack(self):
@@ -170,7 +170,7 @@ class Corpse(entities.Entity):
 
 
         if self.enemy.respawn_time:
-            actions.FuncCallEffect(self.pipe, 10, self, "recover", change_type=1)
+            actions.FuncCallAction(self.pipe, 10, self, "recover", change_type=1)
 
     def update(self):
         super().update()
@@ -182,7 +182,7 @@ class Corpse(entities.Entity):
         timer = self.gfx.max_timer * len(self.gfx.frames)
         self.gfx.reverse = True
         self.gfx.reset()
-        actions.FuncCallEffect(self.pipe, timer, self, "respawn", change_type=1)
+        actions.FuncCallAction(self.pipe, timer, self, "respawn", change_type=1)
 
     def respawn(self):
         """
@@ -213,7 +213,7 @@ class BasicEnemy(Enemy):
             result = self.move_towards(g.player.x, g.player.y)
             if result == g.player:
                 self.attacking = True
-                actions.FuncCallEffect(self.pipe, self.attack_time, self, "attack", change_type=1)
+                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1)
                 print("ATTACK")
 
                 
@@ -240,7 +240,7 @@ class RecoverEnemy(Enemy):
             result = self.move_towards(g.player.x, g.player.y)
             if result == g.player:
                 self.attacking = True
-                actions.FuncCallEffect(self.pipe, self.attack_time, self, "attack", change_type=1)
+                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1)
 
     def attack(self):
         super().attack()

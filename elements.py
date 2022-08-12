@@ -9,9 +9,10 @@ class Element:
     """
     Base class for all game objects
     """
-    def __init__(self, rect):
+    def __init__(self, rect, z_index=0):
         self.rect = rect
         self.set_from_rect()
+        self.z_index = z_index
 
         self.class_names = []
 

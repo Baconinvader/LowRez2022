@@ -4,6 +4,7 @@ import utilities as util
 import creatures
 import particles
 import items
+import actions
 
 import pygame as p
 import math as m
@@ -82,13 +83,22 @@ class Inventory:
             if slot == item:
                 self.remove_index(i)
 
+    def clear(self):
+        """
+        Clear inventory
+        """
+        for slot in self.slots:
+            if slot:
+                self.remove(slot)
 
 class Player(creatures.Creature):
     def __init__(self):
         self.target_x = None
         rect = p.Rect(0,32,16,32)
 
-        super().__init__(rect, g.current_level, "player", solid=True)
+        super().__init__(rect, None, "player", solid=True)
+        self.z_index = 1
+
         self.collision_dict = {"class_Entity":False, "class_LargeEnemy":True}
 
         self.speed = 42  # units per second
@@ -99,11 +109,7 @@ class Player(creatures.Creature):
         #shotgun = items.Gun("shotgun", self, 0.8, 1, 100, projectiles=5, spread=0.5, max_ammunition=25, recharge=0)
         #stungun = items.Gun("stungun", self, 0.0, 1.5, 64, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
         #revolver = items.Gun("revolver", self, 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=15)
-        self.inventory.add_item(items.Handgun(self))
-        self.inventory.add_item(items.Shotgun(self))
-        self.inventory.add_item(items.Stungun(self))
-        self.inventory.add_item(items.Revolver(self))
-        self.inventory.select_index(0)
+        
         self.angle = 0
 
         self.arm = gfx.load_image("player_arm", alpha=True)
@@ -112,8 +118,22 @@ class Player(creatures.Creature):
         self.flash_effect = None
 
         self.control_locks = 0
+        self.fully_dead = False
+
+    def debug_set_inventory(self):
+        """
+        Debug method for setting up player inventory
+        """
+        self.inventory.add_item(items.Handgun(self))
+        self.inventory.add_item(items.Shotgun(self))
+        self.inventory.add_item(items.Stungun(self))
+        self.inventory.add_item(items.Revolver(self))
+        self.inventory.select_index(0)
 
     def set_target_x(self, x):
+        """
+        Set the point the player tries to walk through
+        """
         self.target_x = x-(self.rect.w/2)
 
     def update(self):
@@ -171,6 +191,23 @@ class Player(creatures.Creature):
     def get_direction_for_rendering(self):
         # player should always appear to face the mouse, regardless of their true direction.
         return "right" if g.tmx > self.rect.centerx else "left"
+
+    def take_damage(self, amount):
+        if self.health:
+            super().take_damage(amount)
+
+    def die(self):
+        timer = 1
+        actions.OverlayAction(self.pipe, timer, (255,128,128), blocking=False, blockable=False)
+        actions.FuncCallAction(self.pipe, timer, self, "set_gameover", change_type=1, blocking=False, blockable=False)
+        
+
+    def set_gameover(self):
+        """
+        Actually end the game after player death
+        """
+        self.fully_dead = True
+        
 
     def draw(self):
         super().draw()

@@ -38,28 +38,51 @@ g.fonts = {
 
 g.game_clock = p.time.Clock()
 
-for file_name in os.listdir(g.LEVELS_DIR):
-    if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
-        levels.Level(file_name[:-5])
-
-g.current_level = g.levels["Hallway"] #"Cryo I"]
-for level in g.levels.values():
-    level.linkup()
-
-g.player = players.Player()
-g.camera = cameras.Camera(g.player, (-32, -48 + 3))
-
 #menu
 def start_game():
     reset()
+    g.active_states = set(("main",))
+    g.current_level = g.levels["Hallway"] #"Cryo I"]
+    levels.change_level(g.current_level)
 
-inv_button = None
-def load_game():
-    #TODO FIX THIS
-    global inv_button
+def go_to_menu():
     reset()
-    import pickle
-    byte_sum = 0
+    g.active_states = set(("mainmenu",))
+    print("menu")
+
+
+g.player = players.Player()
+g.camera = cameras.Camera(g.player, (-32, -48 + 3))
+def reset():
+    #reset game
+    for entity in g.elements.get("class_Entity", []):
+        if entity != g.player:
+            entity.delete()
+
+    g.levels = {}
+
+    for file_name in os.listdir(g.LEVELS_DIR):
+        if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
+            levels.Level(file_name[:-5])
+
+    for level in g.levels.values():
+        level.linkup()
+
+    #reset player
+    g.player.health = g.player.max_health
+    g.player.fully_dead = False
+    g.player.inventory.clear()
+    g.player.debug_set_inventory()
+    g.player.x = 0
+    
+
+def load_game():
+    pass
+    #TODO FIX THIS
+    #global inv_button
+    #reset()
+    #import pickle
+    #byte_sum = 0
 
 
     #save
@@ -77,7 +100,7 @@ def load_game():
 
     
     
-
+#MAINMENU
 controls.MainMenuControl()
 rect = p.Rect(0, 0, 32, 16)
 rect.centerx = g.screen_rect.centerx
@@ -88,6 +111,16 @@ controls.Button(rect, start_game, ss_anims[1][0], ss_anims[1][1], ss_anims[1][2]
 rect = rect.copy()
 rect.y -= 16
 #controls.Button(rect, load_game, ss_anims[0][0], ss_anims[0][1], ss_anims[0][2], set(("mainmenu",)))
+
+#GAMEOVER
+controls.GameOverControl()
+rect = p.Rect(0, 0, 32, 16)
+rect.centerx = g.screen_rect.centerx
+rect.centery = 48
+controls.Button(rect, go_to_menu, ss_anims[2][0], ss_anims[2][1], ss_anims[2][2], set(("gameover", "end")))
+
+#END
+controls.EndScreenControl()
 
 #background
 controls.BackgroundControl("space_background", set(("main",)))
@@ -138,15 +171,16 @@ def handle_input():
 
                 command_triggered = False
                 clicked_structure = None
-                #get smallest clicked strueture
-                for structure in g.current_level.structures:
-                    if structure.can_interact and structure.rect.collidepoint((g.tmx, g.tmy)):
-                        if not clicked_structure or (clicked_structure.rect.w*clicked_structure.rect.h) > (structure.rect.w*structure.rect.h):
-                            clicked_structure = structure
-                        
-                if clicked_structure:
-                    clicked_structure.interact()
-                    command_triggered = True
+                #get smallest clicked structure
+                if g.current_level:
+                    for structure in g.current_level.structures:
+                        if structure.can_interact and structure.rect.collidepoint((g.tmx, g.tmy)):
+                            if not clicked_structure or (clicked_structure.rect.w*clicked_structure.rect.h) > (structure.rect.w*structure.rect.h):
+                                clicked_structure = structure
+                            
+                    if clicked_structure:
+                        clicked_structure.interact()
+                        command_triggered = True
 
 
                 #move player
@@ -190,6 +224,11 @@ def handle_input():
         g.player.move(1*0.02*120*g.dt, 0)
 
 def update():
+    #check if player is dead
+    if g.player.fully_dead and "gameover" not in g.active_states:
+        g.active_states = set(("gameover",))
+        print("gameover")
+        
     i = 0
     while i < len(g.pipe_list):
         g.pipe_list[i].update()
@@ -214,19 +253,25 @@ def update():
 
         element.update()
 
+def sort_entity(entity):
+    index = entity.z_index
+    return index
+
 def draw():
-    if g.current_level.show_space:
-        for control in g.elements.get("class_BackgroundControl"):
-            control.draw()
+    if g.current_level:
+        if g.current_level.show_space:
+            for control in g.elements.get("class_BackgroundControl", []):
+                control.draw()
 
     if "main" in g.active_states:
-        g.current_level.draw()
+        if g.current_level:
+            g.current_level.draw()
 
-        for entity in g.elements.get("class_Entity", []):
-            if entity.level != g.current_level:
-                continue
+            for entity in sorted(g.elements.get("class_Entity", []), key=sort_entity):
+                if entity.level != g.current_level:
+                    continue
 
-            entity.draw()
+                entity.draw()
 
     for control in g.elements.get("class_Control", []):
         if not g.active_states.isdisjoint(control.active_states) and not isinstance(control, controls.BackgroundControl):
@@ -235,8 +280,6 @@ def draw():
     for pipe in g.pipes.values():
         pipe.draw()
 
-def reset():
-    g.active_states = set(("main",))
 
 g.active_states = set(("mainmenu",))
 

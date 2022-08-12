@@ -100,7 +100,7 @@ class BackgroundControl(GraphicsControl):
 
 class MainMenuControl(GraphicsControl):
     """
-    Control for main menu
+    Control for showing main menu background
     """
     def __init__(self):
         super().__init__(g.screen_rect.copy(), "space_background", set(("mainmenu",)) )
@@ -115,6 +115,26 @@ class MainMenuControl(GraphicsControl):
         self.offset_x = m.sin((p.time.get_ticks()/1000) * (2*m.pi) * 0.05)*8
         g.screen.blit(self.ship_surface, (self.ship_x+self.offset_x, self.ship_y))
 
+class GameOverControl(GraphicsControl):
+    """
+    Control for showing end screen background
+    """
+    def __init__(self):
+        super().__init__(g.screen_rect.copy(), "gameover_background", set(("gameover",)) )
+
+    def draw(self):
+        super().draw()
+
+
+class EndScreenControl(GraphicsControl):
+    """
+    Control for showing end screen background
+    """
+    def __init__(self):
+        super().__init__(g.screen_rect.copy(), "end_background", set(("end",)) )
+
+    def draw(self):
+        super().draw()
 
 class HealthControl(Control):
     """
@@ -163,9 +183,6 @@ class ItemControl(Control):
                 gfx.draw_text("font1_1", ammunition_string, self.rect.move((icon_width + 1, -self.rect.h/2 + 1)).topleft)
 
                 
-
-
-
 class MapControl(Control):
     """
     Control for displaying a minimap
@@ -489,3 +506,28 @@ class Item_Popup(Popup):
                     self.pickup.delete()
                 else:
                     self.pickup.interaction_enabled = False
+
+class Timer(Control):
+    """
+    Control for displaying a timer on screen associated with an action
+    """
+    def __init__(self, font_name, rect, action, active_states, colour="black"):
+        super().__init__(rect, active_states)
+        self.font_name = font_name
+        self.action = action
+        self.colour = colour
+
+    def update(self):
+        super().update()
+        if self.action.progress >= 1:
+            self.delete()
+
+    def draw(self):
+        minutes = str(int(self.action.timer // 60)).zfill(2)
+        seconds = str(int(self.action.timer % 60)).zfill(2)
+        seconds_decimal = int(round(self.action.timer % 1, 1)*10)
+        if seconds_decimal == 10:
+            seconds_decimal = 0
+
+        timer_string = f"{minutes}:{seconds}.{seconds_decimal}"
+        gfx.draw_text(self.font_name, timer_string, self.rect.center, cx=True, cy=True, colour=self.colour, alpha=255)

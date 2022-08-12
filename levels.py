@@ -13,7 +13,7 @@ import json
 class Level:
     def __init__(self, name):
         path = os.path.join(g.LEVELS_DIR, name)
-        
+
         self.level_image = gfx.load_image(name, path=g.LEVELS_DIR)
         self.level_image_render_offset = (0, 3)
         self.rect = p.Rect(0, 0, self.level_image.get_width(), self.level_image.get_height() )
@@ -357,6 +357,42 @@ class TextInformation(Structure):
     def interact(self):
         controls.TextScreenControl(g.screen_rect.copy(), self.font_name, self.text, set(("main",)), background_gfx=self.background_gfx)
 
+class PowerSwitch(Structure):
+    """
+    A structure which triggers the endgame when activated
+    """
+    def __init__(self, level, x, y):
+        structure_gfx = g.spritesheets["structure_16_32_ss"].anims[1][1]
+        w, h = structure_gfx.get_size()
+        rect = p.Rect(x, y, w, h)
+        super().__init__(level, rect, structure_gfx)
+        self.popup = None
+
+    def interact(self):
+        rect = p.Rect(0, 0, 56, 32)
+        rect.center = g.screen_rect.center
+        self.popup = controls.Popup(rect, "Divert", "Power?", self.trigger, set(("main",)), background_gfx="popup_success_background")
+
+    def trigger(self):
+        """
+        Trigger the countdown
+        """
+        rect = p.Rect(0, 8, 32, 16)
+        rect.centerx = g.screen_rect.centerx
+
+        timer = (3*60) + 0
+
+        #pipe, timer, obj, proc, args=[], kwargs={}, change_type=0, blocking=True, blockable=True)
+        action = actions.FuncCallAction(self.pipe, timer, self, "timer_end", blocking=False, blockable=True)
+        controls.Timer("font1_1", rect, action, (("main",)), colour="white")
+        self.popup.delete()
+
+    def timer_end(self):
+        """
+        End Game if player fails to finish in time
+        """
+        if "end" not in g.active_states:
+            g.player.die()
 
 class EnemySpawn(Structure):
     """
