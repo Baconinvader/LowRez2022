@@ -117,7 +117,6 @@ class Animation:
                 print(len(self.frames)-int(frame_index+1), ": ", len(self.frames), frame_index)
                 frame_index = len(self.frames)-int(frame_index+1)
 
-        #print(old_frame_index, frame_index,"[",len(self.frames),"]")
         return self.frames[int(frame_index)]
 
     def __getstate__(self):
@@ -235,20 +234,18 @@ def pickle_state(_state_dict):
         if type(v) == p.Surface:
             surf_pickle = get_surface_pickle(v)
             state_dict[k] = surf_pickle
-            #print("conv to [",surf_pickle,"]")
+
 
         elif type(v) == list:
             list_pickle = []
             for i,vv in enumerate(v):
                 if type(vv) == p.Surface:
                     surf_pickle = get_surface_pickle(vv)
-                    #print("conv",i,"to",surf_pickle)
                     list_pickle.append(surf_pickle)
                 else:
                     list_pickle.append(vv)
             state_dict[k] = list_pickle
 
-        #print(">:",k,state_dict[k],"",_state_dict[k])
 
     return state_dict
         
@@ -276,13 +273,11 @@ def unpickle_state(_state_dict):
                         surf = g.image_cache[vv.hash]
                     except:
                         surf = g.image_cache[vv.name]
-                    #print("conv",i,"to",surf_pickle)
                     list_unpickle.append(surf)
                 else:
                     list_unpickle.append(vv)
             state_dict[k] = list_unpickle
 
-    #print( ">>",len(state_dict.values()), state_dict)
     return state_dict
 
 
@@ -299,7 +294,6 @@ def get_mask(gfx):
         #create new
         mask = p.mask.from_surface(surf)
         g.mask_cache[surf_hash] = mask
-        print("new mask: ",type(gfx),"- ",surf.get_width(),",",surf.get_height(), mask.count())
         return mask
 
 def draw_text(font_name, string, pos, cx=False, cy=False, colour="black", alpha=255):

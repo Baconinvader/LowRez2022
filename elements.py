@@ -19,7 +19,6 @@ class Element:
 
         #add to lists of game elements
         for base_class in inspect.getmro(self.__class__):
-            #print(">", base_class, " - ", base_class.__name__)
             name = "class_"+base_class.__name__
             self.class_names.append(name)
 
