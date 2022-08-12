@@ -11,7 +11,7 @@ import actions
 import sounds
 
 class Creature(entities.Entity):
-    def __init__(self, rect, level, name, max_health=10, solid=True):
+    def __init__(self, rect, level, name, max_health=10, solid=True, collision_dict={}):
         
         self.direction = "right"
         self.speed = 15  # units per second
@@ -26,7 +26,7 @@ class Creature(entities.Entity):
         self.stunned = 0
         self.stun_effect = False
 
-        super().__init__(rect, level, entity_gfx=self.anims, solid=solid)
+        super().__init__(rect, level, entity_gfx=self.anims, solid=solid, collision_dict=collision_dict)
 
     def update(self):
         if self.change_x:
@@ -104,7 +104,8 @@ class Enemy(Creature):
     Base class for all enemies
     """
     def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=0.85, max_health=10):
-        super().__init__(rect, level, name, max_health=max_health)
+        super().__init__(rect, level, name, max_health=max_health, collision_dict={"class_Enemy":False})
+        self.z_index = 0.5
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "attacking":2}, 0.25)
 
         self.attacking = False
@@ -177,6 +178,9 @@ class Corpse(entities.Entity):
 
     def update(self):
         super().update()
+        #move to bottom
+        if self.rect.bottom != self.level.rect.bottom:
+            self.move(0, 9.8*2*g.dt)
 
     def recover(self):
         """

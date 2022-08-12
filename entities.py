@@ -89,7 +89,7 @@ class Entity(elements.Element):
             ny += ay
             new_rect.x = nx
             new_rect.y = ny
-            result = util.check_collision(new_rect, obj=self, collision_dict=self.collision_dict, exceptions=self.collision_exceptions, detail=detail, mask=self.mask)
+            result = util.check_collision(new_rect, obj=self, _collision_dict=self.collision_dict, exceptions=self.collision_exceptions, detail=detail, mask=self.mask)
 
             if result:
                 nx -= ax

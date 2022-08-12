@@ -3,14 +3,13 @@ import pygame as p
 
 import math as m
 
-def check_collision(rect, obj=None, mask=None, collision_dict={}, exceptions=[], detail=False):
+def check_collision(rect, obj=None, mask=None, _collision_dict={}, exceptions=[], detail=False):
     """
     Check whether a rect is colliding with an object
     Returns the object if collision occurs, false otherwise
     """
-    _collision_dict = {"class_Entity":True, "levels":True}
-    _collision_dict.update(collision_dict)
-    collision_dict = _collision_dict
+    collision_dict = {"class_Entity":True, "levels":True}
+    collision_dict.update(_collision_dict)
 
     if collision_dict["levels"] and ((obj and rect not in obj.level.rect) or (not obj and rect not in g.current_level.rect)):
         return g.current_level
