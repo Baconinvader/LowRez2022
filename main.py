@@ -24,6 +24,8 @@ p.display.set_caption(g.CAPTION)
 gfx.Spritesheet("player_ss", 16,32)
 gfx.Spritesheet("basic_enemy_ss", 16,32)
 gfx.Spritesheet("large_enemy_ss", 32,60)
+gfx.Spritesheet("spider_enemy_ss", 32,16)
+
 gfx.Spritesheet("structure_16_32_ss", 16,32)
 gfx.Spritesheet("structure_32_32_ss", 32,32)
 gfx.Spritesheet("corpse_ss", 32, 32)

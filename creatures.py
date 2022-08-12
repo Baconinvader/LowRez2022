@@ -20,6 +20,8 @@ class Creature(entities.Entity):
 
         self.name = name
         self.anims = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1}, 0.25)
+        self.flip_h = False
+        self.flip_v = False
 
         self.stunned = 0
         self.stun_effect = False
@@ -78,10 +80,11 @@ class Creature(entities.Entity):
             flip_h = True
 
         surf = gfx.get_surface(self.gfx)
-        if flip_h:
-            self.surface = p.transform.flip(surf, True, False)
+        if flip_h or self.flip_h or self.flip_v:
+            self.surface = p.transform.flip(surf, (flip_h or self.flip_h), self.flip_v)
         else:
             self.surface = surf
+
         #gfx.get_mask(self.surface).to_surface()
         g.camera.draw_gfx( self.surface , self.rect.topleft)
 
@@ -100,7 +103,7 @@ class Enemy(Creature):
     """
     Base class for all enemies
     """
-    def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=2, max_health=10):
+    def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=0.85, max_health=10):
         super().__init__(rect, level, name, max_health=max_health)
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "attacking":2}, 0.25)
 
@@ -160,7 +163,7 @@ class Corpse(entities.Entity):
     Corpse of an creature
     """
     def __init__(self, enemy, x, y, level):
-        corpse_ss_dict = {"basic_enemy":0, "large_enemy":0, "recover_enemy":1}
+        corpse_ss_dict = {"basic_enemy":0, "large_enemy":0, "recover_enemy":1, "spider_enemy":1}
         self.enemy = enemy
         self.corpse_anim_index = corpse_ss_dict[enemy.name]
 
@@ -214,9 +217,7 @@ class BasicEnemy(Enemy):
             if result == g.player:
                 self.attacking = True
                 actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1)
-                print("ATTACK")
 
-                
 
     def attack(self):
         super().attack()
@@ -224,6 +225,49 @@ class BasicEnemy(Enemy):
 
         if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 20:
             g.player.take_damage(self.damage)
+
+class SpiderEnemy(Enemy):
+    """
+    Crawling spider enemy
+    """
+    def __init__(self, x, y, level):
+        rect = p.Rect(x, y, 32, 16)
+        super().__init__(rect, level, "spider_enemy", max_health=5, speed=25)
+
+        self.on_ceiling = True
+
+    def update_ai(self):
+        super().update_ai()
+
+        if not self.stunned and not self.attacking:
+            #fall
+            if self.on_ceiling:
+                if abs(g.player.rect.centerx - self.rect.centerx) < 30:
+                    self.on_ceiling = False
+                    actions.VarChangeAction(self.pipe, 0.5, self, "y", self.level.rect.h-self.rect.h, blocking=False, blockable=False, force=False)
+
+            result = self.move_towards(g.player.x, self.y)
+
+
+            if result == g.player:
+                self.attacking = True
+                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1)
+
+
+    def attack(self):
+        super().attack()
+        sounds.play_sound("bleep1", self.rect.center)
+
+        if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 40:
+            g.player.take_damage(self.damage)
+
+    def draw(self):
+        if self.on_ceiling:
+            self.flip_v = True
+        else:
+            self.flip_v = False
+
+        super().draw()
 
 class RecoverEnemy(Enemy):
     """
