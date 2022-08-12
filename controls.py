@@ -220,8 +220,8 @@ class MapControl(Control):
                 px = lx+int( (g.player.x+1) //self.pixel_size)
                 surf.set_at((px-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2)), "red")
 
-            
-        
+
+
         g.screen.blit(surf, self.rect)
 
 class InventoryControl(Control):

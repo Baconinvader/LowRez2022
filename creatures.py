@@ -232,7 +232,7 @@ class SpiderEnemy(Enemy):
     """
     def __init__(self, x, y, level):
         rect = p.Rect(x, y, 32, 16)
-        super().__init__(rect, level, "spider_enemy", max_health=5, speed=25)
+        super().__init__(rect, level, "spider_enemy", max_health=3, speed=25)
 
         self.on_ceiling = True
 

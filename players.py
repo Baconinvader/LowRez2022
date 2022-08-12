@@ -226,7 +226,7 @@ class Player(creatures.Creature):
             hand_y = elbow_y + m.sin(self.elbow_angle)*self.hand.get_width()
             
             if g.tmx > self.rect.centerx:
-                item_surf = self.inventory.selected_item.surface
+                item_surf = p.transform.flip(self.inventory.selected_item.surface, False, True)
                 item_angle = self.arm_angle  - (m.pi/4)
             else:
                 item_surf = p.transform.flip(self.inventory.selected_item.surface, False, True)
