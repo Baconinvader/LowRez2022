@@ -368,6 +368,10 @@ class PowerSwitch(Structure):
         super().__init__(level, rect, structure_gfx)
         self.popup = None
 
+    def update(self):
+        super().update()
+        self.can_interact = not g.power_diverted
+
     def interact(self):
         rect = p.Rect(0, 0, 56, 32)
         rect.center = g.screen_rect.center
@@ -377,13 +381,16 @@ class PowerSwitch(Structure):
         """
         Trigger the countdown
         """
+        g.power_diverted = True
+
+
         rect = p.Rect(0, 8, 32, 16)
         rect.centerx = g.screen_rect.centerx
 
+        #start countdown
         timer = (3*60) + 0
 
-        #pipe, timer, obj, proc, args=[], kwargs={}, change_type=0, blocking=True, blockable=True)
-        action = actions.FuncCallAction(self.pipe, timer, self, "timer_end", blocking=False, blockable=True)
+        action = actions.FuncCallAction(self.pipe, timer, self, "timer_end", change_type=1, blocking=False, blockable=False)
         controls.Timer("font1_1", rect, action, (("main",)), colour="white")
         self.popup.delete()
 
@@ -393,6 +400,41 @@ class PowerSwitch(Structure):
         """
         if "end" not in g.active_states:
             g.player.die()
+
+class Shuttle(Structure):
+    """
+    A structure which the player must board to finish the game
+    """
+    def __init__(self, level, x, y):
+        structure_gfx = "shuttle"
+        rect = p.Rect(x, y, 64, 64)
+        self.entered = False
+        super().__init__(level, rect, structure_gfx)
+
+    def update(self):
+        super().update()
+        self.can_interact = g.power_diverted and not self.entered
+
+    def interact(self):
+        self.entered = True
+        g.player.set_target_x(self.rect.centerx)
+        self.can_interact = False
+        timer = 2
+        actions.OverlayAction(self.pipe, timer, (0,0,0), blocking=False, blockable=False)
+        
+        #fade in
+        actions.Action(self.pipe, timer-0.02, blocking=True, blockable=False)
+        actions.OverlayAction(self.pipe, timer, (0,0,0), blocking=False, blockable=True, fade_type=1)
+
+
+        actions.FuncCallAction(self.pipe, timer+0.01, self, "finish_game", change_type=1, blocking=False, blockable=False)
+        
+
+    def finish_game(self):
+        """
+        Actually finish the game
+        """
+        g.active_states = set(("end",))
 
 class EnemySpawn(Structure):
     """

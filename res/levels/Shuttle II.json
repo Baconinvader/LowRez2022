@@ -3,6 +3,7 @@
     "position":[8,1],
     "show_space":false,
     "structures":[
+        ["Shuttle", 32, -64]
     ],
 
     "comments": []

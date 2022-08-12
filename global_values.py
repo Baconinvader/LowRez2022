@@ -36,6 +36,7 @@ element_id_number = 0
 global_pipe = None
 current_level = None
 active_states = set()
+power_diverted = False
 player = None
 
 #input

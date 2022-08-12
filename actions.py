@@ -38,11 +38,11 @@ class Pipe:
                 else:
                     ran_action = self.update_action(action) or ran_action
 
-        if self.actions:
-            if not self.actions[0].active:
-                self.actions[0].start()
+        #if self.actions:
+        #    if not self.actions[0].active:
+        #        self.actions[0].start()
 
-            self.actions[0].update()
+        #    self.actions[0].update()
 
     def add_action(self, action):
         """
@@ -215,15 +215,21 @@ class OverlayAction(Action):
     """
     Action for showing a coloured screen overlay
     """
-    def __init__(self, pipe, timer, colour, blocking=True, blockable=True):
+    def __init__(self, pipe, timer, colour, blocking=True, blockable=True, fade_type=0):
         super().__init__(pipe, timer, blocking=blocking, blockable=blockable)
 
         self.alpha = 0
         self.colour = colour
+
+        #0: get more intense, 1: get lass intense
+        self.fade_type = fade_type
     
     def update(self):
         super().update()
-        self.alpha = util.interpolate(0, 255, self.progress)
+        if self.fade_type == 0:
+            self.alpha = util.interpolate(0, 255, self.progress)
+        elif self.fade_type == 1:
+            self.alpha = util.interpolate(255, 0, self.progress)
 
     def draw(self):
         pg.box(g.screen, g.screen_rect, (self.colour[0], self.colour[1], self.colour[2], self.alpha))
