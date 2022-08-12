@@ -92,7 +92,7 @@ class Enemy(Creature):
     """
     Base class for all enemies
     """
-    def __init__(self, rect, level, name, respawn_time=0, speed=0.006, damage=1, attack_time=2, max_health=10):
+    def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=2, max_health=10):
         super().__init__(rect, level, name, max_health=max_health)
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "attacking":2}, 0.25)
 

@@ -42,7 +42,7 @@ for file_name in os.listdir(g.LEVELS_DIR):
     if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
         levels.Level(file_name[:-5])
 
-g.current_level = g.levels["Cryo I"]
+g.current_level = g.levels["Hallway"] #"Cryo I"]
 for level in g.levels.values():
     level.linkup()
 

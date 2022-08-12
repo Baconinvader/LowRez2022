@@ -45,6 +45,12 @@ my = 0
 ml, mm, mr = False, False, False
 tmx, tmy = 0,0
 
+#debug stuff
+# enable "dev mode" commands if there's a gitignore file~
+IS_DEV = os.path.exists(".gitignore")
+if IS_DEV:
+    print("IS_DEV is enabled.")
+
 #graphics
 spritesheets = {}
 image_cache = {}
