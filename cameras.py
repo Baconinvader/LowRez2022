@@ -22,7 +22,6 @@ class Camera(elements.Element):
             self.old_parent_direction = self.parent.direction
 
         diff_from_center = g.mx - g.WIDTH/2
-        #print(diff_from_center, "[",g.tmx," ",self.parent.rect.centerx,"]")
         
         if not hasattr(self.parent, "control_locks") or not g.player.control_locks:
             self.look_offset = m.sin( diff_from_center/(g.WIDTH/2) )*24

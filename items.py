@@ -69,7 +69,6 @@ class Ammunition(Item):
         super().pickup()
         gun = g.player.inventory.check_for_named_item(self.gun_name)
         gun.change_ammunition(self.ammunition_amount)
-        print(">>",self.ammunition_amount)
 
         g.player.inventory.remove(self)
 

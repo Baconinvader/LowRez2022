@@ -43,7 +43,6 @@ class Pipe:
                 self.actions[0].start()
 
             self.actions[0].update()
-            #print(self.actions[0], type(self.actions[0]))
 
     def add_action(self, action):
         """

@@ -35,7 +35,6 @@ def check_collision(rect, obj=None, mask=None, collision_dict={}, exceptions=[],
                             if entity.surface:
                                 gfx_mask = gfx.get_mask(entity.surface)
                                 #gfx_mask = p.mask.Mask((entity.rect.w, entity.rect.h), fill=True)
-                                #print(gfx_mask.count(), mask.count(), (rect.right-entity.rect.right, rect.bottom-entity.rect.bottom))
                                 if gfx_mask.overlap(mask, (rect.left-entity.rect.left, rect.top-entity.rect.top)):
                                     return entity
 

@@ -206,7 +206,6 @@ class Door(Structure):
         super().__init__(level, rect, self.closed_surface)
 
     def interact(self):
-        print(">",self.state,":",self.change_level.name,"(",self.level.name,")")
         if self.state == "closed":
             self.open()
 
@@ -219,7 +218,6 @@ class Door(Structure):
         actions.VarChangeAction(g.global_pipe, 0, g.player, "x", self.change_pos[0], change_type=1)
 
     def close(self):
-        print("closing ",self,">",self.change_level.name,"(",self.level.name,")")
         self.state = "closed"
         self.open_anim.reset()
         self.gfx = self.closed_surface
