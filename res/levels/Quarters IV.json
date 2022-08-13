@@ -3,6 +3,7 @@
     "position":[11,-4],
     "show_space":false,
     "structures":[
+        ["Pickup", 8, null, "Stungun"]
     ],
 
     "comments": []

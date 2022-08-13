@@ -3,6 +3,11 @@
     "position":[6,0],
     "show_space":false,
     "structures":[
+        ["Pickup", 2, null, "Medkit"],
+        ["Pickup", 12, null, "ShotgunAmmunition"],
+        ["Pickup", 20, null, "RevolverAmmunition"],
+        ["Pickup", 28, null, "HandgunAmmunition"],
+        ["Pickup", 38, null, "HandgunAmmunition"]
     ],
 
     "comments": []

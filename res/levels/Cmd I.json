@@ -3,7 +3,10 @@
     "position":[12,-1],
     "show_space":false,
     "structures":[
-        ["Door", null, -32, "Cmd II"]
+        ["Door", null, -32, "Cmd II"],
+
+        ["EnemySpawn", 16, -32, "BasicEnemy"],
+        ["EnemySpawn", 32, -32, "RecoverEnemy"]
     ],
 
     "comments": []

@@ -4,6 +4,8 @@
     "show_space":false,
     "structures":[
         ["Door", null, -32, "Cryo III"],
-        ["KeypadDoor", 112, -32, "Reception", "451"]
+        ["KeypadDoor", 112, -32, "Reception", "451"],
+
+        ["Pickup", 16, null, "Handgun"]
     ]
 }

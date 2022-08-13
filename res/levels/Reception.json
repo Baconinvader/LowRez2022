@@ -5,7 +5,8 @@
     "structures":[
         ["KeypadDoor", null, -32, "Shuttle I", "555"],
         ["Door", null, -32, "Hallway"],
-        ["Pickup", 45, null, "HealthDrink"]
+        ["Pickup", 45, null, "HealthDrink"],
+        ["EnemySpawn", 60, -32, "BasicEnemy"]
     ],
 
     "comments": []

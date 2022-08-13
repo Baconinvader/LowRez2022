@@ -3,5 +3,6 @@
     "position":[0,-1],
     "show_space":true,
     "structures":[
+        ["Pickup", 16, null, "HandgunAmmunition"]
     ]
 }

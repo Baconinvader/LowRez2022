@@ -127,10 +127,10 @@ class Player(creatures.Creature):
         """
         Debug method for setting up player inventory
         """
-        self.inventory.add_item(items.Handgun(self))
-        self.inventory.add_item(items.Shotgun(self))
-        self.inventory.add_item(items.Stungun(self))
-        self.inventory.add_item(items.Revolver(self))
+        self.inventory.add_item(items.Handgun())
+        self.inventory.add_item(items.Shotgun())
+        self.inventory.add_item(items.Stungun())
+        self.inventory.add_item(items.Revolver())
         self.inventory.select_index(0)
 
     def set_target_x(self, x):

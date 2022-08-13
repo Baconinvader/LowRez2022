@@ -3,6 +3,9 @@
     "position":[3,-3],
     "show_space":false,
     "structures":[
+        ["Pickup", 24, null, "Shotgun"],
+        ["Pickup", 6, null, "ShotgunAmmunition"],
+        ["Pickup", 10, null, "HandgunAmmunition"]
     ],
 
     "comments": []

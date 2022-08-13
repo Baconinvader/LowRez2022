@@ -3,6 +3,7 @@
     "position":[14,0],
     "show_space":false,
     "structures":[
+        ["Pickup", 50, null, "Medkit"]
     ],
 
     "comments": []

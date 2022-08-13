@@ -3,7 +3,11 @@
     "position":[4,1],
     "show_space":false,
     "structures":[
-        ["Door", null, -32, "Shuttle II"]
+        ["Door", null, -32, "Shuttle II"],
+
+        ["EnemySpawn", 80, 8, "SpiderEnemy"],
+        ["EnemySpawn", 120, 8, "SpiderEnemy"],
+        ["EnemySpawn", 140, 8, "SpiderEnemy"]
     ],
 
     "comments": []

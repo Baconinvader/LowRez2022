@@ -138,8 +138,8 @@ class Pickup(Structure):
         #    outline_rect = self.rect.inflate(2,2)
         #    g.camera.draw_rect("green", outline_rect, 1)
 
-    def interact(self):
-        controls.Item_Popup(self.item, pickup=self)
+    def interact(self, delete_pickup=True):
+        controls.Item_Popup(self.item, pickup=self, delete_pickup=delete_pickup)
 
 class LockedPickup(Pickup):
     """
@@ -153,15 +153,15 @@ class LockedPickup(Pickup):
 
         self.locked = True
 
-    def interact(self):
-        super().interact()
+    #def interact(self):
+    #    super().interact()
 
     def unlock(self):
         self.locked = False
 
 class KeyPickup(LockedPickup):
     """
-    Structure of an item that can be pickup up, but required a key
+    Structure of an item that can be pickup up, but requires a key
     """
 
     def __init__(self, level, x, y, item, pickup_gfx, key_name):
@@ -184,7 +184,30 @@ class KeyPickup(LockedPickup):
         elif not self.locked:
             controls.Item_Popup(self.item, pickup=self, delete_pickup=False)
 
-    
+class KeypadPickup(LockedPickup):
+    """
+    Structure of an item that can be pickup up, but requires a code
+    """
+
+    def __init__(self, level, x, y, item, pickup_gfx, key_string):
+        self.key_string = key_string
+        super().__init__(level, x, y, item, pickup_gfx)
+
+    def interact(self):
+        if self.locked:
+            controls.Keypad_Popup(self)
+        else:
+            controls.Item_Popup(self.item, pickup=self, delete_pickup=False)
+
+    def attempt_unlock(self, value=None):
+        rect = p.Rect(0, 0, 56, 32)
+        rect.center = g.screen_rect.center
+        if value == self.key_string or (g.IS_DEV and p.key.get_pressed()[p.K_u]):
+            controls.Popup(rect, "Unlocked", "Item", None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
+            self.unlock()  
+        else:
+            controls.Popup(rect, "Incorrect", "Code", None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
+
 
 class Door(Structure):
     def __init__(self, level, x, y, change_level, create_exit=True):
