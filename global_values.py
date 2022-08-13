@@ -38,6 +38,7 @@ current_level = None
 active_states = set()
 power_diverted = False
 player = None
+end_screen = None
 
 #input
 keys = {}

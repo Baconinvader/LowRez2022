@@ -116,23 +116,92 @@ class MainMenuControl(GraphicsControl):
         self.offset_x = m.sin((p.time.get_ticks()/1000) * (2*m.pi) * 0.05)*8
         g.screen.blit(self.ship_surface, (self.ship_x+self.offset_x, self.ship_y))
 
+class SlidesControl(GraphicsControl):
+    """
+    Control for displaying a slideshow of images
+    """
+    def __init__(self, rect, font_name, slides, end_func, active_states, background_colour="white", font_colour="black"):
+        self.slides = slides
+        #create slides
+        for i,slide in enumerate(self.slides):
+            if type(slide) == str and slide.startswith("img:"):
+                slide = gfx.load_image(slide[4:])
+                self.slides[i] = slide
+
+        self.slide_index = 0
+
+        self.font_name = font_name
+        self.background_colour = background_colour
+        self.font_colour = font_colour
+
+        super().__init__(rect, None, active_states)
+
+        self.background_surface = p.Surface((self.rect.w, self.rect.h))
+        self.background_surface.fill(self.background_colour)
+
+        button_anims = g.spritesheets["button_ss"].anims
+
+
+        button_rect = p.Rect(0,0,8,8)
+        button_rect.bottomright = self.rect.bottomright
+        self.button_progress = Button(button_rect, self.progress, button_anims[6][0], button_anims[6][1], button_anims[6][2], self.active_states)
+
+        self.end_func = end_func
+
+    def progress(self):
+        self.slide_index += 1
+        if self.slide_index >= len(self.slides):
+            self.end_func()
+            self.delete()
+
+    def draw(self):
+        slide = self.slides[self.slide_index]
+
+        if type(slide) == str:
+            self.gfx = self.background_surface
+            #x = self.rect.centerx
+            #y = 20
+            
+            #draw_text(self.font_name, slide, pos, cx=False, cy=False, colour="black", alpha=255):
+        else:
+            self.gfx = slide
+
+        super().draw()
+
+        if type(slide) == str:
+            gfx.draw_wrapped_text(self.font_name, slide, self.rect.inflate((-4,-4)), colour=self.font_colour, spacing=10)
+
 class GameOverControl(GraphicsControl):
     """
     Control for showing end screen background
     """
     def __init__(self):
         super().__init__(g.screen_rect.copy(), "gameover_background", set(("gameover",)) )
+        self.slides = []
 
     def draw(self):
         super().draw()
 
 
-class EndScreenControl(GraphicsControl):
+class EndScreenControl(SlidesControl):
     """
-    Control for showing end screen background
+    Control for showing end screen 
     """
     def __init__(self):
-        super().__init__(g.screen_rect.copy(), "end_background", set(("end",)) )
+        slides = [
+            "As the pod departed, the planet began to transform.",
+            g.spritesheets["end_ss"].anims[0][0],
+            "Its evil influence became part of its physical form",
+            g.spritesheets["end_ss"].anims[0][1],
+            "And mine as well.",
+            g.spritesheets["end_ss"].anims[0][2],
+            "Thanks for playing.",
+            "Credits: Baconinv: Programming Ghast: Art"
+        ]
+        super().__init__(g.screen_rect, "font1_1", slides, self.back_to_menu, set(("end",)), background_colour="white", font_colour="black")
+
+    def back_to_menu(self):
+        g.active_states = set(("mainmenu",))
 
     def draw(self):
         super().draw()
@@ -296,6 +365,18 @@ class InventoryControl(Control):
                 y = 48
                 detail_string = detail_item.name
                 gfx.draw_text("font1_1", detail_string, (x,y), cx=True, cy=True)
+
+                y += 8
+                extra_detail_string = ""
+                if isinstance(detail_item, items.Gun):
+                    extra_detail_string = f"{detail_item.ammunition}/{detail_item.max_ammunition} rnds"
+                elif type(detail_item) == items.HealthDrink:
+                    extra_detail_string = "+3 HP"
+                elif type(detail_item) == items.Medkit:
+                    extra_detail_string = "+5 HP"
+
+
+                gfx.draw_text("font1_1", extra_detail_string, (x,y), cx=True, cy=True)
 
 class TextScreenControl(Control):
     """

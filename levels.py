@@ -461,6 +461,7 @@ class Shuttle(Structure):
         """
         Actually finish the game
         """
+        g.end_screen.slide_index = 0
         g.active_states = set(("end",))
 
 class EnemySpawn(Structure):

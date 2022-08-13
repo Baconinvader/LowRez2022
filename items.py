@@ -57,7 +57,7 @@ class HealthDrink(Consumable):
 
     def consume(self):
         super().consume()
-        actions.VarChangeAction( g.player.pipe, 5, g.player, "health", g.player.health+5, blocking=False, blockable=False, force=False, max_val=g.player.max_health)
+        actions.VarChangeAction( g.player.pipe, 6, g.player, "health", g.player.health+3, blocking=False, blockable=False, force=False, max_val=g.player.max_health)
 
 
 class Ammunition(Item):
@@ -69,7 +69,10 @@ class Ammunition(Item):
     def pickup(self):
         super().pickup()
         gun = g.player.inventory.check_for_named_item(self.gun_name)
-        gun.change_ammunition(self.ammunition_amount)
+        if gun:
+            gun.change_ammunition(self.ammunition_amount)
+        else:
+            g.player.inventory.ammunition_reserves[self.gun_name] = g.player.inventory.ammunition_reserves.get(self.gun_name) + self.ammunition_amount
 
         g.player.inventory.remove(self)
 

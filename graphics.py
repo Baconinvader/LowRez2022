@@ -317,7 +317,7 @@ def draw_text(font_name, string, pos, cx=False, cy=False, colour="black", alpha=
 
     g.screen.blit(health_text, (x, y))
 
-def draw_wrapped_text(font_name, string, rect, colour="black", alpha=255):
+def draw_wrapped_text(font_name, string, rect, colour="black", alpha=255, spacing=None):
     words = string.split(" ")
     font = g.fonts[font_name]
     colour = g.convert_colour(colour)
@@ -333,7 +333,10 @@ def draw_wrapped_text(font_name, string, rect, colour="black", alpha=255):
 
             line = word
             x = rect.x
-            y += h
+            if spacing:
+                y += spacing
+            else:
+                y += h
             #if y > rect.bottom:
             #    return
         else:

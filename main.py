@@ -33,6 +33,7 @@ gfx.Spritesheet("corpse_ss", 32, 32)
 gfx.Spritesheet("button_ss", 8,8)
 gfx.Spritesheet("med_button_ss", 12,12)
 gfx.Spritesheet("large_button_ss", 32,16)
+gfx.Spritesheet("end_ss", 64,64)
 
 p.font.init()
 g.fonts = {
@@ -68,11 +69,14 @@ def reset():
         if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
             levels.Level(file_name[:-5])
 
-
     for level in g.levels.values():
         level.linkup()
+    g.power_diverted = False
 
+    #reset sound
     g.channel_list.stop_sounds()
+
+
 
     #reset player
     g.player.health = g.player.max_health
@@ -128,7 +132,7 @@ rect.centery = 48
 controls.Button(rect, go_to_menu, ss_anims[2][0], ss_anims[2][1], ss_anims[2][2], set(("gameover", "end")))
 
 #END
-controls.EndScreenControl()
+g.end_screen = controls.EndScreenControl()
 
 #background
 controls.BackgroundControl("space_background", set(("main",)))

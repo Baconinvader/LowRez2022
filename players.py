@@ -19,6 +19,9 @@ class Inventory:
         self.selected_item = None
         self.selected_index = None
 
+        #a way for ammunition to be collected before a gun is picked up
+        self.ammunition_reserves = {}
+
     def add_item(self, item):
         """
         Attempt to add an item to inventory
@@ -33,6 +36,10 @@ class Inventory:
         for i,slot in enumerate(self.slots):
             if not slot:
                 self.slots[i] = item
+                if isinstance(item, items.Gun):
+                    item.change_ammunition(self.ammunition_reserves.get(item.name, 0))
+                    self.ammunition_reserves[item.name] = 0
+
                 return True
         return False
 
@@ -130,10 +137,10 @@ class Player(creatures.Creature):
         """
         Debug method for setting up player inventory
         """
-        self.inventory.add_item(items.Handgun())
-        self.inventory.add_item(items.Shotgun())
-        self.inventory.add_item(items.Stungun())
-        self.inventory.add_item(items.Revolver())
+        #self.inventory.add_item(items.Handgun())
+        #self.inventory.add_item(items.Shotgun())
+        #self.inventory.add_item(items.Stungun())
+        #self.inventory.add_item(items.Revolver())
         self.inventory.select_index(0)
 
     def set_target_x(self, x):
@@ -146,7 +153,7 @@ class Player(creatures.Creature):
             self.target_x = None
 
     def set_animation(self):
-        if self.hurt:
+        if self.health < self.max_health/2:
             self.gfx.set_anim("hurt")
         elif self.change_x:
             self.gfx.set_anim("moving")
@@ -168,7 +175,7 @@ class Player(creatures.Creature):
         #position arm
         self.shoulder_pos = self.rect.move(0, -4).center
         if item:
-            if item.name == "handgun" or item.name == "stungun" or item.name == "revolver" or item.name == "shotgun":
+            if True:#item.name == "handgun" or item.name == "stungun" or item.name == "revolver" or item.name == "shotgun"
                 if g.tmx > self.rect.centerx:
                     self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) + (m.pi/4)
                     self.elbow_angle = self.arm_angle - (m.pi/2)
@@ -180,8 +187,12 @@ class Player(creatures.Creature):
                 self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) + (m.pi/4)
                 self.elbow_angle = self.arm_angle - (m.pi/2)
         else:
-            self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) + (m.pi/4)
-            self.elbow_angle = self.arm_angle - (m.pi/2)
+            if g.tmx > self.rect.centerx:
+                self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) + (m.pi/4)
+                self.elbow_angle = self.arm_angle - (m.pi*.25)
+            else:
+                self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) - (m.pi/4)
+                self.elbow_angle = self.arm_angle + (m.pi*0.25)
 
         if item:
             if isinstance(item, items.Gun) and item.recharge:
@@ -216,8 +227,8 @@ class Player(creatures.Creature):
             
             actions.OverlayAction(self.pipe, 1, g.colour_remaps["red"], fade_type=1, full_alpha=overlay_strength, blockable=False, blocking=False)
 
-            self.hurt += 1
-            actions.VarChangeAction(self.pipe, 1, self, "hurt", self.hurt-1, change_type=2, revert=False, blocking=False, blockable=False, force=False)
+            #self.hurt += 1
+            #actions.VarChangeAction(self.pipe, 1, self, "hurt", self.hurt-1, change_type=2, revert=False, blocking=False, blockable=False, force=False)
 
     def die(self):
         self.visible_override = False
@@ -241,16 +252,17 @@ class Player(creatures.Creature):
         #arm
         g.camera.draw_rotated_gfx(self.arm, self.arm_angle, self.shoulder_pos, ox=0, oy=0.5)
 
-        if self.inventory.selected_item:
-            #hand
-            elbow_x = self.shoulder_pos[0] + m.cos(self.arm_angle)*self.arm.get_width()
-            elbow_y = self.shoulder_pos[1] + m.sin(self.arm_angle)*self.arm.get_width()
-            g.camera.draw_rotated_gfx(self.hand, self.elbow_angle, (elbow_x,elbow_y), ox=0, oy=0.5, yflip=g.tmx > self.rect.centerx)
+        
+        #hand
+        elbow_x = self.shoulder_pos[0] + m.cos(self.arm_angle)*self.arm.get_width()
+        elbow_y = self.shoulder_pos[1] + m.sin(self.arm_angle)*self.arm.get_width()
+        g.camera.draw_rotated_gfx(self.hand, self.elbow_angle, (elbow_x,elbow_y), ox=0, oy=0.5, yflip=g.tmx > self.rect.centerx)
 
-            #weapon
-            hand_x = elbow_x + m.cos(self.elbow_angle)*self.hand.get_width()
-            hand_y = elbow_y + m.sin(self.elbow_angle)*self.hand.get_width()
-            
+        #weapon
+        hand_x = elbow_x + m.cos(self.elbow_angle)*self.hand.get_width()
+        hand_y = elbow_y + m.sin(self.elbow_angle)*self.hand.get_width()
+        
+        if self.inventory.selected_item:
             if g.tmx > self.rect.centerx:
                 item_surf = p.transform.flip(self.inventory.selected_item.surface, False, True)
                 item_angle = self.arm_angle  - (m.pi/4)
