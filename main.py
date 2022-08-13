@@ -46,7 +46,7 @@ g.game_clock = p.time.Clock()
 def start_game():
     reset()
     g.active_states = set(("main",))
-    g.current_level = g.levels["Hallway"] #"Cryo I"]
+    g.current_level = g.levels["Hallway"]
     levels.change_level(g.current_level)
 
 def go_to_menu():

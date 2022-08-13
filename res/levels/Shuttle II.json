@@ -1,9 +1,9 @@
 {
     "name":"Shuttle II",
     "position":[8,1],
-    "show_space":false,
+    "show_space":true,
     "structures":[
-        ["Shuttle", 32, -64]
+        ["Shuttle", 64, -64]
     ],
 
     "comments": []
