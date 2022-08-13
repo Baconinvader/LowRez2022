@@ -219,7 +219,7 @@ class OverlayAction(Action):
         super().__init__(pipe, timer, blocking=blocking, blockable=blockable)
 
         self.alpha = 0
-        self.colour = colour
+        self.colour = g.convert_colour(colour)
 
         #0: get more intense, 1: get lass intense
         self.fade_type = fade_type

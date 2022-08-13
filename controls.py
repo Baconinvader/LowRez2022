@@ -95,8 +95,8 @@ class BackgroundControl(GraphicsControl):
         left_border = g.camera.transform_point((g.current_level.rect.left,0))[0]
         right_border = g.camera.transform_point((g.current_level.rect.right,0))[0]
         
-        p.draw.rect(g.screen, "black", p.Rect(0,0,left_border,g.HEIGHT))
-        p.draw.rect(g.screen, "black", p.Rect(right_border,0,g.WIDTH-right_border+1,g.HEIGHT))
+        p.draw.rect(g.screen, g.convert_colour("black"), p.Rect(0,0,left_border,g.HEIGHT))
+        p.draw.rect(g.screen, g.convert_colour("black"), p.Rect(right_border,0,g.WIDTH-right_border+1,g.HEIGHT))
 
 class MainMenuControl(GraphicsControl):
     """
@@ -144,7 +144,7 @@ class HealthControl(Control):
         super().__init__(rect, active_states)
 
     def draw(self):
-        p.draw.rect(g.screen, "green", self.rect)
+        p.draw.rect(g.screen, g.convert_colour("green"), self.rect)
 
         health_string = str(int(g.player.health))
 
@@ -171,13 +171,13 @@ class ItemControl(Control):
                 if item.recharge:
                     ammunition_frac = item.ammunition % 1
                     x = int(remaining_space*ammunition_frac)
-                    p.draw.rect(g.screen, "blue", p.Rect(self.rect.x+icon_width+x, self.rect.y, 1, self.rect.h))
+                    p.draw.rect(g.screen, g.convert_colour("blue"), p.Rect(self.rect.x+icon_width+x, self.rect.y, 1, self.rect.h))
 
                 ticks = p.time.get_ticks()
                 if item.last_fire_time and (ticks - item.last_fire_time)/1000 < item.max_cooldown:
                     cooldown_frac = (ticks - item.last_fire_time)/1000/item.max_cooldown
                     x = int(remaining_space*cooldown_frac)
-                    p.draw.rect(g.screen, "brown", p.Rect(self.rect.x+icon_width+x, self.rect.y, 1, self.rect.h))
+                    p.draw.rect(g.screen, g.convert_colour("brown"), p.Rect(self.rect.x+icon_width+x, self.rect.y, 1, self.rect.h))
 
                 ammunition_string = f"x{int(item.ammunition)}"
                 gfx.draw_text("font1_1", ammunition_string, self.rect.move((icon_width + 1, -self.rect.h/2 + 1)).topleft)
@@ -214,6 +214,7 @@ class MapControl(Control):
             #    print(lx, ly)
             #    colour = "yellow"
 
+            # I'm ok using non-palette colors in the map - Ghast
             p.draw.rect(surf, colour, p.Rect(lx-offset_x+ (self.rect.w//2), ly-offset_y+ (self.rect.h//2), lw, lh))
 
             if level == g.player.level:
@@ -267,9 +268,8 @@ class InventoryControl(Control):
                 colour = "red"
             elif self.highlighted_slot == i:
                 colour = "brown"
-                
 
-            p.draw.rect(g.screen, colour, rect, 1)
+            p.draw.rect(g.screen, g.convert_colour(colour), rect, 1)
 
             if cell:
                 g.screen.blit(cell.icon, rect.move((1,1)))

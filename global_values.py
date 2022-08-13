@@ -73,10 +73,16 @@ colour_remaps = {
 
     # accent colours
     "green": (80, 217, 80),
-    "yellow": (255, 216, 0),
-    "darkyellow": (202, 179, 48)
+    "lightyellow": (255, 216, 0),
+    "lightblue": (80, 211, 217),
+    "blue": (80, 82, 217),
+    "yellow": (202, 179, 48)
 }
 colour_remaps["gray"] = colour_remaps["white"]
+colour_remaps["brown"] = colour_remaps["beige"]
+for cname in list(colour_remaps.keys()):
+    print(cname)
+    colour_remaps[p.color.Color(cname)[0:3]] = colour_remaps[cname]
 
 _logged_bad_colours = set()
 

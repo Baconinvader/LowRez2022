@@ -287,7 +287,7 @@ g.active_states = set(("mainmenu",))
 
 RUNNING = True
 while RUNNING:
-    g.screen.fill("black")
+    g.screen.fill(g.convert_colour("black"))
     handle_input()
     update()
     draw()

@@ -25,6 +25,7 @@ pickups:
     [ ] keys
 
 [ ] standardize colors
-    [ ] blood
+    [x] in-world effects
+    [ ] control panel
 [ ] level scenery
 [ ] interaction outlines
