@@ -40,6 +40,8 @@ class Inventory:
                     item.change_ammunition(self.ammunition_reserves.get(item.name, 0))
                     self.ammunition_reserves[item.name] = 0
 
+                if not self.selected_item:
+                    self.select_index(i)
                 return True
         return False
 
@@ -137,10 +139,10 @@ class Player(creatures.Creature):
         """
         Debug method for setting up player inventory
         """
-        #self.inventory.add_item(items.Handgun())
-        #self.inventory.add_item(items.Shotgun())
-        #self.inventory.add_item(items.Stungun())
-        #self.inventory.add_item(items.Revolver())
+        self.inventory.add_item(items.Handgun())
+        self.inventory.add_item(items.Shotgun())
+        self.inventory.add_item(items.Stungun())
+        self.inventory.add_item(items.Revolver())
         self.inventory.select_index(0)
 
     def set_target_x(self, x):
@@ -215,6 +217,15 @@ class Player(creatures.Creature):
 
                 elif item.fire_effect == 2:
                     self.flash_effect = particles.create_stun_flash(self.level, (0,0), self.angle)
+
+                #recoil
+                recoil_magnitude = min(item.damage*item.projectiles, 4)
+                if self.direction == "left":
+                    self.move(recoil_magnitude, 0)
+                    self.direction = "left"
+                elif self.direction == "right":
+                    self.move(-recoil_magnitude, 0)
+                    self.direction = "right"
 
     def get_direction_for_rendering(self):
         # player should always appear to face the mouse, regardless of their true direction.

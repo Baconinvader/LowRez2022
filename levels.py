@@ -432,7 +432,8 @@ class PowerSwitch(Structure):
 
     def delete(self):
         super().delete()
-        self.timer_control.delete()
+        if self.timer_control:
+            self.timer_control.delete()
 
 class Shuttle(Structure):
     """
