@@ -150,7 +150,7 @@ class HealthControl(Control):
 
         health_string = str(int(g.player.health))
 
-        gfx.draw_text("font1_1", health_string, self.rect.center, cx=True, cy=True)
+        gfx.draw_text("font1_1", health_string, self.rect.move(1, 0).center, cx=True, cy=True)
 
 
 class ItemControl(Control):

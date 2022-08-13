@@ -4,6 +4,8 @@ needs drawn:
     [ ] animations
 [x] big guy
     [ ] animations
+[ ] regen guy
+    [ ] animations
 [x] title screen
     [x] ship
     [x] planet
@@ -18,7 +20,7 @@ needs drawn:
     [ ] tentacle arm reveal
 ui widgets:
     [ ] backgrounds
-    [ ] control bar?
+    [x] control bar?
     [ ] buttons
 pickups:
     [ ] health drink
@@ -26,6 +28,6 @@ pickups:
 
 [ ] standardize colors
     [x] in-world effects
-    [ ] control panel
+    [x] control panel
 [ ] level scenery
 [ ] interaction outlines

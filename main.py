@@ -45,7 +45,7 @@ g.game_clock = p.time.Clock()
 def start_game():
     reset()
     g.active_states = set(("main",))
-    g.current_level = g.levels["Hallway"] #"Cryo I"]
+    g.current_level = g.levels["Quarters I"] #"Cryo I"]
     levels.change_level(g.current_level)
 
 def go_to_menu():
@@ -133,7 +133,7 @@ controls.BackgroundControl("space_background", set(("main",)))
 rect = p.Rect(0, 0, g.WIDTH, 8)
 controls.GraphicsControl(rect, "controls_background", set(("main",)))
 
-rect = p.Rect(0,0,15,7)
+rect = p.Rect(0,0,15,8)
 controls.MapControl(rect, set(("main",)))
 
 rect = p.Rect(rect.right+1, 0, 32, 8)
