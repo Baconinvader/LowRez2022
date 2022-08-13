@@ -103,7 +103,7 @@ class Player(creatures.Creature):
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "hurt":2}, 0.25)
         self.z_index = 1
 
-        self.collision_dict = {"class_Entity":False, "class_LargeEnemy":True}
+        self.collision_dict = {"class_Entity":False, "class_LargeEnemy":False}
 
         self.speed = 42  # units per second
 

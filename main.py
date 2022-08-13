@@ -45,9 +45,8 @@ g.game_clock = p.time.Clock()
 def start_game():
     reset()
     g.active_states = set(("main",))
-    g.current_level = g.levels["Shuttle I"] #"Cryo I"]
+    g.current_level = g.levels["Hallway"] #"Cryo I"]
     levels.change_level(g.current_level)
-    print(len(g.pipe_list))
 
 def go_to_menu():
     reset()
@@ -69,8 +68,6 @@ def reset():
         if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
             levels.Level(file_name[:-5])
 
-    for entity in g.elements.get("class_LargeEnemy", []):
-        print(entity)
 
     for level in g.levels.values():
         level.linkup()

@@ -28,6 +28,7 @@ class Level:
 
         self.structures = []
         self.entities = []
+        self.connected_levels = []
 
         for structure_dat in self.level_dat["structures"]:
             structure_class, *args = structure_dat
@@ -51,6 +52,7 @@ class Level:
             if isinstance(structure, Door):
                 if type(structure.change_level) == str:
                     structure.change_level = g.levels[structure.change_level]
+                    self.connected_levels.append(structure.change_level)
 
                 if structure.create_exit:
                     structure.create_exit_door()
