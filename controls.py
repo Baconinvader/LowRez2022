@@ -606,11 +606,12 @@ class Timer(Control):
     """
     Control for displaying a timer on screen associated with an action
     """
-    def __init__(self, font_name, rect, action, active_states, colour="black"):
+    def __init__(self, font_name, rect, action, active_states, colour="black", shadow_pos=None):
         super().__init__(rect, active_states)
         self.font_name = font_name
         self.action = action
         self.colour = colour
+        self.shadow_pos = shadow_pos
 
     def update(self):
         super().update()
@@ -625,4 +626,9 @@ class Timer(Control):
             seconds_decimal = 0
 
         timer_string = f"{minutes}:{seconds}.{seconds_decimal}"
+        if self.shadow_pos:
+            gfx.draw_text(self.font_name, timer_string, self.rect.move(self.shadow_pos).center, cx=True, cy=True, colour=g.colour_remaps["beige"], alpha=255)
+            
         gfx.draw_text(self.font_name, timer_string, self.rect.center, cx=True, cy=True, colour=self.colour, alpha=255)
+
+        

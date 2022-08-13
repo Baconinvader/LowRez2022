@@ -394,6 +394,7 @@ class PowerSwitch(Structure):
         rect = p.Rect(x, y, w, h)
         super().__init__(level, rect, structure_gfx)
         self.popup = None
+        self.timer_control = None
 
     def update(self):
         super().update()
@@ -418,7 +419,8 @@ class PowerSwitch(Structure):
         timer = (3*60) + 0
 
         action = actions.FuncCallAction(self.pipe, timer, self, "timer_end", change_type=1, blocking=False, blockable=False)
-        controls.Timer("font1_1", rect, action, (("main",)), colour="white")
+        self.timer_control = controls.Timer("font1_1", rect, action, (("main",)), colour="white", shadow_pos=(0,1))
+        
         self.popup.delete()
 
     def timer_end(self):
@@ -427,6 +429,10 @@ class PowerSwitch(Structure):
         """
         if "end" not in g.active_states:
             g.player.die()
+
+    def delete(self):
+        super().delete()
+        self.timer_control.delete()
 
 class Shuttle(Structure):
     """
@@ -456,13 +462,13 @@ class Shuttle(Structure):
 
         actions.FuncCallAction(self.pipe, timer+0.01, self, "finish_game", change_type=1, blocking=False, blockable=False)
         
-
     def finish_game(self):
         """
         Actually finish the game
         """
         g.end_screen.slide_index = 0
         g.active_states = set(("end",))
+
 
 class EnemySpawn(Structure):
     """
