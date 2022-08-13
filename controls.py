@@ -5,6 +5,7 @@ import global_values as g
 import graphics as gfx
 import elements
 import items
+import sounds
 
 class Control(elements.Element):
     """
@@ -45,6 +46,7 @@ class Button(Control):
         self.func = func
 
     def press(self):
+        sounds.play_sound("button_press")
         self.func()
 
     def update(self):
@@ -366,6 +368,8 @@ class Popup(Control):
     """
     def __init__(self, rect, line1, line2, func1, active_states, func2=None, show_accept=True, show_reject=True, background_gfx="prompt_background"):
         super().__init__(rect, active_states)
+        sounds.play_sound("popup")
+        
         self.line1 = line1
         self.line2 = line2
 
@@ -451,6 +455,7 @@ class Keypad_Popup(Popup):
 
         
     def add_number(self, value):
+        sounds.play_sound("keypad_press")
         if len(self.entered_code) < self.max_digits:
             self.entered_code += str(value)
 
@@ -506,6 +511,7 @@ class Item_Popup(Popup):
         if g.player.inventory.add_item(self.item):
             self.item.pickup()
             self.delete()
+            sounds.play_sound("pickup")
             if self.pickup:
                 if self.delete_pickup:
                     self.pickup.delete()

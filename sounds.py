@@ -8,7 +8,7 @@ class ChannelList():
     """
     Class for list of channels
     """
-    def __init__(self, channel_amount=8):
+    def __init__(self, channel_amount=16):
         self.channel_list = []
         
 
@@ -47,6 +47,10 @@ class ChannelList():
                     vol = min(1, (1/dist)*sound.volume)
                     channel.set_volume(vol)
 
+    def stop_sounds(self):
+        for channel in self.channel_list:
+            channel.stop()
+
 class GameSound():
     """
     Class for 2D sound
@@ -58,6 +62,9 @@ class GameSound():
         self.volume = volume
         self.x, self.y = pos
 
+    def stop(self):
+        self.sound.stop()
+
 
 def load_sounds():
     """
@@ -65,11 +72,12 @@ def load_sounds():
     """
     path = g.SOUNDS_DIR
     for sound_file in os.listdir(path):
-        sound = p.mixer.Sound(os.path.join(g.SOUNDS_DIR, sound_file))
+        if sound_file.endswith(".wav"):
+            sound = p.mixer.Sound(os.path.join(g.SOUNDS_DIR, sound_file))
 
-        g.sound_dict[sound_file[:-4]] = sound
+            g.sound_dict[sound_file[:-4]] = sound
 
-        print(sound_file)
+            print(sound_file)
 
 def play_sound(name, pos=None, volume=3):
     """
@@ -79,6 +87,8 @@ def play_sound(name, pos=None, volume=3):
         sound = GameSound(name, pos, volume=volume)
     else: #non-2D sound
         sound = g.sound_dict[name]
+        sound.set_volume(volume)
     g.channel_list.play(sound)
+    return sound
 
     

@@ -5,6 +5,7 @@ import creatures
 import particles
 import items
 import actions
+import sounds
 
 import pygame as p
 import math as m
@@ -58,6 +59,8 @@ class Inventory:
             self.selected_item.consume()
             self.remove_index(self.selected_index)
             self.select_index(old_index)
+
+        sounds.play_sound("inventory_select")
 
         return self.selected_item
 
@@ -134,7 +137,10 @@ class Player(creatures.Creature):
         """
         Set the point the player tries to walk through
         """
-        self.target_x = x-(self.rect.w/2)
+        if x is not None:
+            self.target_x = x-(self.rect.w/2)
+        else:
+            self.target_x = None
 
     def update(self):
         super().update()
@@ -198,8 +204,9 @@ class Player(creatures.Creature):
 
     def die(self):
         timer = 1
-        actions.OverlayAction(self.pipe, timer, (255,128,128), blocking=False, blockable=False)
+        actions.OverlayAction(self.pipe, timer, g.colour_remaps["darkred"], blocking=False, blockable=False)
         actions.FuncCallAction(self.pipe, timer, self, "set_gameover", change_type=1, blocking=False, blockable=False)
+        g.player.control_locks += 1
         
 
     def set_gameover(self):

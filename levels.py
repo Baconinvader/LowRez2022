@@ -5,6 +5,7 @@ import entities
 import controls
 import actions
 import items
+import sounds
 
 import pygame as p
 import os
@@ -216,6 +217,7 @@ class Door(Structure):
         actions.OverlayAction(g.global_pipe, 1, (0,0,0))
         actions.LevelChangeAction(g.global_pipe, self.change_level, door=self)
         actions.VarChangeAction(g.global_pipe, 0, g.player, "x", self.change_pos[0], change_type=1)
+        sounds.play_sound("door_open")#, pos=self.rect.center
 
     def close(self):
         self.state = "closed"

@@ -5,6 +5,7 @@ import particles
 import creatures
 import levels
 import actions
+import sounds
 
 import pygame as p
 import random as r
@@ -125,6 +126,7 @@ class Gun(Item):
             self.ammunition = self.max_ammunition
 
     def fire(self):
+        sounds.play_sound(self.name+"_fire", volume=0.5)
         for _ in range(self.projectiles):
             angle = self.holder.angle + ((r.random()-0.5)*self.spread)
 

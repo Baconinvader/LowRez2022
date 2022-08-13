@@ -269,6 +269,7 @@ class LevelChangeAction(Action):
     def start(self):
         super().start()
         levels.change_level(self.new_level)
+        g.player.set_target_x(None)
 
         if self.door:
             g.player.x = self.door.change_pos[0]

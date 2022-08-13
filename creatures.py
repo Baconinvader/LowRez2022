@@ -11,7 +11,7 @@ import actions
 import sounds
 
 class Creature(entities.Entity):
-    def __init__(self, rect, level, name, max_health=10, solid=True, collision_dict={}):
+    def __init__(self, rect, level, name, max_health=10, solid=True, collision_dict={}, footstep_sound="footstep"):
         
         self.direction = "right"
         self.speed = 15  # units per second
@@ -27,6 +27,11 @@ class Creature(entities.Entity):
         self.stun_effect = False
 
         super().__init__(rect, level, entity_gfx=self.anims, solid=solid, collision_dict=collision_dict)
+
+        
+        self.footstep_timer = 0.5
+        self.footstep_sound = footstep_sound
+        self.footstep_cooldown = actions.Action(self.pipe, self.footstep_timer)
 
     def update(self):
         if self.change_x:
@@ -68,6 +73,10 @@ class Creature(entities.Entity):
         elif x < 0:
             self.direction = "left"
 
+        if x != 0 and not result:
+            if not self.footstep_cooldown.active:
+                self.footstep_cooldown = actions.Action(self.pipe, self.footstep_timer)
+                sounds.play_sound(self.footstep_sound, self.rect.center)
         return result
 
     def get_direction_for_rendering(self):
@@ -104,7 +113,7 @@ class Enemy(Creature):
     Base class for all enemies
     """
     def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=0.85, max_health=10):
-        super().__init__(rect, level, name, max_health=max_health, collision_dict={"class_Enemy":False})
+        super().__init__(rect, level, name, max_health=max_health, collision_dict={"class_Enemy":False}, footstep_sound="footstep_enemy")
         self.z_index = 0.5
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "attacking":2}, 0.25)
 
@@ -114,6 +123,29 @@ class Enemy(Creature):
         self.damage = damage
         self.respawn_time = respawn_time
 
+        self.played_encounter_sound = False
+
+    def level_entered(self):
+        super().level_entered()
+        self.played_encounter_sound = False
+
+        #type_string = self.class_names[0]
+        #enemies_of_type = g.elements[type_string]
+        #print(self, type_string, len(enemies_of_type) )
+
+        #find closest enemy of type
+        #closest_enemy = None
+        #closest_dist = 512
+        #for enemy in enemies_of_type:
+        #    if enemy.level == self.level:
+        #        dist = abs(g.player.rect.centerx - enemy.rect.centerx)
+        #        if not closest_enemy or dist < closest_dist:
+        #            closest_enemy = enemy
+        #            closest_dist = dist
+        
+        #make sound if we are that enemy
+        #if closest_enemy == self:
+        #    sounds.play_sound(type_string[6:]+"_level_noise", self.rect.center)
 
     def update(self):
         super().update()
@@ -126,6 +158,15 @@ class Enemy(Creature):
                 self.gfx.set_anim("moving")
             else:
                 self.gfx.set_anim("static")
+
+        if not self.played_encounter_sound:
+            dist_from_camera = abs(g.camera.rect.centerx - self.rect.centerx)
+            if dist_from_camera <= 32:
+                type_string = self.class_names[0]
+                self.played_encounter_sound = sounds.play_sound(type_string[6:]+"_level_noise", self.rect.center, volume=5)
+        else:
+            self.played_encounter_sound.x = self.rect.centerx
+            self.played_encounter_sound.y = self.rect.centery
 
     def move_towards(self, x, y):
         result_x = super().move_towards(x, self.y, self.speed * g.dt)
@@ -145,18 +186,23 @@ class Enemy(Creature):
         self.stunned += 1
         actions.FuncCallAction(self.pipe, stun_timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
 
+        sounds.play_sound("enemy_damage", pos=self.rect.center)
+
 
     def attack(self):
         """
         Finish attack on the player
         """
         self.attacking = False
+        sounds.play_sound("enemy_attack", self.rect.center, volume=7)
 
     def update_ai(self):
         pass
 
     def die(self):
         Corpse(self, self.x, self.y, self.level)
+        if self.played_encounter_sound:
+            self.played_encounter_sound.stop()
         self.delete()
 
 class Corpse(entities.Entity):
@@ -225,8 +271,6 @@ class BasicEnemy(Enemy):
 
     def attack(self):
         super().attack()
-        sounds.play_sound("bleep1", self.rect.center)
-
         if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 20:
             g.player.take_damage(self.damage)
 

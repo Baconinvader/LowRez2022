@@ -199,6 +199,7 @@ def handle_input():
                         button.press()
                         break
 
+                
                 #use item
                 if "inventory" in g.active_states:
                     if inventory_control.highlighted_slot is not None:
@@ -207,8 +208,9 @@ def handle_input():
 
                 #use weapon
                 if not button_pressed:
-                    if g.player.inventory.selected_item:
-                        g.player.attack()
+                    if "main" in g.active_states:
+                        if g.player.inventory.selected_item:
+                            g.player.attack()
 
 
     g.keys = p.key.get_pressed()
@@ -229,6 +231,7 @@ def update():
     #check if player is dead
     if g.player.fully_dead and "gameover" not in g.active_states:
         g.active_states = set(("gameover",))
+        g.channel_list.stop_sounds()
         print("gameover")
         
     i = 0
