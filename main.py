@@ -132,7 +132,7 @@ controls.BackgroundControl("space_background", set(("main",)))
 rect = p.Rect(0, 0, g.WIDTH, 8)
 controls.GraphicsControl(rect, "controls_background", set(("main",)))
 
-rect = p.Rect(0,0,15,7)
+rect = p.Rect(0,0,15,8)
 controls.MapControl(rect, set(("main",)))
 
 rect = p.Rect(rect.right+1, 0, 32, 8)

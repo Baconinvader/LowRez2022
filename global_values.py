@@ -79,7 +79,7 @@ colour_remaps = {
     "yellow": (202, 179, 48)
 }
 colour_remaps["gray"] = colour_remaps["white"]
-colour_remaps["brown"] = colour_remaps["beige"]
+colour_remaps["brown"] = colour_remaps["darkred"]
 for cname in list(colour_remaps.keys()):
     print(cname)
     colour_remaps[p.color.Color(cname)[0:3]] = colour_remaps[cname]

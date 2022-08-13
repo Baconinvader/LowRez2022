@@ -150,7 +150,7 @@ class HealthControl(Control):
 
         health_string = str(int(g.player.health))
 
-        gfx.draw_text("font1_1", health_string, self.rect.center, cx=True, cy=True)
+        gfx.draw_text("font1_1", health_string, self.rect.move(1, 0).center, cx=True, cy=True)
 
 
 class ItemControl(Control):
@@ -179,7 +179,7 @@ class ItemControl(Control):
                 if item.last_fire_time and (ticks - item.last_fire_time)/1000 < item.max_cooldown:
                     cooldown_frac = (ticks - item.last_fire_time)/1000/item.max_cooldown
                     x = int(remaining_space*cooldown_frac)
-                    p.draw.rect(g.screen, g.convert_colour("darkred"), p.Rect(self.rect.x+icon_width+x, self.rect.y, 1, self.rect.h))
+                    p.draw.rect(g.screen, g.convert_colour("brown"), p.Rect(self.rect.x+icon_width+x, self.rect.y, 1, self.rect.h))
 
                 ammunition_string = f"x{int(item.ammunition)}"
                 gfx.draw_text("font1_1", ammunition_string, self.rect.move((icon_width + 1, -self.rect.h/2 + 1)).topleft)
