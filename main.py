@@ -84,6 +84,7 @@ def reset():
     g.player.debug_set_inventory()
     g.player.x = 0
     g.player.control_locks = 0
+    g.player.visible_override = None
     
 
 def load_game():
@@ -290,10 +291,11 @@ def draw():
                 if entity.level != g.current_level:
                     continue
 
-                entity.draw()
+                if entity.visible_override is not False:
+                    entity.draw()
 
     for control in g.elements.get("class_Control", []):
-        if not g.active_states.isdisjoint(control.active_states) and not isinstance(control, controls.BackgroundControl):
+        if (control.visible_override is not False) and not g.active_states.isdisjoint(control.active_states) and not isinstance(control, controls.BackgroundControl):
             control.draw()
 
     for pipe in g.pipes.values():
