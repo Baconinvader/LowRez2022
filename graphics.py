@@ -114,7 +114,6 @@ class Animation:
             if frame_index == -1:
                 frame_index = 0
             else:
-                print(len(self.frames)-int(frame_index+1), ": ", len(self.frames), frame_index)
                 frame_index = len(self.frames)-int(frame_index+1)
 
         return self.frames[int(frame_index)]

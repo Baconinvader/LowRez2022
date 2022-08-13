@@ -274,7 +274,11 @@ class InventoryControl(Control):
             p.draw.rect(g.screen, g.convert_colour(colour), rect, 1)
 
             if cell:
-                g.screen.blit(cell.icon, rect.move((1,1)))
+                if cell.icon.get_width() == rect.w-2:
+                    g.screen.blit(cell.icon, rect.move((1,1)))
+                else:
+                    p.draw.rect(g.screen, "white", rect.inflate((-2,-2)))
+                    g.screen.blit(cell.icon, rect.move(( 1 + (rect.w/2) - (cell.icon.get_width()/2) , 1 + (rect.h/2) - (cell.icon.get_height()/2)  )))
                 #draw amount
                 if cell.amount > 1:
                     amount_string = str(cell.amount)
@@ -369,7 +373,7 @@ class Popup(Control):
     def __init__(self, rect, line1, line2, func1, active_states, func2=None, show_accept=True, show_reject=True, background_gfx="prompt_background"):
         super().__init__(rect, active_states)
         sounds.play_sound("popup")
-        
+
         self.line1 = line1
         self.line2 = line2
 

@@ -186,7 +186,7 @@ class Enemy(Creature):
         self.stunned += 1
         actions.FuncCallAction(self.pipe, stun_timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
 
-        sounds.play_sound("enemy_damage", pos=self.rect.center)
+        sounds.play_sound("enemy_damage", pos=self.rect.center, volume=6)
 
 
     def attack(self):
