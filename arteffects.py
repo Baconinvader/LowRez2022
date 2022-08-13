@@ -1,12 +1,14 @@
 import pygame
 import random
 
+import global_values as g
+
 
 def melt(surf, n_frames, blood_colors=((128, 51, 30), (78, 39, 28)), blood_rate=0.2, compression_factor=0.8, decay_rate=0.1, xshift_rate=0.15):
     res = []
 
     for i in range(0, n_frames):
-        frame = pygame.Surface(surf.get_size(), 0, surf)
+        frame = pygame.Surface(surf.get_size(), pygame.SRCALPHA, surf)
         frame.fill((0, 0, 0, 0))
         x_list = list(range(0, surf.get_width()))
         random.shuffle(x_list)
@@ -27,7 +29,7 @@ def melt(surf, n_frames, blood_colors=((128, 51, 30), (78, 39, 28)), blood_rate=
                     else:
                         new_x = x
 
-                    if 0 <= new_x < frame.get_width() and 0 <= new_y <= frame.get_height():
+                    if is_valid_pos((new_x, new_y), frame):
                         frame.set_at((new_x, new_y), color_at)
         res.append(frame)
         surf = frame
@@ -47,6 +49,24 @@ def shift_down(surf):
     return res
 
 
+def is_valid_pos(xy, surf):
+    return 0 <= xy[0] < surf.get_width() and 0 <= xy[1] < surf.get_height()
+
+
+def add_outline(surf, outline_color):
+    res = surf.copy()
+    neighbors = [(-1, 0), (0, 1), (0, -1), (0, 1)]
+    for x in range(0, surf.get_width()):
+        for y in range(0, surf.get_height()):
+            color_at = surf.get_at((x, y))
+            if color_at[3] == 255 and color_at[0:3] != outline_color[0:3]:
+                for n in neighbors:
+                    px_to_color = (x + n[0], y + n[1])
+                    if is_valid_pos(px_to_color, res) and surf.get_at(px_to_color)[3] < 255:
+                        res.set_at(px_to_color, outline_color)
+    return res
+
+
 def gen_melted_basic_enemy(outfile):
     sheet = pygame.image.load("res/gfx_new/basic_enemy_ss.png")
     surf = sheet.subsurface((32, 0, 16, 32))
@@ -62,7 +82,23 @@ def gen_melted_basic_enemy(outfile):
     pygame.image.save(outsurf, outfile)
 
 
+def gen_melted_player(outfile):
+    surf = pygame.image.load("res/gfx_new/player_single.png").convert_alpha()
+    frames = melt(surf, 4, compression_factor=0.5, blood_rate=0.3, xshift_rate=0, decay_rate=0)
+    frames[-1] = shift_down(frames[-1])
+    frames = [add_outline(f, g.colour_remaps["black"]) for f in frames]
+    outsurf = pygame.Surface((sum(f.get_width() for f in frames),
+                              max(f.get_height() for f in frames)))
+    x = 0
+    for f in frames:
+        outsurf.blit(f, (x, 0))
+        x += f.get_width()
+
+    pygame.image.save(outsurf, outfile)
+
+
 if __name__ == "__main__":
-    # pygame.display.set_mode((50, 50), 0, 32)
-    gen_melted_basic_enemy("enemy_death_seq.png")
+    pygame.display.set_mode((10, 10))
+    # gen_melted_basic_enemy("enemy_death_seq.png")
+    gen_melted_player("player_death_seq.png")
 

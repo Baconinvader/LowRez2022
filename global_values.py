@@ -81,7 +81,6 @@ colour_remaps = {
 colour_remaps["gray"] = colour_remaps["white"]
 colour_remaps["brown"] = colour_remaps["darkred"]
 for cname in list(colour_remaps.keys()):
-    print(cname)
     colour_remaps[p.color.Color(cname)[0:3]] = colour_remaps[cname]
 
 _logged_bad_colours = set()
