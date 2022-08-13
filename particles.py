@@ -80,7 +80,7 @@ def create_flash(level, pos, angle):
     Create muzzle flash effect particles at a point
     """
             #level, position, angle, colour, spread, amount, power, timer
-    return Particles(level, pos, angle, "yellow", 1, 15, 15, 0.4, gravity=0.5)
+    return Particles(level, pos, angle, "lightyellow", 1, 15, 15, 0.4, gravity=0.5)
 
 def create_stun_flash(level, pos, angle):
     """

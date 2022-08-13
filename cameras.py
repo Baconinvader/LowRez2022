@@ -48,10 +48,10 @@ class Camera(elements.Element):
         return new_rect
 
     def draw_rect(self, colour, rect, border=0):
-        p.draw.rect(g.screen, colour, self.transform_rect(rect), border)
+        p.draw.rect(g.screen, g.convert_colour(colour), self.transform_rect(rect), border)
 
     def draw_circle(self, colour, pos, radius, border=0):
-        p.draw.circle(g.screen, colour, self.transform_point(pos), radius, border)
+        p.draw.circle(g.screen, g.convert_colour(colour), self.transform_point(pos), radius, border)
 
     def draw_gfx(self, drawing_gfx, pos, flip_h=False):
         if drawing_gfx:
@@ -64,7 +64,7 @@ class Camera(elements.Element):
         x,y = self.transform_point(pos)
         x = int(x)
         y = int(y)
-        g.screen.set_at((x,y), colour)
+        g.screen.set_at((x, y), g.convert_colour(colour))
 
     def draw_rotated_gfx(self, rotating_gfx, angle, pos, ox=0.5, oy=0.5, xflip=False, yflip=False):
         surf = gfx.get_surface(rotating_gfx)

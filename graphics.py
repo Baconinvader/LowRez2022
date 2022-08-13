@@ -301,6 +301,7 @@ def draw_text(font_name, string, pos, cx=False, cy=False, colour="black", alpha=
     Draw some text
     """
     font = g.fonts[font_name]
+    colour = g.convert_colour(colour)
     
     health_text = font.render(string, False, colour)
 
@@ -320,6 +321,7 @@ def draw_text(font_name, string, pos, cx=False, cy=False, colour="black", alpha=
 def draw_wrapped_text(font_name, string, rect, colour="black", alpha=255):
     words = string.split(" ")
     font = g.fonts[font_name]
+    colour = g.convert_colour(colour)
     x = rect.x
     y = rect.y
     line = ""

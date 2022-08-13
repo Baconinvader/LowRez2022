@@ -1,0 +1,31 @@
+needs drawn:
+
+[x] spider guy
+    [ ] animations
+[x] big guy
+    [ ] animations
+[ ] title screen
+    [ ] ship
+    [ ] planet
+[x] basic enemy
+    [x] animations
+    [ ] death animation
+[ ] level backgrounds
+    [ ] level decorations
+[ ] end screen(s)
+    [ ] escape pod
+    [ ] tentacle planet
+    [ ] tentacle arm reveal
+ui widgets:
+    [ ] backgrounds
+    [ ] control bar?
+    [ ] buttons
+pickups:
+    [ ] health drink
+    [ ] keys
+
+[ ] standardize colors
+    [x] in-world effects
+    [ ] control panel
+[ ] level scenery
+[ ] interaction outlines

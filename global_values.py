@@ -59,6 +59,45 @@ reverse_image_cache = {}
 mask_cache = {}
 fonts = {}
 
+# respect the palette >:(
+colour_remaps = {
+    # primary colours
+    "white": (233, 239, 236),
+    "beige": (160, 160, 139),
+    "darkslategrey": (85, 85, 104),
+    "black": (33, 30, 32),
+
+    # blood
+    "red": (128, 51, 30),
+    "darkred": (78, 39, 28),
+
+    # accent colours
+    "green": (80, 217, 80),
+    "lightyellow": (255, 216, 0),
+    "lightblue": (80, 211, 217),
+    "blue": (80, 82, 217),
+    "yellow": (202, 179, 48)
+}
+colour_remaps["gray"] = colour_remaps["white"]
+colour_remaps["brown"] = colour_remaps["beige"]
+for cname in list(colour_remaps.keys()):
+    print(cname)
+    colour_remaps[p.color.Color(cname)[0:3]] = colour_remaps[cname]
+
+_logged_bad_colours = set()
+
+
+def convert_colour(colour):
+    """Converts a colour to its palette version, if possible"""
+    if colour in colour_remaps:
+        return colour_remaps[colour]
+    else:
+        if colour not in _logged_bad_colours:
+            _logged_bad_colours.add(colour)
+            print(f"WARN: non-palette friendly color is being used?!: {colour}")
+        return colour
+
+
 #sounds
 sound_dict = {}
 channel_list = None
