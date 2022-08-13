@@ -24,7 +24,7 @@ p.display.set_caption(g.CAPTION)
 gfx.Spritesheet("player_ss", 16,32)
 gfx.Spritesheet("basic_enemy_ss", 16,32)
 gfx.Spritesheet("recover_enemy_ss", 16,32)
-gfx.Spritesheet("large_enemy_ss", 32,60)
+gfx.Spritesheet("large_enemy_ss", 48,48)
 gfx.Spritesheet("spider_enemy_ss", 32,16)
 
 gfx.Spritesheet("structure_16_32_ss", 16,32)
@@ -47,6 +47,7 @@ def start_game():
     g.active_states = set(("main",))
     g.current_level = g.levels["Hallway"] #"Cryo I"]
     levels.change_level(g.current_level)
+    print(len(g.pipe_list))
 
 def go_to_menu():
     reset()
@@ -58,7 +59,7 @@ g.player = players.Player()
 g.camera = cameras.Camera(g.player, (-32, -48 + 3))
 def reset():
     #reset game
-    for entity in g.elements.get("class_Entity", []):
+    for entity in g.elements.get("class_Entity", [])[:]:
         if entity != g.player:
             entity.delete()
 
@@ -68,8 +69,13 @@ def reset():
         if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
             levels.Level(file_name[:-5])
 
+    for entity in g.elements.get("class_LargeEnemy", []):
+        print(entity)
+
     for level in g.levels.values():
         level.linkup()
+
+    g.channel_list.stop_sounds()
 
     #reset player
     g.player.health = g.player.max_health
@@ -234,6 +240,7 @@ def update():
     if g.player.fully_dead and "gameover" not in g.active_states:
         g.active_states = set(("gameover",))
         g.channel_list.stop_sounds()
+        g.current_level = None
         print("gameover")
         
     i = 0
@@ -245,11 +252,16 @@ def update():
 
     in_main = "main" in g.active_states
     for element in g.element_list:
-        if isinstance(element, entities.Entity) and (element.level != g.current_level or not in_main):
-            element.update_inactive()
-            continue
+        if isinstance(element, entities.Entity):
+            if in_main:
+                if element.level == g.current_level:
+                    element.update()
+                else:
+                    element.update_inactive()
+            else:
+                continue
 
-        if isinstance(element, controls.Control):
+        elif isinstance(element, controls.Control):
             if g.active_states.isdisjoint(element.active_states):
                 element.active = False
                 continue
@@ -257,8 +269,8 @@ def update():
             else:
                 element.active = True
             
-
-        element.update()
+        else:
+            element.update()
 
 def sort_entity(entity):
     index = entity.z_index

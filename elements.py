@@ -63,6 +63,7 @@ class Element:
             self.pipe.delete()
             for class_name in self.class_names:
                 g.elements[class_name].remove(self)
+            g.element_list.remove(self)
 
     def __getstate__(self):
         print("ELEMENT")

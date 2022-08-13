@@ -48,8 +48,10 @@ class ChannelList():
                     channel.set_volume(vol)
 
     def stop_sounds(self):
-        for channel in self.channel_list:
+        for i,channel in enumerate(self.channel_list):
             channel.stop()
+            self.sound_playing_list[i] = None
+
 
 class GameSound():
     """
@@ -80,6 +82,7 @@ def load_sounds():
             print(sound_file)
 
 def play_sound(name, pos=None, volume=3):
+    #print(name)
     """
     Play a sound, optional a 2D one
     """

@@ -100,6 +100,7 @@ class Player(creatures.Creature):
         rect = p.Rect(0,32,16,32)
 
         super().__init__(rect, None, "player", solid=True)
+        self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "hurt":2}, 0.25)
         self.z_index = 1
 
         self.collision_dict = {"class_Entity":False, "class_LargeEnemy":True}
@@ -121,6 +122,7 @@ class Player(creatures.Creature):
         self.flash_effect = None
 
         self.control_locks = 0
+        self.hurt = 0
         self.fully_dead = False
 
     def debug_set_inventory(self):
@@ -141,6 +143,14 @@ class Player(creatures.Creature):
             self.target_x = x-(self.rect.w/2)
         else:
             self.target_x = None
+
+    def set_animation(self):
+        if self.hurt:
+            self.gfx.set_anim("hurt")
+        elif self.change_x:
+            self.gfx.set_anim("moving")
+        else:
+            self.gfx.set_anim("static")
 
     def update(self):
         super().update()
@@ -201,6 +211,12 @@ class Player(creatures.Creature):
     def take_damage(self, amount):
         if self.health:
             super().take_damage(amount)
+            overlay_strength = min(96*amount, 255)
+            
+            actions.OverlayAction(self.pipe, 1, g.colour_remaps["red"], fade_type=1, full_alpha=overlay_strength, blockable=False, blocking=False)
+
+            self.hurt += 1
+            actions.VarChangeAction(self.pipe, 1, self, "hurt", self.hurt-1, change_type=2, revert=False, blocking=False, blockable=False, force=False)
 
     def die(self):
         timer = 1

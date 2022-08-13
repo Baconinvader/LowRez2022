@@ -104,7 +104,7 @@ class Action:
         """
         if self.max_timer:
             self.timer -= g.dt
-            self.progress = 1-(self.timer/self.max_timer)
+            self.progress = 1-(max(self.timer,0)/self.max_timer)
             if self.timer <= 0:
                 self.finish()
         else:
@@ -151,25 +151,44 @@ class VarChangeAction(Action):
         if self.change_type == 1:
             self.set_var(self.val)
 
+        if self.change_type == 0 and not self.force:
+            self.changed = 0
+
         if not self.force:
             self.change = (self.val-self.start_val)/self.timer
 
     def finish(self):
         super().finish()
         if self.change_type == 0 or self.change_type == 2:
-            self.set_var(self.val)
+            
+
+            if not self.force and self.change_type == 2:
+                current_value = getattr(self.obj, self.prop)
+                new_value = current_value + self.change*self.max_timer
+                self.set_var(new_value)
+
+            elif self.force or self.change_type == 2:
+                self.set_var(self.val)
 
         if self.revert:
             self.set_var(self.start_val)
 
     def update(self):
         super().update()
+        if self.timer < 0:
+            dt = g.dt+self.timer
+        else:
+            dt = g.dt
+
         if self.change_type == 0:
             if self.force:
                 new_value = util.interpolate(self.start_val, self.val, self.progress)
             else:
                 current_value = getattr(self.obj, self.prop)
-                new_value = current_value + (self.change*g.dt)
+                new_value = current_value + (self.change*dt)
+                
+                self.changed = self.changed + (self.change*dt)
+                
             self.set_var(new_value)
             
 
@@ -215,10 +234,11 @@ class OverlayAction(Action):
     """
     Action for showing a coloured screen overlay
     """
-    def __init__(self, pipe, timer, colour, blocking=True, blockable=True, fade_type=0):
+    def __init__(self, pipe, timer, colour, blocking=True, blockable=True, fade_type=0, full_alpha=255):
         super().__init__(pipe, timer, blocking=blocking, blockable=blockable)
 
         self.alpha = 0
+        self.full_alpha = full_alpha
         self.colour = g.convert_colour(colour)
 
         #0: get more intense, 1: get lass intense
@@ -227,9 +247,9 @@ class OverlayAction(Action):
     def update(self):
         super().update()
         if self.fade_type == 0:
-            self.alpha = util.interpolate(0, 255, self.progress)
+            self.alpha = util.interpolate(0, self.full_alpha, self.progress)
         elif self.fade_type == 1:
-            self.alpha = util.interpolate(255, 0, self.progress)
+            self.alpha = util.interpolate(self.full_alpha, 0, self.progress)
 
     def draw(self):
         pg.box(g.screen, g.screen_rect, (self.colour[0], self.colour[1], self.colour[2], self.alpha))

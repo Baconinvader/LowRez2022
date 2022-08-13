@@ -25,19 +25,23 @@ class Creature(entities.Entity):
 
         self.stunned = 0
         self.stun_effect = False
+        self.dead = False
 
         super().__init__(rect, level, entity_gfx=self.anims, solid=solid, collision_dict=collision_dict)
 
         
         self.footstep_timer = 0.5
         self.footstep_sound = footstep_sound
-        self.footstep_cooldown = actions.Action(self.pipe, self.footstep_timer)
+        self.footstep_cooldown = actions.Action(self.pipe, self.footstep_timer, blocking=False, blockable=False)
 
-    def update(self):
+    def set_animation(self):
         if self.change_x:
             self.gfx.set_anim("moving")
         else:
             self.gfx.set_anim("static")
+
+    def update(self):
+        self.set_animation()
     
         super().update()
 
@@ -47,13 +51,15 @@ class Creature(entities.Entity):
             self.health = self.max_health
 
         if self.health <= 0:
-            self.die()
+            self.health = 0
+            if not self.dead:
+                self.die()
 
     def take_damage(self, amount, source=None):
         self.change_health(-amount)
 
     def die(self):
-        pass
+        self.dead = True
 
     def stun(self, timer):
         self.stunned += 1
@@ -74,8 +80,8 @@ class Creature(entities.Entity):
             self.direction = "left"
 
         if x != 0 and not result:
-            if not self.footstep_cooldown.active:
-                self.footstep_cooldown = actions.Action(self.pipe, self.footstep_timer)
+            if not self.footstep_cooldown.active and self.level == g.current_level:
+                self.footstep_cooldown = actions.Action(self.pipe, self.footstep_timer, blockable=False, blocking=False)
                 sounds.play_sound(self.footstep_sound, self.rect.center)
         return result
 
@@ -220,7 +226,7 @@ class Corpse(entities.Entity):
 
 
         if self.enemy.respawn_time:
-            actions.FuncCallAction(self.pipe, 10, self, "recover", change_type=1)
+            actions.FuncCallAction(self.pipe, 10, self, "recover", change_type=1, blocking=False, blockable=False)
 
     def update(self):
         super().update()
@@ -235,7 +241,7 @@ class Corpse(entities.Entity):
         timer = self.gfx.max_timer * len(self.gfx.frames)
         self.gfx.reverse = True
         self.gfx.reset()
-        actions.FuncCallAction(self.pipe, timer, self, "respawn", change_type=1)
+        actions.FuncCallAction(self.pipe, timer, self, "respawn", change_type=1, blocking=False, blockable=False)
 
     def respawn(self):
         """
@@ -266,7 +272,7 @@ class BasicEnemy(Enemy):
             result = self.move_towards(g.player.x, g.player.y)
             if result == g.player:
                 self.attacking = True
-                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1)
+                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
 
 
     def attack(self):
@@ -299,7 +305,7 @@ class SpiderEnemy(Enemy):
 
             if result == g.player:
                 self.attacking = True
-                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1)
+                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
 
 
     def attack(self):
@@ -332,7 +338,7 @@ class RecoverEnemy(Enemy):
             result = self.move_towards(g.player.x, g.player.y)
             if result == g.player:
                 self.attacking = True
-                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1)
+                actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
 
     def attack(self):
         super().attack()
@@ -344,9 +350,10 @@ class LargeEnemy(Enemy):
     Large melee enemy
     """
     def __init__(self, x, y, level):
-        rect = p.Rect(x, y, 32, 60)
-        super().__init__(rect, level, "large_enemy", max_health=50, speed=0.01)
-        self.regen = 1
+        rect = p.Rect(x, y, 48, 48)
+        super().__init__(rect, level, "large_enemy", max_health=50, speed=5, damage=5)
+        self.regen = 0.2
+        self.direction = "left"
 
     def update(self):
         super().update()
@@ -374,11 +381,27 @@ class LargeEnemy(Enemy):
         super().update_ai()
 
         if not self.stunned and not self.attacking:
-            result = self.move_towards(g.player.x, g.player.y)
+            #move
+            result = None
+            if self.direction == "left":
+                result = self.move(-self.speed * g.dt, 0)
+            elif self.direction == "right":
+                result = self.move(self.speed * g.dt, 0)
+
+            #switch
+            if result:
+                if result == g.player:
+                    self.attacking = True
+                    actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
+                else:
+                    if self.direction == "left":
+                        self.direction = "right"
+                    elif self.direction == "right":
+                        self.direction = "left"
 
     def attack(self):
         super().attack()
-        if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 20:
+        if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 35:
             g.player.take_damage(self.damage)
         
         
