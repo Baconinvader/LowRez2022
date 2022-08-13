@@ -77,6 +77,7 @@ def reset():
     g.player.inventory.clear()
     g.player.debug_set_inventory()
     g.player.x = 0
+    g.player.control_locks = 0
     
 
 def load_game():
