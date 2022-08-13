@@ -4,12 +4,12 @@ needs drawn:
     [ ] animations
 [x] big guy
     [ ] animations
-[ ] title screen
-    [ ] ship
-    [ ] planet
+[x] title screen
+    [x] ship
+    [x] planet
 [x] basic enemy
     [x] animations
-    [ ] death animation
+    [x] death animation
 [ ] level backgrounds
     [ ] level decorations
 [ ] end screen(s)
