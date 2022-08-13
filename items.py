@@ -72,7 +72,7 @@ class Ammunition(Item):
         if gun:
             gun.change_ammunition(self.ammunition_amount)
         else:
-            g.player.inventory.ammunition_reserves[self.gun_name] = g.player.inventory.ammunition_reserves.get(self.gun_name) + self.ammunition_amount
+            g.player.inventory.ammunition_reserves[self.gun_name] = g.player.inventory.ammunition_reserves.get(self.gun_name, 0) + self.ammunition_amount
 
         g.player.inventory.remove(self)
 
@@ -152,11 +152,19 @@ class Gun(Item):
             result = bullet.move_towards(target_x, target_y, self.range, detail=True)
 
             if result:
-                #level, pos, angle)
                 if isinstance(result, creatures.Creature):
+                    if bullet.y < result.rect.bottom-(result.rect.h*0.75):
+                        #boom, headshot
+                        damage = self.damage*1.5
+                        headshot = True
+                    else:
+                        damage = self.damage
+                        headshot = False
+
                     if self.damage > 0:
-                        particles.create_blood(bullet.level, (bullet.x, bullet.y), self.holder.angle + m.pi )
-                    result.take_damage(self.damage, source=self.holder)
+                        particles.create_blood(bullet.level, (bullet.x, bullet.y), self.holder.angle + m.pi ,headshot=headshot)
+
+                    result.take_damage(damage, source=self.holder)
                     if self.stun:
                         result.stun(self.stun)
 

@@ -61,12 +61,19 @@ class Particles(entities.Entity):
             else:
                 g.camera.draw_circle(self.colour, (self.x+self.particle_x[i], self.y+self.particle_y[i]), self.size)
 
-def create_blood(level, pos, angle):
+def create_blood(level, pos, angle, headshot=False):
     """
     Create blood particle effects at a point
     """
             #level, position, angle, colour, spread, amount, power, timer
-    return Particles(level, pos, angle, "red", 1, 10, 10, 10)
+    if headshot:
+        power = 20
+        amount = 15
+    else:
+        power = 10
+        amount = 8
+
+    return Particles(level, pos, angle, "red", 1, amount, power, 10)
 
 def create_smoke(level, pos):
     """
