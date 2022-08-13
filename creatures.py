@@ -80,9 +80,9 @@ class Creature(entities.Entity):
             self.direction = "left"
 
         if x != 0 and not result:
-            if not self.footstep_cooldown.active and self.level == g.current_level:
+            if not self.footstep_cooldown.active:
                 self.footstep_cooldown = actions.Action(self.pipe, self.footstep_timer, blockable=False, blocking=False)
-                sounds.play_sound(self.footstep_sound, self.rect.center)
+                sounds.play_sound(self.footstep_sound, self.rect.center, self.level)
         return result
 
     def get_direction_for_rendering(self):
@@ -114,12 +114,14 @@ class Creature(entities.Entity):
 
             r.setstate(state)
 
+        #g.camera.draw_rect("red", self.rect, 1)
+
 class Enemy(Creature):
     """
     Base class for all enemies
     """
-    def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=0.85, max_health=10):
-        super().__init__(rect, level, name, max_health=max_health, collision_dict={"class_Enemy":False}, footstep_sound="footstep_enemy")
+    def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=0.85, max_health=10, footstep_sound="footstep_enemy"):
+        super().__init__(rect, level, name, max_health=max_health, collision_dict={"class_Enemy":False}, footstep_sound=footstep_sound)
         self.z_index = 0.5
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "attacking":2}, 0.25)
 
@@ -192,15 +194,19 @@ class Enemy(Creature):
         self.stunned += 1
         actions.FuncCallAction(self.pipe, stun_timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
 
-        sounds.play_sound("enemy_damage", pos=self.rect.center, volume=6)
-
+        sounds.play_sound("enemy_damage", pos=self.rect.center, level=self.level, volume=6)
+ 
 
     def attack(self):
         """
         Finish attack on the player
         """
-        self.attacking = False
-        sounds.play_sound("enemy_attack", self.rect.center, volume=7)
+        if "main" in g.active_states and self.level == g.current_level:
+            self.attacking = False
+            sounds.play_sound("enemy_attack", self.rect.center, level=self.level, volume=7)
+
+            if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= self.rect.w/2 + g.player.rect.w/2 + 4:
+                g.player.take_damage(self.damage)
 
     def update_ai(self):
         pass
@@ -216,7 +222,7 @@ class Corpse(entities.Entity):
     Corpse of an creature
     """
     def __init__(self, enemy, x, y, level):
-        corpse_ss_dict = {"basic_enemy":0, "large_enemy":0, "recover_enemy":1, "spider_enemy":1}
+        corpse_ss_dict = {"player":2, "basic_enemy":0, "large_enemy":0, "recover_enemy":1, "spider_enemy":1}
         self.enemy = enemy
         self.corpse_anim_index = corpse_ss_dict[enemy.name]
 
@@ -275,11 +281,6 @@ class BasicEnemy(Enemy):
                 actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
 
 
-    def attack(self):
-        super().attack()
-        if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 20:
-            g.player.take_damage(self.damage)
-
 class SpiderEnemy(Enemy):
     """
     Crawling spider enemy
@@ -307,14 +308,6 @@ class SpiderEnemy(Enemy):
                 self.attacking = True
                 actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
 
-
-    def attack(self):
-        super().attack()
-        sounds.play_sound("bleep1", self.rect.center)
-
-        if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 40:
-            g.player.take_damage(self.damage)
-
     def draw(self):
         if self.on_ceiling:
             self.flip_v = True
@@ -340,10 +333,6 @@ class RecoverEnemy(Enemy):
                 self.attacking = True
                 actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
 
-    def attack(self):
-        super().attack()
-        if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 20:
-            g.player.take_damage(self.damage)
 
 class LargeEnemy(Enemy):
     """
@@ -351,7 +340,7 @@ class LargeEnemy(Enemy):
     """
     def __init__(self, x, y, level):
         rect = p.Rect(x, y, 48, 48)
-        super().__init__(rect, level, "large_enemy", max_health=50, speed=5, damage=5)
+        super().__init__(rect, level, "large_enemy", max_health=50, speed=10, damage=5)
         self.regen = 0.2
         self.direction = "left"
 
@@ -376,6 +365,8 @@ class LargeEnemy(Enemy):
             elif self.direction == "right":
                 self.direction = "left"
 
+        self.update_rect()
+
 
     def update_ai(self):
         super().update_ai()
@@ -391,20 +382,14 @@ class LargeEnemy(Enemy):
             #switch
             if result:
                 if result == g.player:
-                    self.attacking = True
-                    actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
+                    if (self.direction == "left" and g.player.rect.centerx < self.rect.centerx) or (self.direction == "right" and g.player.rect.centerx > self.rect.centerx):
+                        self.attacking = True
+                        actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
                 else:
                     if self.direction == "left":
                         self.direction = "right"
                     elif self.direction == "right":
                         self.direction = "left"
-
-    def attack(self):
-        super().attack()
-        if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= 35:
-            g.player.take_damage(self.damage)
-        
-        
 
 def spawn_enemy(name, x, y, level):
     """

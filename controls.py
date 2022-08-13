@@ -16,7 +16,7 @@ class Control(elements.Element):
         self.active_states = active_states
 
         self.active = True
-        self.visible_override = None
+        
 
         self.active = False
 
@@ -26,8 +26,7 @@ class Control(elements.Element):
 
     def draw(self):
         super().draw()
-        if self.active or self.visible_override:
-            pass
+
 
 class Button(Control):
     """

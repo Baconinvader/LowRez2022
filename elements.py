@@ -16,6 +16,7 @@ class Element:
 
         self.class_names = []
 
+        self.visible_override = None
         self.deleted = False
 
         #add to lists of game elements

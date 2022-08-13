@@ -45,9 +45,8 @@ g.game_clock = p.time.Clock()
 def start_game():
     reset()
     g.active_states = set(("main",))
-    g.current_level = g.levels["Shuttle II"] #"Cryo I"]
+    g.current_level = g.levels["Hallway"]
     levels.change_level(g.current_level)
-    print(len(g.pipe_list))
 
 def go_to_menu():
     reset()
@@ -69,8 +68,6 @@ def reset():
         if file_name.endswith(".json") and not file_name.startswith("nolevel_"):
             levels.Level(file_name[:-5])
 
-    for entity in g.elements.get("class_LargeEnemy", []):
-        print(entity)
 
     for level in g.levels.values():
         level.linkup()
@@ -84,6 +81,7 @@ def reset():
     g.player.debug_set_inventory()
     g.player.x = 0
     g.player.control_locks = 0
+    g.player.visible_override = None
     
 
 def load_game():
@@ -290,10 +288,11 @@ def draw():
                 if entity.level != g.current_level:
                     continue
 
-                entity.draw()
+                if entity.visible_override is not False:
+                    entity.draw()
 
     for control in g.elements.get("class_Control", []):
-        if not g.active_states.isdisjoint(control.active_states) and not isinstance(control, controls.BackgroundControl):
+        if (control.visible_override is not False) and not g.active_states.isdisjoint(control.active_states) and not isinstance(control, controls.BackgroundControl):
             control.draw()
 
     for pipe in g.pipes.values():

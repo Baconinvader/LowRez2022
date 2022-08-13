@@ -39,6 +39,18 @@ class ChannelList():
                 sound = self.sound_playing_list[i]
 
                 if type(sound) == GameSound:
+                    sy = sound.y
+                    if sound.level == g.current_level:
+                        #we are in the same room
+                        sx = sound.x  
+                    else:
+                        if sound.level in g.current_level.connected_levels:
+                            #in adjacent rooms
+                            sx = sound.x + ((sound.level.world_x - g.current_level.world_x)*64)
+                        else:
+                            #too far away
+                            channel.set_volume(0)
+                            continue
 
                     dist = util.get_distance(g.player.rect.centerx, g.player.rect.centery, sound.x, sound.y)
                     if dist < 1:
@@ -57,11 +69,12 @@ class GameSound():
     """
     Class for 2D sound
     """
-    def __init__(self, name, pos, volume=3):
+    def __init__(self, name, pos, level, volume=3):
         self.name = name
-
+        
         self.sound = g.sound_dict[self.name]
         self.volume = volume
+        self.level = level
         self.x, self.y = pos
 
     def stop(self):
@@ -81,13 +94,13 @@ def load_sounds():
 
             print(sound_file)
 
-def play_sound(name, pos=None, volume=3):
+def play_sound(name, pos=None, level=None, volume=3):
     #print(name)
     """
     Play a sound, optional a 2D one
     """
     if pos: #2D sound
-        sound = GameSound(name, pos, volume=volume)
+        sound = GameSound(name, pos, level, volume=volume)
     else: #non-2D sound
         sound = g.sound_dict[name]
         sound.set_volume(volume)

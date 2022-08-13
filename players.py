@@ -103,7 +103,7 @@ class Player(creatures.Creature):
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "hurt":2}, 0.25)
         self.z_index = 1
 
-        self.collision_dict = {"class_Entity":False, "class_LargeEnemy":True}
+        self.collision_dict = {"class_Entity":False, "class_LargeEnemy":False}
 
         self.speed = 42  # units per second
 
@@ -115,6 +115,7 @@ class Player(creatures.Creature):
         #revolver = items.Gun("revolver", self, 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=15)
         
         self.angle = 0
+        self.respawn_time = None
 
         self.arm = gfx.load_image("player_arm", alpha=True)
         self.hand = gfx.load_image("player_hand", alpha=True)
@@ -219,10 +220,12 @@ class Player(creatures.Creature):
             actions.VarChangeAction(self.pipe, 1, self, "hurt", self.hurt-1, change_type=2, revert=False, blocking=False, blockable=False, force=False)
 
     def die(self):
+        self.visible_override = False
         timer = 1
         actions.OverlayAction(self.pipe, timer, g.colour_remaps["darkred"], blocking=False, blockable=False)
         actions.FuncCallAction(self.pipe, timer, self, "set_gameover", change_type=1, blocking=False, blockable=False)
         g.player.control_locks += 1
+        creatures.Corpse(self, self.x, self.y, self.level)
         
 
     def set_gameover(self):
