@@ -263,14 +263,16 @@ class Door(Structure):
         """
         Create exit door
         """
+        door_offset = 2
+        #this door
         #automatically place this door based on it's connection
         if self.auto_place:
             #same y, different x
             if self.change_level.world_y == self.level.world_y:
                 if self.change_level.world_x > self.level.world_x:
-                    self.x = self.level.rect.w-self.rect.w
+                    self.x = self.level.rect.w - self.rect.w - door_offset 
                 else:
-                    self.x = 0
+                    self.x = door_offset
             else:
                 #different y, maybe different x
                 self.x = (self.change_level.world_x - self.level.world_x)*64
@@ -280,18 +282,18 @@ class Door(Structure):
                 else:
                     self.x += (self.rect.w/2)
 
-
+        #exit door
         if self.change_level.world_y == self.level.world_y:
             #same y, different x
             if self.change_level.world_x < self.level.world_x:
                 #left
-                x = self.change_level.rect.w - self.rect.w
+                x = self.change_level.rect.w - self.rect.w - door_offset 
             else:
                 #right
-                x = 0
+                x = door_offset 
         else:
             #different y, maybe different x
-            x = ( (self.level.world_x*64) + self.x) - (self.change_level.world_x*64)
+            x = ((self.level.world_x-self.change_level.world_x)*64)+self.x
             
         if type(self) == Door:
             self.exit_door = Door(self.change_level, x, self.y, self.level, create_exit=False)
