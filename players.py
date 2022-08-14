@@ -59,7 +59,7 @@ class Inventory:
         """
         Select an item at an index
         """
-        if 0 <= index < len(self.slots):
+        if index is not None and 0 <= index < len(self.slots):
             old_index = self.selected_index
 
             self.selected_index = index
