@@ -93,8 +93,8 @@ def change_level(new_level, show_text=True):
     if show_text:
         x = g.screen_rect.centerx
         y = 8
-        actions.TextEffectAction(g.global_pipe, 1, "font1_1", new_level.name, (x,y))
-
+        actions.TextEffectAction(g.global_pipe, 1.5, "font1_1", new_level.name, (x,y), colour="white")
+ 
 class Structure(entities.Entity):
     def __init__(self, level, rect, structure_gfx, solid=False, interaction_enabled=True):
         super().__init__(rect, level, solid=solid)

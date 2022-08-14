@@ -258,12 +258,13 @@ class TextEffectAction(Action):
     """
     Action for showing fading text
     """
-    def __init__(self, pipe, timer, font, text, pos, blocking=True, blockable=True):
+    def __init__(self, pipe, timer, font, text, pos, blocking=True, blockable=True, colour="black"):
         super().__init__(pipe, timer, blocking=blocking, blockable=blockable)
 
         self.font = font
         self.text = text
         self.pos = pos
+        self.colour = colour
         self.alpha = 255
 
     def update(self):
@@ -271,7 +272,7 @@ class TextEffectAction(Action):
         self.alpha = util.interpolate(255, 0, self.progress)
 
     def draw(self):
-        gfx.draw_text(self.font, self.text, self.pos, cx=True, cy=False, colour="black", alpha=self.alpha)
+        gfx.draw_text(self.font, self.text, self.pos, cx=True, cy=False, colour=self.colour, alpha=self.alpha)
 
 class LevelChangeAction(Action):
     """
