@@ -22,7 +22,8 @@ needs drawn:
 ui widgets:
     [ ] backgrounds
     [x] control bar?
-    [ ] buttons
+    [x] buttons
+    [x] computer bg
 pickups:
     [ ] health drink
     [ ] keys
