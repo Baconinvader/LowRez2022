@@ -4,8 +4,9 @@
     "show_space":false,
     "structures":[
         
-        ["Pickup", 48, null, "HandgunAmmunition"],
-        ["Door", 0, -32, "Lab II"]
+        ["Pickup", 16, null, "HandgunAmmunition"],
+        ["Door", 1, -32, "Lab II"],
+        ["TextInformation", 36, -32, ["structure_32_32_ss", 0, 0], "font1_1", "Julia: Tissue samples from infected personel have been sent to the lab. Whatever is going on with them, it doesn't seem terrestrial in nature.", "text_screen_background"]
     ],
 
     "comments": []

@@ -3,7 +3,7 @@
     "position":[7,-2],
     "show_space":false,
     "structures":[
-        ["Door", 0, -32, "Lab II"]
+        ["Door", 1, -32, "Lab II"]
     ],
 
     "comments": []

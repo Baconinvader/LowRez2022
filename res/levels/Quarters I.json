@@ -3,7 +3,7 @@
     "position":[9,-2],
     "show_space":false,
     "structures":[
-        ["Door", 0, -32, "Quarters II"],
+        ["Door", 1, -32, "Quarters II"],
         ["EnemySpawn", 0, -32, "RecoverEnemy"]
     ],
 
