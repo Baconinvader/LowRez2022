@@ -227,7 +227,7 @@ class Corpse(entities.Entity):
     Corpse of an creature
     """
     def __init__(self, enemy, x, y, level):
-        corpse_ss_dict = {"player":2, "basic_enemy":0, "large_enemy":0, "recover_enemy":1, "spider_enemy":1}
+        corpse_ss_dict = {"player":2, "basic_enemy":0, "large_enemy":0, "recover_enemy":1, "spider_enemy":3}
         self.enemy = enemy
         self.corpse_anim_index = corpse_ss_dict[enemy.name]
 
