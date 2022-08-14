@@ -76,17 +76,17 @@ class Inventory:
         else:
             return None
 
-    def remove_index(self, index):
+    def remove_index(self, index, full=False):
         """
         Delete an item at an index
         """
         item = self.slots[index]
-        if item.amount > 1:
+        if item.amount > 1 and not full:
             item.amount -= 1
         else:
             self.slots[index] = None
 
-        if index == self.selected_index:
+        if not self.slots[index] and index == self.selected_index:
             self.selected_item = None
             self.selected_index = None
 
