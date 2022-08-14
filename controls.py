@@ -418,7 +418,7 @@ class TextScreenControl(Control):
 
         self.margin = margin
         if not scroll_space:
-            scroll_space = len(text)*2
+            scroll_space = len(text)*1
         self.scroll_space = scroll_space
 
         self.background_gfx = gfx.get_surface(background_gfx)

@@ -260,8 +260,13 @@ def handle_input():
                 if "main" in g.active_states or "inventory" in g.active_states:
                     index = event.key - p.K_1
                     g.player.inventory.select_index(index)
-                print(index)
-
+        
+        elif event.type == p.MOUSEWHEEL:
+            for text in g.elements.get("class_TextScreenControl", []):
+                if event.y > 0:
+                    text.scroll_up()
+                else:
+                    text.scroll_down()
 
     g.keys = p.key.get_pressed()
     g.ml, g.mm, g.mr = p.mouse.get_pressed()
