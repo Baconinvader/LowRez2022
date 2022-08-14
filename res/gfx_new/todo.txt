@@ -2,10 +2,11 @@ needs drawn:
 
 [x] spider guy
     [ ] animations
+    [x] death anim
 [x] big guy
-    [ ] animations
-[ ] regen guy
-    [ ] animations
+    [ ] walk/attack animations
+    [x] death anim
+[x] regen guy
 [x] title screen
     [x] ship
     [x] planet
@@ -25,7 +26,7 @@ ui widgets:
     [x] buttons
     [x] computer bg
 pickups:
-    [ ] health drink
+    [x] health drink
     [ ] keys
 
 [ ] standardize colors

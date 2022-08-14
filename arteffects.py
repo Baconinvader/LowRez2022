@@ -57,7 +57,7 @@ def is_valid_pos(xy, surf):
 
 def add_outline(surf, outline_color):
     res = surf.copy()
-    neighbors = [(-1, 0), (0, 1), (0, -1), (0, 1)]
+    neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     for x in range(0, surf.get_width()):
         for y in range(0, surf.get_height()):
             color_at = surf.get_at((x, y))
@@ -101,6 +101,7 @@ def gen_death_animation(infile, outfile, n_frames=4,
         x += f.get_width()
 
     pygame.image.save(outsurf, outfile)
+    print(f"created {outfile}")
 
 
 if __name__ == "__main__":
@@ -111,4 +112,5 @@ if __name__ == "__main__":
     gen_death_animation("res/gfx_new/player_single.png", "gen/player_corpse_ss.png", compression=0.5, blood_rate=0.3, xshift_rate=0, decay_rate=0)
     gen_death_animation(("res/gfx_new/large_enemy_ss.png", (0, 0, 48, 48)), "gen/large_enemy_corpse_ss.png", compression=0.6, xshift_rate=0.05)
     gen_death_animation(("res/gfx_new/spider_enemy_ss.png", (0, 0, 32, 16)), "gen/spider_enemy_corpse_ss.png", compression=0.3)
+    gen_death_animation(("res/gfx_new/recover_enemy_ss.png", (0, 0, 16, 32)), "gen/recover_enemy_death_seq.png")
 
