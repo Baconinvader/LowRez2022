@@ -165,7 +165,7 @@ def exit_menu():
     g.active_states = set(("main",))
     g.player.control_locks -= 1
 
-inv_button = controls.Button(rect, enter_inventory, g.spritesheets["button_ss"].anims[0][0], g.spritesheets["button_ss"].anims[0][1], g.spritesheets["button_ss"].anims[0][2], set(("main",)))
+g.inv_button = controls.Button(rect, enter_inventory, g.spritesheets["button_ss"].anims[0][0], g.spritesheets["button_ss"].anims[0][1], g.spritesheets["button_ss"].anims[0][2], set(("main",)))
 
 
 #inventory
@@ -225,6 +225,21 @@ def handle_input():
                     if "main" in g.active_states:
                         if g.player.inventory.selected_item:
                             g.player.attack()
+
+        elif event.type == p.KEYDOWN:
+            #toggle inventory
+            if event.key == p.K_i:
+                if "main" in g.active_states:
+                    enter_inventory()
+                elif "inventory" in g.active_states:
+                    exit_menu()
+
+            #select item
+            if p.K_1 <= event.key <= p.K_9:
+                if "main" in g.active_states or "inventory" in g.active_states:
+                    index = event.key - p.K_1
+                    g.player.inventory.select_index(index)
+                print(index)
 
 
     g.keys = p.key.get_pressed()

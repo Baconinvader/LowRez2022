@@ -59,19 +59,22 @@ class Inventory:
         """
         Select an item at an index
         """
-        old_index = self.selected_index
+        if 0 <= index < len(self.slots):
+            old_index = self.selected_index
 
-        self.selected_index = index
-        self.selected_item = self.slots[self.selected_index]
+            self.selected_index = index
+            self.selected_item = self.slots[self.selected_index]
 
-        if isinstance(self.selected_item, items.Consumable):
-            self.selected_item.consume()
-            self.remove_index(self.selected_index)
-            self.select_index(old_index)
+            if isinstance(self.selected_item, items.Consumable):
+                self.selected_item.consume()
+                self.remove_index(self.selected_index)
+                self.select_index(old_index)
 
-        sounds.play_sound("inventory_select")
+            sounds.play_sound("inventory_select")
 
-        return self.selected_item
+            return self.selected_item
+        else:
+            return None
 
     def remove_index(self, index):
         """

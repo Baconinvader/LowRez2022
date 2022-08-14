@@ -3,6 +3,7 @@
     "position":[10,-4],
     "show_space":false,
     "structures":[
+        ["EnemySpawn", 0, -32, "BasicEnemy"]
     ],
 
     "comments": []

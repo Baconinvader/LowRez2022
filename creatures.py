@@ -322,7 +322,7 @@ class RecoverEnemy(Enemy):
     """
     def __init__(self, x, y, level):
         rect = p.Rect(x, y, 16, 32)
-        super().__init__(rect, level, "recover_enemy", max_health=4, respawn_time=20)
+        super().__init__(rect, level, "recover_enemy", max_health=3, respawn_time=20)
 
     def update_ai(self):
         super().update_ai()

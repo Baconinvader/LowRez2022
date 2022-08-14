@@ -153,7 +153,7 @@ class Gun(Item):
 
             if result:
                 if isinstance(result, creatures.Creature):
-                    if bullet.y < result.rect.bottom-(result.rect.h*0.75):
+                    if bullet.y < result.rect.bottom-(result.rect.h*0.70):
                         #boom, headshot
                         damage = self.damage*1.5
                         headshot = True
