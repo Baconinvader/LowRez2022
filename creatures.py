@@ -159,6 +159,7 @@ class Enemy(Creature):
         super().update()
         self.update_ai()
 
+        #print(self.attacking)
         if self.attacking:
             self.gfx.set_anim("attacking")
         else:
@@ -214,6 +215,8 @@ class Enemy(Creature):
 
             if util.get_distance(self.rect.centerx, self.rect.centery, g.player.rect.centerx, g.player.rect.centery) <= self.rect.w/2 + g.player.rect.w/2 + 4:
                 g.player.take_damage(self.damage)
+        else:
+            self.attacking = False
 
     def update_ai(self):
         pass
@@ -284,7 +287,6 @@ class BasicEnemy(Enemy):
             if result == g.player:
                 self.attacking = True
                 actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
-
 
 class SpiderEnemy(Enemy):
     """
