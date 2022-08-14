@@ -17,6 +17,8 @@ needs drawn:
     [x] cryo
     [x] shuttle
     [x] reception
+    [ ] bathroom
+    [ ]
 [x] end screen(s)
     [x] escape pod
     [x] tentacle planet
