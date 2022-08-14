@@ -47,7 +47,11 @@ def start_game():
     reset()
     g.active_states = set(("main",))
     g.current_level = g.levels["Cryo I"]
-    levels.change_level(g.current_level)
+    levels.change_level(g.current_level, show_text=False)
+
+    if not g.start_slides_shown:
+        g.start_slides_shown = True
+        controls.StartScreenControl()
 
 def go_to_menu():
     reset()
@@ -262,7 +266,6 @@ def update():
         g.active_states = set(("gameover",))
         g.channel_list.stop_sounds()
         g.current_level = None
-        print("gameover")
         
     i = 0
     while i < len(g.pipe_list):

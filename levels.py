@@ -69,7 +69,7 @@ class Level:
     def __setstate__(self, state):
         self.__dict__ = gfx.unpickle_state(state)
 
-def change_level(new_level):
+def change_level(new_level, show_text=True):
     if g.current_level:
         for entity in g.current_level.entities:
             entity.level_left()
@@ -81,9 +81,10 @@ def change_level(new_level):
         for entity in g.current_level.entities:
             entity.level_entered()
 
-    x = g.screen_rect.centerx
-    y = 8
-    actions.TextEffectAction(g.global_pipe, 1, "font1_1", new_level.name, (x,y))
+    if show_text:
+        x = g.screen_rect.centerx
+        y = 8
+        actions.TextEffectAction(g.global_pipe, 1, "font1_1", new_level.name, (x,y))
 
 class Structure(entities.Entity):
     def __init__(self, level, rect, structure_gfx, solid=False, interaction_enabled=True):

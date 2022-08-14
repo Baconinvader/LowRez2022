@@ -170,7 +170,7 @@ class Gun(Item):
 
                 if isinstance(result, levels.Level):
                                                                 #level, position, angle, colour, spread, amount, power, timer
-                    particles.Particles(bullet.level, (bullet.x, bullet.y), self.holder.angle + m.pi, "brown", 1, 5, 5, 10)
+                    particles.Particles(bullet.level, (bullet.x, bullet.y), self.holder.angle + m.pi, g.colour_remaps["beige"], 1, 5, 5, 10)
 
             else:
                 pass

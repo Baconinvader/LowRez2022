@@ -37,6 +37,7 @@ global_pipe = None
 current_level = None
 active_states = set()
 power_diverted = False
+start_slides_shown = False
 player = None
 end_screen = None
 inv_button = None

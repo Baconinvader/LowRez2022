@@ -172,6 +172,10 @@ class SlidesControl(GraphicsControl):
         if type(slide) == str:
             gfx.draw_wrapped_text(self.font_name, slide, self.rect.inflate((-4,-4)), colour=self.font_colour, spacing=10)
 
+    def delete(self):
+        super().delete()
+        self.button_progress.delete()
+
 class GameOverControl(GraphicsControl):
     """
     Control for showing end screen background
@@ -179,6 +183,28 @@ class GameOverControl(GraphicsControl):
     def __init__(self):
         super().__init__(g.screen_rect.copy(), "gameover_background", set(("gameover",)) )
         self.slides = []
+
+    def draw(self):
+        super().draw()
+
+class StartScreenControl(SlidesControl):
+    """
+    Control for showing start screen
+    """
+    def __init__(self):
+        slides = [
+            "I awoke on the station.",
+            "It seems my Cyro pod had taken some damage.",
+            "The station was in disrepair, something was very wrong.",
+            "I put on a nearby space suit, and went to investigate."
+        ]
+        super().__init__(g.screen_rect, "font1_1", slides, self.finish, set(("main",)), background_colour="white", font_colour="black")
+
+    def update(self):
+        super().update()
+
+    def finish(self):
+        self.delete()
 
     def draw(self):
         super().draw()
