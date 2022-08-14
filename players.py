@@ -173,6 +173,11 @@ class Player(creatures.Creature):
 
     def update(self):
         super().update()
+
+        #kind of a hack, for when the player is damaged through doors
+        if not self.dead and not self.health:
+            self.die()
+
         if self.target_x is not None:
             result = self.move_towards(self.target_x, self.y, self.speed * g.dt)
             if result:
@@ -286,6 +291,7 @@ class Player(creatures.Creature):
             #actions.VarChangeAction(self.pipe, 1, self, "hurt", self.hurt-1, change_type=2, revert=False, blocking=False, blockable=False, force=False)
 
     def die(self):
+        super().die()
         self.visible_override = False
         timer = 1
         actions.OverlayAction(self.pipe, timer, g.colour_remaps["darkred"], blocking=False, blockable=False)
