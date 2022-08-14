@@ -288,6 +288,7 @@ class LevelChangeAction(Action):
         
     def start(self):
         super().start()
+        print(f"DEBUG: entering level: {self.new_level.name}")
         levels.change_level(self.new_level)
         g.player.set_target_x(None)
 

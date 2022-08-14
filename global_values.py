@@ -18,6 +18,7 @@ full_screen = None
 #res
 RES_DIR = "res"
 LEVELS_DIR = os.path.join(RES_DIR, "levels")
+LEVEL_PLACEHOLDERS_DIR = os.path.join(RES_DIR, "levels", "placeholders")
 GFX_DIRS = (os.path.join(RES_DIR, "gfx_new"), os.path.join(RES_DIR, "gfx"))
 FONTS_DIR = os.path.join(RES_DIR, "fonts")
 SOUNDS_DIR = os.path.join(RES_DIR, "sounds")
