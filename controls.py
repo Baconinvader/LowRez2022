@@ -49,9 +49,10 @@ class Button(Control):
         self.func()
 
     def update(self):
+        super().update()
         if self.rect.collidepoint((g.mx, g.my)):
             self.highlighted = True
-
+            
             if g.ml:
                 self.pressed = True
             else:

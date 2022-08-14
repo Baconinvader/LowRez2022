@@ -371,7 +371,7 @@ class LargeEnemy(Enemy):
     def update_ai(self):
         super().update_ai()
 
-        if not self.stunned and not self.attacking:
+        if not self.stunned:
             #move
             result = None
             if self.direction == "left":
@@ -383,8 +383,9 @@ class LargeEnemy(Enemy):
             if result:
                 if result == g.player:
                     if (self.direction == "left" and g.player.rect.centerx < self.rect.centerx) or (self.direction == "right" and g.player.rect.centerx > self.rect.centerx):
-                        self.attacking = True
-                        actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
+                        if not self.attacking:
+                            self.attacking = True
+                            actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
                 else:
                     if self.direction == "left":
                         self.direction = "right"

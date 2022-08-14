@@ -109,7 +109,7 @@ class Player(creatures.Creature):
         rect = p.Rect(0,32,16,32)
 
         super().__init__(rect, None, "player", solid=True)
-        self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "hurt":2}, 0.25)
+        self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "hurt_static":2, "hurt_move":3}, 0.25)
         self.z_index = 1
 
         self.collision_dict = {"class_Entity":False, "class_LargeEnemy":False}
@@ -156,7 +156,11 @@ class Player(creatures.Creature):
 
     def set_animation(self):
         if self.health < self.max_health/2:
-            self.gfx.set_anim("hurt")
+            if self.change_x:
+                self.gfx.set_anim("hurt_move")
+            else:
+                self.gfx.set_anim("hurt_static")
+
         elif self.change_x:
             self.gfx.set_anim("moving")
         else:
@@ -206,7 +210,7 @@ class Player(creatures.Creature):
 
     def attack(self):
         item = self.inventory.selected_item
-        if isinstance(item, items.Gun):
+        if isinstance(item, items.Gun) and not g.elements.get("class_Popup", False):
             res = item.attempt_fire()
 
             #show effect

@@ -73,6 +73,10 @@ def reset():
         level.linkup()
     g.power_diverted = False
 
+    #reset elements:
+    for popup in g.elements.get("class_Popup", []):
+        popup.delete()
+
     #reset sound
     g.channel_list.stop_sounds()
 
@@ -270,6 +274,7 @@ def update():
                 
             else:
                 element.active = True
+                element.update()
             
         else:
             element.update()
@@ -279,12 +284,14 @@ def sort_entity(entity):
     return index
 
 def draw():
-    if g.current_level:
-        if g.current_level.show_space:
-            for control in g.elements.get("class_BackgroundControl", []):
-                control.draw()
+    
 
     if "main" in g.active_states:
+        if g.current_level:
+            if g.current_level.show_space:
+                for control in g.elements.get("class_BackgroundControl", []):
+                    control.draw()
+
         if g.current_level:
             g.current_level.draw()
 
