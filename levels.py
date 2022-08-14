@@ -25,6 +25,7 @@ class Level:
         self.name = self.level_dat["name"]
         self.world_x, self.world_y = self.level_dat["position"]
         self.show_space = self.level_dat["show_space"]
+        self.play_music = self.level_dat.get("play_music", False)
 
         self.structures = []
         self.entities = []
@@ -43,6 +44,13 @@ class Level:
             
 
         g.levels[self.name] = self
+
+    def level_entered(self):
+        """
+        Called when this level becomes the current level
+        """
+        if self.play_music and not p.mixer.music.get_busy():
+            sounds.play_main_music()
 
     def linkup(self):
         """
@@ -78,6 +86,7 @@ def change_level(new_level, show_text=True):
     g.player.set_level(new_level)
 
     if g.current_level:
+        g.current_level.level_entered()
         for entity in g.current_level.entities:
             entity.level_entered()
 
@@ -212,7 +221,8 @@ class KeypadPickup(LockedPickup):
         rect.center = g.screen_rect.center
         if value == self.key_string or (g.IS_DEV and p.key.get_pressed()[p.K_u]):
             controls.Popup(rect, "Unlocked", "Item", None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
-            self.unlock()  
+            self.unlock()
+            sounds.play_sound("success")
         else:
             controls.Popup(rect, "Incorrect", "Code", None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
 
@@ -369,7 +379,8 @@ class KeypadDoor(LockedDoor):
         rect.center = g.screen_rect.center
         if value == self.key_string or (g.IS_DEV and p.key.get_pressed()[p.K_u]):
             controls.Popup(rect, "Unlocked", "Door", None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
-            self.unlock()  
+            self.unlock()
+            sounds.play_sound("success")
         else:
             controls.Popup(rect, "Incorrect", "Code", None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
 
