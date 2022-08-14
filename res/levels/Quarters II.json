@@ -7,10 +7,10 @@
         ["Door", null, -32, "Quarters IV"],
         ["Door", null, -32, "Quarters V"],
 
-        ["EnemySpawn", 48, -32, "BasicEnemy"],
-        ["EnemySpawn", 64, -32, "BasicEnemy"],
-        ["EnemySpawn", 70, -32, "RecoverEnemy"],
-        ["EnemySpawn", 80, -32, "RecoverEnemy"]
+        ["EnemySpawn", 58, -32, "BasicEnemy"],
+        ["EnemySpawn", 74, -32, "BasicEnemy"],
+        ["EnemySpawn", 80, -32, "RecoverEnemy"],
+        ["EnemySpawn", 90, -32, "RecoverEnemy"]
 
     ],
 

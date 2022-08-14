@@ -325,8 +325,11 @@ def draw_wrapped_text(font_name, string, rect, colour="black", alpha=255, spacin
     y = rect.y
     line = ""
     for word in words:
+        if word == "":
+            word = " "
+
         w,h = font.size(line+" "+word)
-        if w > rect.w:
+        if w > rect.w or "\n" in word:
             #draw line
             if y+h > rect.y:
                 draw_text(font_name, line, (x,y), colour=colour, alpha=alpha)
@@ -341,6 +344,8 @@ def draw_wrapped_text(font_name, string, rect, colour="black", alpha=255, spacin
             #    return
         else:
             line += " "+word
+
+
 
     if line:
         draw_text(font_name, line, (x,y), colour=colour, alpha=alpha)

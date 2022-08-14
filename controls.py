@@ -409,7 +409,7 @@ class TextScreenControl(Control):
     """
     Control for displaying text on screen
     """
-    def __init__(self, rect, font_name, text, active_states, background_gfx="text_screen_background", margin=2, scroll_space=64):
+    def __init__(self, rect, font_name, text, active_states, background_gfx="text_screen_background", margin=4, scroll_space=None):
         super().__init__(rect, active_states)
 
         self.text = text
@@ -417,6 +417,8 @@ class TextScreenControl(Control):
         self.scroll = 0
 
         self.margin = margin
+        if not scroll_space:
+            scroll_space = len(text)*2
         self.scroll_space = scroll_space
 
         self.background_gfx = gfx.get_surface(background_gfx)
@@ -457,13 +459,16 @@ class TextScreenControl(Control):
 
         text_rect = self.rect.copy()
         text_rect.x += self.margin
-        text_rect.w -= self.margin
+        text_rect.w -= self.margin*2
 
         text_rect.y -= self.scroll
         text_rect.h -= 8
-        gfx.draw_wrapped_text(self.font_name, self.text, text_rect, colour="white", alpha=255)
+        gfx.draw_wrapped_text(self.font_name, self.text, text_rect, colour="white", alpha=255, spacing=10)
 
-        footer_rect = p.Rect(self.rect.x, self.rect.bottom-8, self.rect.w, 8)
+        header_rect = p.Rect(self.rect.x, 0, self.rect.w, self.margin)
+        g.screen.blit(self.background_gfx, header_rect, header_rect)
+
+        footer_rect = p.Rect(self.rect.x, self.rect.bottom-self.margin, self.rect.w, self.margin)
         g.screen.blit(self.background_gfx, footer_rect, footer_rect)
 
     def delete(self):

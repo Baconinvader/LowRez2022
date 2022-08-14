@@ -3,7 +3,6 @@
     "position":[16,-1],
     "show_space":true,
     "structures":[
-        ["Door", null, -32, "Eng III"],
         ["KeypadPickup", 16, -32, "Revolver", ["structure_16_32_ss", 1, 0], "999"]
     ],
 

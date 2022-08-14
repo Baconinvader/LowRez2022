@@ -3,10 +3,10 @@
     "position":[2,0],
     "show_space":false,
     "structures":[
-        ["KeypadDoor", null, -32, "Shuttle I", "555"],
+        ["KeypadDoor", null, -32, "Shuttle I", "617"],
         ["Door", null, -32, "Hallway"],
         ["Pickup", 45, null, "HealthDrink"],
-        ["EnemySpawn", 60, -32, "BasicEnemy"]
+        ["EnemySpawn", 70, -32, "BasicEnemy"]
     ],
 
     "comments": []

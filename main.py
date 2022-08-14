@@ -90,7 +90,7 @@ def reset():
     g.player.health = g.player.max_health
     g.player.fully_dead = False
     g.player.inventory.clear()
-    g.player.debug_set_inventory()
+    #g.player.debug_set_inventory()
     g.player.x = 0
     g.player.control_locks = 0
     g.player.visible_override = None

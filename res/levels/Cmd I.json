@@ -5,8 +5,8 @@
     "structures":[
         ["Door", null, -32, "Cmd II"],
 
-        ["EnemySpawn", 16, -32, "BasicEnemy"],
-        ["EnemySpawn", 32, -32, "RecoverEnemy"]
+        ["EnemySpawn", 32, -32, "BasicEnemy"],
+        ["EnemySpawn", 48, -32, "RecoverEnemy"]
     ],
 
     "comments": []
