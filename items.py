@@ -168,7 +168,7 @@ class Gun(Item):
                     if self.stun:
                         result.stun(self.stun)
 
-                if isinstance(result, levels.Level):
+                if isinstance(result, levels.Level) and self.damage:
                                                                 #level, position, angle, colour, spread, amount, power, timer
                     particles.Particles(bullet.level, (bullet.x, bullet.y), self.holder.angle + m.pi, g.colour_remaps["beige"], 1, 5, 5, 10)
 

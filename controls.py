@@ -396,7 +396,7 @@ class InventoryControl(Control):
                 y += 8
                 extra_detail_string = ""
                 if isinstance(detail_item, items.Gun):
-                    extra_detail_string = f"{detail_item.ammunition}/{detail_item.max_ammunition} rnds"
+                    extra_detail_string = f"{int(detail_item.ammunition)}/{detail_item.max_ammunition} rnds"
                 elif type(detail_item) == items.HealthDrink:
                     extra_detail_string = "+3 HP"
                 elif type(detail_item) == items.Medkit:
