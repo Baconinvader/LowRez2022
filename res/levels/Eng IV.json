@@ -1,7 +1,7 @@
 {
     "name":"Eng IV",
     "position":[12,0],
-    "show_space":false,
+    "show_space":true,
     "structures":[
         ["Door", null, -32, "Reactor"],
         ["EnemySpawn", 50, 8, "SpiderEnemy"],
