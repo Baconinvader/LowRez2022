@@ -7,7 +7,7 @@
         ["Pickup", 24, null, "ShotgunAmmunition"],
         ["Pickup", 40, null, "HandgunAmmunition"],
 
-        ["TextInformation", 50, -32, ["structure_32_32_ss", 0, 0], "font1_1", "Mike: \nIf anyone manages to get here, use the terminal to divert power to the escape shuttle, and you might have a chance. It'll destroy the station, but this place is too far gone anyway. Just make sure you get out in time.", "text_screen_background"],
+        ["TextInformation", 50, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Mike: \nIf anyone manages to get here, use the terminal to divert power to the escape shuttle, and you might have a chance. It'll destroy the station, but this place is too far gone anyway. Just make sure you get out in time.", "text_screen_background"],
         ["PowerSwitch", 80, -32]
     ],
 

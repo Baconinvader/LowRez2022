@@ -6,7 +6,7 @@
         ["Pickup", 42, null, "StorageKey"],
         ["Pickup", 48, null, "HealthDrink"],
         ["Pickup", 54, null, "HealthDrink"],
-        ["TextInformation", 1, -32, ["structure_32_32_ss", 0, 0], "font1_1", "Chris: \nI've locked myself in storage to get away from those... things. If you knock, and I don't answer, don't open the door.", "text_screen_background"]
+        ["TextInformation", 1, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Chris: \nI've locked myself in storage to get away from those... things. If you knock, and I don't answer, don't open the door.", "text_screen_background"]
     ],
 
     "comments": []

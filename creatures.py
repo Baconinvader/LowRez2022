@@ -172,7 +172,8 @@ class Enemy(Creature):
             dist_from_camera = abs(g.camera.rect.centerx - self.rect.centerx)
             if dist_from_camera <= 32:
                 type_string = self.class_names[0]
-                self.played_encounter_sound = sounds.play_sound(type_string[6:]+"_level_noise", self.rect.center, volume=5)
+                print("play",type_string)
+                self.played_encounter_sound = sounds.play_sound(type_string[6:]+"_level_noise", self.rect.center, self.level, volume=5)
         else:
             self.played_encounter_sound.x = self.rect.centerx
             self.played_encounter_sound.y = self.rect.centery

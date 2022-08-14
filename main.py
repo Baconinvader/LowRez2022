@@ -29,6 +29,7 @@ gfx.Spritesheet("spider_enemy_ss", 32,16)
 
 gfx.Spritesheet("structure_16_32_ss", 16,32)
 gfx.Spritesheet("structure_32_32_ss", 32,32)
+gfx.Spritesheet("structure_32_24_ss", 32,24)
 gfx.Spritesheet("corpse_ss", 32, 32)
 gfx.Spritesheet("button_ss", 8,8)
 gfx.Spritesheet("med_button_ss", 12,12)
