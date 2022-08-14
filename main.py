@@ -14,6 +14,7 @@ import sounds
 p.mixer.init()
 sounds.load_sounds()
 g.channel_list = sounds.ChannelList()
+p.mixer.music.set_volume(0.5)
 
 g.global_pipe = actions.Pipe("global")
 
@@ -29,6 +30,7 @@ gfx.Spritesheet("spider_enemy_ss", 32,16)
 
 gfx.Spritesheet("structure_16_32_ss", 16,32)
 gfx.Spritesheet("structure_32_32_ss", 32,32)
+gfx.Spritesheet("structure_32_24_ss", 32,24)
 gfx.Spritesheet("corpse_ss", 32, 32)
 gfx.Spritesheet("button_ss", 8,8)
 gfx.Spritesheet("med_button_ss", 12,12)
@@ -45,6 +47,7 @@ g.game_clock = p.time.Clock()
 #menu
 def start_game():
     reset()
+    p.mixer.music.fadeout(500)
     g.active_states = set(("main",))
     g.current_level = g.levels["Cryo I"]
     levels.change_level(g.current_level, show_text=False)
@@ -56,7 +59,7 @@ def start_game():
 def go_to_menu():
     reset()
     g.active_states = set(("mainmenu",))
-    print("menu")
+    sounds.play_main_music()
 
 
 g.player = players.Player()
@@ -292,6 +295,7 @@ def update():
     if g.player.fully_dead and "gameover" not in g.active_states:
         g.active_states = set(("gameover",))
         g.channel_list.stop_sounds()
+        p.mixer.music.fadeout(500)
         g.current_level = None
         
     i = 0
@@ -353,7 +357,7 @@ def draw():
         pipe.draw()
 
 
-g.active_states = set(("mainmenu",))
+go_to_menu()
 
 RUNNING = True
 while RUNNING:

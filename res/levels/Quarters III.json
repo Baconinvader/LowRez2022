@@ -4,7 +4,7 @@
     "show_space":false,
     "structures":[
         ["EnemySpawn", 0, -32, "BasicEnemy"],
-        ["TextInformation", 36, -32, ["structure_32_32_ss", 0, 0], "font1_1", "Mike: \nMe and a few other survivors are making a break for Engineering. Maybe it's safer there. I was thinking of trying to open up the Command gun cabinet first, but the door is locked, and the code is back in Reception anyway.", "text_screen_background"]
+        ["TextInformation", 36, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Mike: \nMe and a few other survivors are making a break for Engineering. Maybe it's safer there. I was thinking of trying to open up the Command gun cabinet first, but the door is locked, and the code is back in Reception anyway.", "text_screen_background"]
     ],
 
     "comments": []

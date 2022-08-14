@@ -2,11 +2,12 @@
     "name":"Cryo II",
     "position":[0,0],
     "show_space":false,
+    "play_music":true,
     "structures":[
         ["Door", 48, -32, "Cryo III"],
         ["KeypadDoor", 176, -32, "Reception", "451"],
 
-        ["TextInformation", 16, -32, ["structure_32_32_ss", 0, 0], "font1_1", "Chris: \nHas anyone else noticed members of the crew acting strange lately? They don't look so hot either, have they come down with something? I thought this place was sterile?", "text_screen_background"],
+        ["TextInformation", 16, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Chris: \nHas anyone else noticed members of the crew acting strange lately? They don't look so hot either, have they come down with something? I thought this place was sterile?", "text_screen_background"],
 
         ["Pickup", 112, null, "Handgun"]
     ]

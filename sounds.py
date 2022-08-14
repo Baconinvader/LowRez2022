@@ -107,4 +107,10 @@ def play_sound(name, pos=None, level=None, volume=3):
     g.channel_list.play(sound)
     return sound
 
+def play_main_music():
+    """
+    Play the main music track for this game
+    """
+    p.mixer.music.load(os.path.join(g.SOUNDS_DIR,"music.mp3"))
+    p.mixer.music.play(-1)
     
