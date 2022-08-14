@@ -46,7 +46,11 @@ g.game_clock = p.time.Clock()
 def start_game():
     reset()
     g.active_states = set(("main",))
+<<<<<<< HEAD
     g.current_level = g.levels["Quarters III"]
+=======
+    g.current_level = g.levels["Bathroom"] # "Cryo I"]
+>>>>>>> bc7df055d5968bac539ebf97115c3dd12c13f969
     levels.change_level(g.current_level, show_text=False)
 
     if not g.start_slides_shown:

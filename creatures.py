@@ -206,7 +206,9 @@ class Enemy(Creature):
         """
         Finish attack on the player
         """
-        if "main" in g.active_states and self.level == g.current_level and not self.stunned:
+        if g.IS_DEV and g.NO_ATTACK:
+            self.attacking = False
+        elif "main" in g.active_states and self.level == g.current_level and not self.stunned:
             self.attacking = False
             sounds.play_sound("enemy_attack", self.rect.center, level=self.level, volume=7)
 

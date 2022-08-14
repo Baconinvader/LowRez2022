@@ -14,20 +14,21 @@ needs drawn:
     [x] animations
     [x] death animation
 [ ] level backgrounds
-    [ ] level decorations
+    [x] cryo
     [x] shuttle
+    [x] reception
 [x] end screen(s)
     [x] escape pod
     [x] tentacle planet
     [x] tentacle arm reveal
 ui widgets:
-    [ ] backgrounds
+OK  [ ] backgrounds
     [x] control bar?
     [x] buttons
     [x] computer bg
 pickups:
     [x] health drink
-    [ ] keys
+OK  [ ] keys
 
 [ ] standardize colors
     [x] in-world effects

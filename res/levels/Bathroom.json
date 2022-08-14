@@ -5,7 +5,7 @@
     "structures":[
         ["EnemySpawn", 0, -32, "BasicEnemy"],
 
-        ["Pickup", 0, null, "HealthDrink"],
+        ["Pickup", 1, null, "HealthDrink"],
         ["Pickup", 8, null, "HealthDrink"],
         ["Pickup", 16, null, "Medkit"]
     ],
