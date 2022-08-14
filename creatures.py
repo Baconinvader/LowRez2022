@@ -69,6 +69,8 @@ class Creature(entities.Entity):
 
     def remove_stun(self):
         self.stunned -= 1
+        if self.stunned < 0:
+            self.stunned = 0
         if not self.stunned:
             self.stun_effect = False
 
@@ -210,7 +212,7 @@ class Enemy(Creature):
         """
         if g.IS_DEV and g.NO_ATTACK:
             self.attacking = False
-        elif "main" in g.active_states and self.level == g.current_level and not self.stunned:
+        elif "main" in g.active_states and self.level == g.current_level:
             self.attacking = False
             sounds.play_sound("enemy_attack", self.rect.center, level=self.level, volume=7)
 
