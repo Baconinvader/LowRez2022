@@ -396,7 +396,7 @@ class InventoryControl(Control):
                 y += 8
                 extra_detail_string = ""
                 if isinstance(detail_item, items.Gun):
-                    extra_detail_string = f"{detail_item.ammunition}/{detail_item.max_ammunition} rnds"
+                    extra_detail_string = f"{int(detail_item.ammunition)}/{detail_item.max_ammunition} rnds"
                 elif type(detail_item) == items.HealthDrink:
                     extra_detail_string = "+3 HP"
                 elif type(detail_item) == items.Medkit:
@@ -418,7 +418,7 @@ class TextScreenControl(Control):
 
         self.margin = margin
         if not scroll_space:
-            scroll_space = len(text)*2
+            scroll_space = len(text)*1
         self.scroll_space = scroll_space
 
         self.background_gfx = gfx.get_surface(background_gfx)

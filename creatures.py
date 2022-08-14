@@ -120,8 +120,8 @@ class Enemy(Creature):
     """
     Base class for all enemies
     """
-    def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=0.85, max_health=10, footstep_sound="footstep_enemy"):
-        super().__init__(rect, level, name, max_health=max_health, collision_dict={"class_Enemy":False}, footstep_sound=footstep_sound)
+    def __init__(self, rect, level, name, respawn_time=0, speed=16, damage=1, attack_time=0.85, max_health=10, footstep_sound="footstep_enemy", collision_dict={"class_Enemy":False}):
+        super().__init__(rect, level, name, max_health=max_health, collision_dict=collision_dict, footstep_sound=footstep_sound)
         self.z_index = 0.5
         self.gfx = g.spritesheets[f"{self.name}_ss"].create_animation_system({"static":0, "moving":1, "attacking":2}, 0.25)
 
@@ -176,6 +176,11 @@ class Enemy(Creature):
             self.played_encounter_sound.x = self.rect.centerx
             self.played_encounter_sound.y = self.rect.centery
 
+
+    def level_entered(self):
+        super().level_entered()
+        self.attacking = False
+
     def move_towards(self, x, y):
         result_x = super().move_towards(x, self.y, self.speed * g.dt)
         result_y = super().move_towards(self.x, y, self.speed * g.dt)
@@ -222,7 +227,7 @@ class Corpse(entities.Entity):
     Corpse of an creature
     """
     def __init__(self, enemy, x, y, level):
-        corpse_ss_dict = {"player":2, "basic_enemy":0, "large_enemy":0, "recover_enemy":1, "spider_enemy":1}
+        corpse_ss_dict = {"player":2, "basic_enemy":0, "large_enemy":0, "recover_enemy":1, "spider_enemy":3}
         self.enemy = enemy
         self.corpse_anim_index = corpse_ss_dict[enemy.name]
 
@@ -259,8 +264,6 @@ class Corpse(entities.Entity):
 
         self.enemy.__class__(x, y, level)
         self.delete()
-
-
 
 
 class BasicEnemy(Enemy):
@@ -340,7 +343,7 @@ class LargeEnemy(Enemy):
     """
     def __init__(self, x, y, level):
         rect = p.Rect(x, y, 48, 48)
-        super().__init__(rect, level, "large_enemy", max_health=50, speed=10, damage=5)
+        super().__init__(rect, level, "large_enemy", max_health=50, speed=10, damage=5, collision_dict={"class_Enemy":False, "class_Player":False})
         self.regen = 0.2
         self.direction = "left"
 
@@ -379,18 +382,19 @@ class LargeEnemy(Enemy):
             elif self.direction == "right":
                 result = self.move(self.speed * g.dt, 0)
 
+            if abs(g.player.rect.centerx-self.rect.centerx) <= (g.player.rect.w/2)+(self.rect.w/2):
+                if (self.direction == "left" and g.player.rect.centerx < self.rect.centerx) or (self.direction == "right" and g.player.rect.centerx > self.rect.centerx):
+                    if not self.attacking:
+                        self.attacking = True
+                        actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
+
             #switch
             if result:
-                if result == g.player:
-                    if (self.direction == "left" and g.player.rect.centerx < self.rect.centerx) or (self.direction == "right" and g.player.rect.centerx > self.rect.centerx):
-                        if not self.attacking:
-                            self.attacking = True
-                            actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
-                else:
-                    if self.direction == "left":
-                        self.direction = "right"
-                    elif self.direction == "right":
-                        self.direction = "left"
+                if self.direction == "left":
+                    self.direction = "right"
+                elif self.direction == "right":
+                    self.direction = "left"
+                
 
 def spawn_enemy(name, x, y, level):
     """

@@ -111,7 +111,7 @@ class Entity(elements.Element):
         if not self.deleted:
             if self.level:
                 self.level.entities.remove(self)
-            super().delete()
+        super().delete()
 
     def level_left(self):
         """

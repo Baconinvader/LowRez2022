@@ -116,6 +116,11 @@ class Structure(entities.Entity):
             icon_y = self.rect.y - icon_surf.get_height() - 3
             g.camera.draw_gfx(icon_name, (icon_x, icon_y))
 
+    def delete(self):
+        if not self.deleted:
+            self.level.structures.remove(self)
+        super().delete()
+
 class Pickup(Structure):
     """
     Structure of an item that can be picked up
