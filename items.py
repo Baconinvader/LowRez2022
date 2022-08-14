@@ -196,13 +196,13 @@ class Revolver(Gun):
 #keys
 class BathroomKey(Item):
     def __init__(self):
-     super().__init__("K. Bathroom")
+     super().__init__("K. Bath")
 class ReactorKey(Item):
     def __init__(self):
         super().__init__("K. Reactor")
 class StorageKey(Item):
     def __init__(self):
-        super().__init__("K. Storage")
+        super().__init__("K. Store")
 
 def create_item(name):
     """

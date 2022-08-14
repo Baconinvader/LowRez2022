@@ -447,7 +447,7 @@ class Shuttle(Structure):
     """
     def __init__(self, level, x, y):
         structure_gfx = "shuttle"
-        rect = p.Rect(x, y, 64, 64)
+        rect = p.Rect(x, y, 128, 64)
         self.entered = False
         super().__init__(level, rect, structure_gfx)
 
@@ -459,7 +459,7 @@ class Shuttle(Structure):
         self.entered = True
         g.player.set_target_x(self.rect.centerx)
         self.can_interact = False
-        timer = 2
+        timer = 3
         actions.OverlayAction(self.pipe, timer, (0,0,0), blocking=False, blockable=False)
         
         #fade in

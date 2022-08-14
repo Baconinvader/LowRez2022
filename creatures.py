@@ -206,7 +206,7 @@ class Enemy(Creature):
         """
         Finish attack on the player
         """
-        if "main" in g.active_states and self.level == g.current_level:
+        if "main" in g.active_states and self.level == g.current_level and not self.stunned:
             self.attacking = False
             sounds.play_sound("enemy_attack", self.rect.center, level=self.level, volume=7)
 
@@ -233,7 +233,7 @@ class Corpse(entities.Entity):
 
         rect = p.Rect(x, y, 32, 32)
         corpse_gfx = g.spritesheets["corpse_ss"].create_animation(self.corpse_anim_index, 0.25, global_time=False, repeat=False)
-        super().__init__(rect, level, entity_gfx=corpse_gfx, solid=False)
+        super().__init__(rect, level, entity_gfx=corpse_gfx, solid=False, collision_dict={"class_Entity":False})
 
 
         if self.enemy.respawn_time:

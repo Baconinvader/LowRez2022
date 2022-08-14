@@ -4,7 +4,7 @@
     "show_space":false,
     "structures":[
         
-        ["Pickup", 0, null, "HealthDrink"],
+        ["Pickup", 48, null, "HandgunAmmunition"],
         ["Door", 0, -32, "Lab II"]
     ],
 
