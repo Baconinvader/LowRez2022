@@ -1,4 +1,6 @@
 import pygame
+
+import os
 import random
 
 import global_values as g
@@ -8,7 +10,7 @@ def melt(surf, n_frames, blood_colors=((128, 51, 30), (78, 39, 28)), blood_rate=
     res = []
 
     for i in range(0, n_frames):
-        frame = pygame.Surface(surf.get_size(), pygame.SRCALPHA, surf)
+        frame = pygame.Surface(surf.get_size(), pygame.SRCALPHA)
         frame.fill((0, 0, 0, 0))
         x_list = list(range(0, surf.get_width()))
         random.shuffle(x_list)
@@ -41,7 +43,7 @@ def shift_down(surf):
     res = pygame.Surface(surf.get_size(), 0, surf)
     for x in range(0, surf.get_width()):
         for y in range(surf.get_height() - 1, -1, -1):
-            color_at = color_at = surf.get_at((x, y))
+            color_at = surf.get_at((x, y))
             if color_at[3] == 255:
                 new_y = surf.get_height() - 1 - heights[x]
                 heights[x] += 1
@@ -67,28 +69,32 @@ def add_outline(surf, outline_color):
     return res
 
 
-def gen_melted_basic_enemy(outfile):
-    sheet = pygame.image.load("res/gfx_new/basic_enemy_ss.png")
-    surf = sheet.subsurface((32, 0, 16, 32))
-    frames = melt(surf, 4)
+def gen_death_animation(infile, outfile, n_frames=4,
+                        compression=0.666, xshift_rate=0.05, decay_rate=0.1,
+                        blood_colors=((128, 51, 30), (78, 39, 28)), blood_rate=0.2,
+                        outline_color=g.colour_remaps["black"]):
+
+    if isinstance(infile, str):
+        surf = pygame.image.load(infile)
+    elif isinstance(infile, pygame.Surface):
+        surf = infile
+    elif isinstance(infile, tuple):
+        filepath, rect = infile
+        sheet = pygame.image.load(filepath)
+        surf = sheet.subsurface(rect).copy()
+    else:
+        raise ValueError(f"Unexpected infile type: {infile}")
+
+    frames = melt(surf, n_frames, compression_factor=compression, xshift_rate=xshift_rate, decay_rate=decay_rate,
+                  blood_colors=blood_colors, blood_rate=blood_rate)
     frames[-1] = shift_down(frames[-1])
-    outsurf = pygame.Surface((sum(f.get_width() for f in frames),
-                              max(f.get_height() for f in frames)))
-    x = 0
-    for f in frames:
-        outsurf.blit(f, (x, 0))
-        x += f.get_width()
+    if outline_color is not None:
+        frames = [add_outline(f, outline_color) for f in frames]
+    total_width = sum(f.get_width() for f in frames)
+    total_height = max(f.get_height() for f in frames)
+    outsurf = pygame.Surface((total_width, total_height), pygame.SRCALPHA)
+    outsurf.fill((0, 0, 0, 0))
 
-    pygame.image.save(outsurf, outfile)
-
-
-def gen_melted_player(outfile):
-    surf = pygame.image.load("res/gfx_new/player_single.png").convert_alpha()
-    frames = melt(surf, 4, compression_factor=0.5, blood_rate=0.3, xshift_rate=0, decay_rate=0)
-    frames[-1] = shift_down(frames[-1])
-    frames = [add_outline(f, g.colour_remaps["black"]) for f in frames]
-    outsurf = pygame.Surface((sum(f.get_width() for f in frames),
-                              max(f.get_height() for f in frames)))
     x = 0
     for f in frames:
         outsurf.blit(f, (x, 0))
@@ -98,7 +104,11 @@ def gen_melted_player(outfile):
 
 
 if __name__ == "__main__":
-    pygame.display.set_mode((10, 10))
-    # gen_melted_basic_enemy("enemy_death_seq.png")
-    gen_melted_player("player_death_seq.png")
+    if not os.path.exists("gen/"):
+        os.mkdir("gen/")
+
+    gen_death_animation(("res/gfx_new/basic_enemy_ss.png", (32, 0, 16, 32)), "gen/enemy_death_seq.png")
+    gen_death_animation("res/gfx_new/player_single.png", "gen/player_corpse_ss.png", compression=0.5, blood_rate=0.3, xshift_rate=0, decay_rate=0)
+    gen_death_animation(("res/gfx_new/large_enemy_ss.png", (0, 0, 48, 48)), "gen/large_enemy_corpse_ss.png", compression=0.6, xshift_rate=0.05)
+    gen_death_animation(("res/gfx_new/spider_enemy_ss.png", (0, 0, 32, 16)), "gen/spider_enemy_corpse_ss.png", compression=0.3)
 
