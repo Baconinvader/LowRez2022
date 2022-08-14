@@ -27,6 +27,7 @@ class Camera(elements.Element):
             self.look_offset = m.sin( diff_from_center/(g.WIDTH/2) )*24
         else:
             self.look_offset = 0
+        self.look_offset = int(self.look_offset)
  
         self.x = self.parent.rect.centerx + self.offset[0] + self.look_offset
         self.y = self.parent.rect.centery + self.offset[1]
