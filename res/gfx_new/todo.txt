@@ -1,7 +1,7 @@
 needs drawn:
 
 [x] spider guy
-    [ ] animations
+    [x] animations
     [x] death anim
 [x] big guy
     [ ] walk/attack animations
