@@ -6,9 +6,9 @@
         ["KeypadDoor", null, -32, "Shuttle I", "617"],
         ["Door", null, -32, "Hallway"],
 
-        ["GraphicsInformation", 36, 12, ["structure_32_32_ss", 0, 1], "map"],
+        ["GraphicsInformation", 112, 12, ["structure_32_32_ss", 0, 1], "map"],
 
-        ["Pickup", 45, null, "HealthDrink"],
+        ["Pickup", 133, null, "HealthDrink"],
         ["EnemySpawn", 70, -32, "BasicEnemy"]
     ],
 

@@ -56,6 +56,7 @@ player_targeting = False
 IS_DEV = os.path.exists(".gitignore")
 if IS_DEV:
     print("IS_DEV is enabled.")
+NO_ATTACK = True  # makes enemies not attack
 
 #graphics
 spritesheets = {}
