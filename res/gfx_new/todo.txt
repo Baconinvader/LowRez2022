@@ -4,7 +4,7 @@ needs drawn:
     [x] animations
     [x] death anim
 [x] big guy
-    [ ] walk/attack animations
+    [x] walk/attack animations
     [x] death anim
 [x] regen guy
 [x] title screen
