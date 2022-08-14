@@ -4,6 +4,6 @@
     "show_space":true,
     "structures":[
         ["Pickup", 12, null, "HandgunAmmunition"],
-        ["TextInformation", 36, -32, ["structure_32_32_ss", 0, 0], "font1_1", "Attention: \nThe code for the Cyro wing has been changed. The new code is: \n  451", "text_screen_background"]
+        ["TextInformation", 64, -32, ["structure_32_32_ss", 0, 0], "font1_1", "Attention: \nThe code for the Cyro wing has been changed. The new code is: \n  451", "text_screen_background"]
     ]
 }

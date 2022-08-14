@@ -263,7 +263,7 @@ class Door(Structure):
         """
         Create exit door
         """
-        door_offset = 2
+        door_offset = 1
         #this door
         #automatically place this door based on it's connection
         if self.auto_place:
