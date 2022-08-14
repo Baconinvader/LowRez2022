@@ -266,8 +266,6 @@ class Corpse(entities.Entity):
         self.delete()
 
 
-
-
 class BasicEnemy(Enemy):
     """
     Basic melee enemy
@@ -384,7 +382,7 @@ class LargeEnemy(Enemy):
             elif self.direction == "right":
                 result = self.move(self.speed * g.dt, 0)
 
-            if abs(g.player.rect.centerx-g.player.rect.centerx) <= (g.player.rect.w/2)+(self.rect.w/2):
+            if abs(g.player.rect.centerx-self.rect.centerx) <= (g.player.rect.w/2)+(self.rect.w/2):
                 if (self.direction == "left" and g.player.rect.centerx < self.rect.centerx) or (self.direction == "right" and g.player.rect.centerx > self.rect.centerx):
                     if not self.attacking:
                         self.attacking = True
