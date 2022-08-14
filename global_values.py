@@ -48,6 +48,7 @@ mx = 0
 my = 0
 ml, mm, mr = False, False, False
 tmx, tmy = 0,0
+player_targeting = False
 
 #debug stuff
 # enable "dev mode" commands if there's a gitignore file~

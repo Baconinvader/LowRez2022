@@ -182,31 +182,36 @@ controls.Button(rect, exit_menu, g.spritesheets["button_ss"].anims[1][0], g.spri
 
 def handle_input():
     global RUNNING
+
+    def interact():
+        command_triggered = False
+        clicked_structure = None
+        #get smallest clicked structure
+        if g.current_level:
+            for structure in g.current_level.structures:
+                if structure.can_interact and structure.rect.collidepoint((g.tmx, g.tmy)):
+                    if not clicked_structure or (clicked_structure.rect.w*clicked_structure.rect.h) > (structure.rect.w*structure.rect.h):
+                        clicked_structure = structure
+                    
+            if clicked_structure:
+                clicked_structure.interact()
+                command_triggered = True
+
+
+        #move player
+        if not command_triggered:
+            if not g.player.control_locks:
+                g.player_targeting = True
+                g.player.set_target_x(g.tmx)
+
     for event in p.event.get():
         if event.type == p.QUIT:
             RUNNING = False
 
         if event.type == p.MOUSEBUTTONDOWN:
             if event.button == 3:
-
-                command_triggered = False
-                clicked_structure = None
-                #get smallest clicked structure
-                if g.current_level:
-                    for structure in g.current_level.structures:
-                        if structure.can_interact and structure.rect.collidepoint((g.tmx, g.tmy)):
-                            if not clicked_structure or (clicked_structure.rect.w*clicked_structure.rect.h) > (structure.rect.w*structure.rect.h):
-                                clicked_structure = structure
-                            
-                    if clicked_structure:
-                        clicked_structure.interact()
-                        command_triggered = True
-
-
-                #move player
-                if not command_triggered:
-                    if not g.player.control_locks:
-                        g.player.set_target_x(g.tmx)
+                interact()
+                
 
             elif event.button == 1:
                 #click button
@@ -227,8 +232,7 @@ def handle_input():
                 #use weapon
                 if not button_pressed:
                     if "main" in g.active_states:
-                        if g.player.inventory.selected_item:
-                            g.player.attack()
+                        g.player.attack()
 
         elif event.type == p.KEYDOWN:
             #toggle inventory
@@ -237,9 +241,22 @@ def handle_input():
                     enter_inventory()
                 elif "inventory" in g.active_states:
                     exit_menu()
+            
+            #interact
+            elif event.key == p.K_e or event.key == p.K_SPACE:
+                #click button
+                button_pressed = False
+                for button in reversed(g.elements["class_Button"]):
+                    if button.active and button.rect.collidepoint((g.mx, g.my)):
+                        button_pressed = True
+                        button.press()
+                        break
+                
+                if not button_pressed:
+                    interact()
 
             #select item
-            if p.K_1 <= event.key <= p.K_9:
+            elif p.K_1 <= event.key <= p.K_9:
                 if "main" in g.active_states or "inventory" in g.active_states:
                     index = event.key - p.K_1
                     g.player.inventory.select_index(index)
@@ -256,9 +273,14 @@ def handle_input():
     g.tmy = g.my + g.camera.y
 
     if g.keys[p.K_a]:
-        g.player.move(-1*0.02*120*g.dt, 0)
+        g.player.move(-g.player.speed*g.dt, 0)
     if g.keys[p.K_d]:
-        g.player.move(1*0.02*120*g.dt, 0)
+        g.player.move(g.player.speed*g.dt, 0)
+
+    if g.mr and g.player_targeting:
+        g.player.set_target_x(g.tmx)
+    else:
+        g.player_targeting = False
 
 def update():
     #check if player is dead
@@ -302,8 +324,6 @@ def sort_entity(entity):
     return index
 
 def draw():
-    
-
     if "main" in g.active_states:
         if g.current_level:
             if g.current_level.show_space:

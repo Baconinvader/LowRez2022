@@ -90,7 +90,6 @@ class RevolverAmmunition(Ammunition):
 
 class Gun(Item):
     def __init__(self, name, damage, cooldown, fire_range, projectiles=1, spread=0, max_ammunition=50, recharge=0, stun=0, fire_effect=1):
-        print("ITEM ",name)
         super().__init__(name)
         
         self.damage = damage
@@ -99,7 +98,7 @@ class Gun(Item):
 
         self.last_fire_time = None
         self.max_ammunition = max_ammunition
-        self.ammunition = self.max_ammunition
+        self.ammunition = int(self.max_ammunition*0.2)
         self.recharge = recharge
         self.stun = stun
         self.fire_effect = fire_effect
@@ -187,7 +186,8 @@ class Shotgun(Gun):
 
 class Stungun(Gun):
     def __init__(self):
-        super().__init__("stungun", 0.0, 1.5, 64, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
+        super().__init__("stungun", 0.0, 1.5, 20, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
+        self.ammunition = self.max_ammunition
 
 class Revolver(Gun):
     def __init__(self):

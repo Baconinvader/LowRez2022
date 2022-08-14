@@ -40,7 +40,7 @@ class Inventory:
                     item.change_ammunition(self.ammunition_reserves.get(item.name, 0))
                     self.ammunition_reserves[item.name] = 0
 
-                if not self.selected_item:
+                if not self.selected_item and not isinstance(item, items.Consumable):
                     self.select_index(i)
                 return True
         return False
@@ -133,6 +133,8 @@ class Player(creatures.Creature):
         self.hand = gfx.load_image("player_hand", alpha=True)
         self.smoke_effect = None
         self.flash_effect = None
+        self.punching = False
+        self.punch_damage = 0.5
 
         self.control_locks = 0
         self.hurt = 0
@@ -196,12 +198,26 @@ class Player(creatures.Creature):
                 self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) + (m.pi/4)
                 self.elbow_angle = self.arm_angle - (m.pi/2)
         else:
-            if g.tmx > self.rect.centerx:
-                self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) + (m.pi/4)
-                self.elbow_angle = self.arm_angle - (m.pi*.25)
+            if self.punching:
+                progress = -m.cos(min(self.punching.progress*2,1) * 2 * m.pi) 
+                
+                self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy)
+                self.elbow_angle = self.arm_angle
+
+                if g.tmx > self.rect.centerx:
+                    self.arm_angle += (m.pi * 0.175)*(1-progress)
+                    self.elbow_angle += (m.pi*0)*(progress)
+                else:
+                    self.arm_angle -= (m.pi * 0.175)*(1-progress)
+                    self.elbow_angle -= (m.pi*0)*(progress)
+
             else:
-                self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) - (m.pi/4)
-                self.elbow_angle = self.arm_angle + (m.pi*0.25)
+                if g.tmx > self.rect.centerx:
+                    self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) + (m.pi/4)
+                    self.elbow_angle = self.arm_angle - (m.pi*.25)
+                else:
+                    self.arm_angle = util.get_angle(self.shoulder_pos[0], self.shoulder_pos[1], g.tmx, g.tmy) - (m.pi/4)
+                    self.elbow_angle = self.arm_angle + (m.pi*0.25)
 
         if item:
             if isinstance(item, items.Gun) and item.recharge:
@@ -213,26 +229,47 @@ class Player(creatures.Creature):
 
     def attack(self):
         item = self.inventory.selected_item
-        if isinstance(item, items.Gun) and not g.elements.get("class_Popup", False):
-            res = item.attempt_fire()
+        if item:
+            if isinstance(item, items.Gun) and not g.elements.get("class_Popup", False):
+                res = item.attempt_fire()
 
-            #show effect
-            if res:
-                if item.fire_effect == 1:
-                    self.smoke_effect = particles.create_smoke(self.level, (0,0))
-                    self.flash_effect = particles.create_flash(self.level, (0,0), self.angle)
+                #show effect
+                if res:
+                    if item.fire_effect == 1:
+                        self.smoke_effect = particles.create_smoke(self.level, (0,0))
+                        self.flash_effect = particles.create_flash(self.level, (0,0), self.angle)
 
-                elif item.fire_effect == 2:
-                    self.flash_effect = particles.create_stun_flash(self.level, (0,0), self.angle)
+                    elif item.fire_effect == 2:
+                        self.flash_effect = particles.create_stun_flash(self.level, (0,0), self.angle)
 
-                #recoil
-                recoil_magnitude = min(item.damage*item.projectiles, 4)
-                if self.direction == "left":
-                    self.move(recoil_magnitude, 0)
-                    self.direction = "left"
-                elif self.direction == "right":
-                    self.move(-recoil_magnitude, 0)
-                    self.direction = "right"
+                    #recoil
+                    recoil_magnitude = min(item.damage*item.projectiles, 4)
+                    if self.direction == "left":
+                        self.move(recoil_magnitude, 0)
+                        self.direction = "left"
+                    elif self.direction == "right":
+                        self.move(-recoil_magnitude, 0)
+                        self.direction = "right"
+        else:
+            if not self.punching:
+                punch_time = 1
+                self.punching = actions.VarChangeAction(self.pipe, punch_time, self, "punching", False, change_type=2, blocking=False, blockable=False)
+                actions.FuncCallAction(self.pipe, punch_time/2 /2, self, "punch", change_type=1, blocking=False, blockable=False)
+
+    def punch(self):
+        """
+        Trigger punch
+        """
+        for entity in self.level.entities:
+            if isinstance(entity, creatures.Enemy):
+                dist = util.get_distance(self.rect.centerx, self.rect.centery, entity.rect.centerx, entity.rect.centery)
+                if dist <= (self.rect.w/2)+12:
+                    entity.take_damage(self.punch_damage)
+                    sounds.play_sound("player_punch", volume=0.5)
+                    break
+
+        sounds.play_sound("player_punch_swoosh", volume=0.5)
+        
 
     def get_direction_for_rendering(self):
         # player should always appear to face the mouse, regardless of their true direction.
