@@ -15,14 +15,15 @@ needs drawn:
 [ ] level backgrounds
     [ ] level decorations
     [x] shuttle
-[ ] end screen(s)
-    [ ] escape pod
-    [ ] tentacle planet
-    [ ] tentacle arm reveal
+[x] end screen(s)
+    [x] escape pod
+    [x] tentacle planet
+    [x] tentacle arm reveal
 ui widgets:
     [ ] backgrounds
     [x] control bar?
-    [ ] buttons
+    [x] buttons
+    [x] computer bg
 pickups:
     [ ] health drink
     [ ] keys
