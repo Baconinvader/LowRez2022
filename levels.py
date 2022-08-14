@@ -371,6 +371,26 @@ class KeypadDoor(LockedDoor):
         else:
             controls.Popup(rect, "Incorrect", "Code", None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
 
+class GraphicsInformation(Structure):
+    """
+    A structure that shows graphics when interacted with
+    """
+    
+    def __init__(self, level, x, y, structure_gfx, displayed_gfx):
+        self.displayed_gfx = displayed_gfx
+
+        structure_gfx = gfx.get_surface(structure_gfx)
+
+        w, h = structure_gfx.get_size()
+        rect = p.Rect(x, y, w, h)
+        super().__init__(level, rect, structure_gfx)
+
+        self.screen_control = None
+        
+    def interact(self):
+        if not self.screen_control or self.screen_control.deleted:
+            self.screen_control = controls.GraphicsScreenControl(self.displayed_gfx, set(("main",)) )
+
 class TextInformation(Structure):
     """
     A structure containing text information which displays when interacted with

@@ -405,6 +405,32 @@ class InventoryControl(Control):
 
                 gfx.draw_text("font1_1", extra_detail_string, (x,y), cx=True, cy=True)
 
+class GraphicsScreenControl(Control):
+    """
+    Control for showing graphics on the whole screen
+    """
+    def __init__(self, control_gfx, active_states, show_exit=True):
+        rect = g.screen_rect.copy()
+        super().__init__(rect, active_states)
+        self.gfx = control_gfx
+
+        self.show_exit = show_exit
+        if self.show_exit:
+            button_anims = g.spritesheets["button_ss"].anims
+            button_rect = p.Rect(0,0,8,8)
+            button_rect = button_rect.copy()
+            button_rect.bottomright = self.rect.bottomright
+            self.button_exit = Button(button_rect, self.delete, button_anims[3][0], button_anims[3][1], button_anims[3][2], self.active_states)
+
+    def draw(self):
+        super().draw()
+        g.screen.blit(gfx.get_surface(self.gfx), self.rect.topleft)
+
+    def delete(self):
+        if self.show_exit:
+            self.button_exit.delete()
+        super().delete()
+
 class TextScreenControl(Control):
     """
     Control for displaying text on screen
@@ -418,7 +444,7 @@ class TextScreenControl(Control):
 
         self.margin = margin
         if not scroll_space:
-            scroll_space = len(text)*1
+            scroll_space = len(text)
         self.scroll_space = scroll_space
 
         self.background_gfx = gfx.get_surface(background_gfx)
