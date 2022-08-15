@@ -21,7 +21,6 @@ g.global_pipe = actions.Pipe("global")
 
 g.screen = p.Surface((g.WIDTH, g.HEIGHT))
 g.full_screen = p.display.set_mode((g.SCREEN_WIDTH, g.SCREEN_HEIGHT))
-p.display.set_caption(g.CAPTION)
 
 gfx.Spritesheet("player_ss", 16,32)
 gfx.Spritesheet("basic_enemy_ss", 16,32)
