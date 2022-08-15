@@ -1,12 +1,12 @@
 {
     "name":"Cmd II",
     "position":[14,-1],
-    "show_space":false,
+    "show_space":true,
     "structures":[
         ["Door", null, -32, "Deck"],
         ["Pickup", 20, null, "ReactorKey"],
 
-        ["TextInformation", 40, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Julia: \nIt won't be long until whatever the crew turned into take over the entire ship. Our only hope is the escape shuttle. The code it get in is 617. The issue is that in order to power it, we'd need to divert the reactor output.", "text_screen_background"]
+        ["TextInformation", 48, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Julia: \nIt won't be long until whatever the crew turned into take over the entire ship. Our only hope is the escape shuttle. The code it get in is 617. The issue is that in order to power it, we'd need to divert the reactor output.", "text_screen_background"]
     
     ],
 

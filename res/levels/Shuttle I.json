@@ -1,7 +1,7 @@
 {
     "name":"Shuttle I",
     "position":[4,1],
-    "show_space":false,
+    "show_space":true,
     "structures":[
         ["Door", null, -32, "Shuttle II"],
 
