@@ -298,7 +298,7 @@ class Door(Structure):
             #same y, different x
             if self.change_level.world_x < self.level.world_x:
                 #left
-                x = self.change_level.rect.w - self.rect.w - door_offset 
+                x = self.change_level.rect.w - self.rect.w - door_offset + 1
             else:
                 #right
                 x = door_offset 
