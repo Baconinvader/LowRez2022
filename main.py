@@ -90,6 +90,9 @@ def reset():
     #reset elements:
     for popup in g.elements.get("class_Popup", []):
         popup.delete()
+    for screen_control in g.elements.get("class_TextScreenControl", []) + g.elements.get("class_GraphicsScreenControl", []):
+        screen_control.delete()
+    
 
     #reset sound
     g.channel_list.stop_sounds()
