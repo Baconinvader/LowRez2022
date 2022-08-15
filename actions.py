@@ -3,7 +3,7 @@ import utilities as util
 import graphics as gfx
 import levels
 
-import pygame.gfxdraw as pg
+import pygame as p
 
 class Pipe:
     """
@@ -243,6 +243,9 @@ class OverlayAction(Action):
 
         #0: get more intense, 1: get lass intense
         self.fade_type = fade_type
+
+        self.surface = p.Surface((g.SCREEN_WIDTH, g.SCREEN_HEIGHT))
+        self.surface.fill(self.colour)
     
     def update(self):
         super().update()
@@ -252,7 +255,8 @@ class OverlayAction(Action):
             self.alpha = util.interpolate(self.full_alpha, 0, self.progress)
 
     def draw(self):
-        pg.box(g.screen, g.screen_rect, (self.colour[0], self.colour[1], self.colour[2], self.alpha))
+        self.surface.set_alpha(self.alpha)
+        g.screen.blit(self.surface, (0,0))
 
 class TextEffectAction(Action):
     """
