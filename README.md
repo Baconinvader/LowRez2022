@@ -1,11 +1,18 @@
-# LowRez2022
-Repo for a game being developed for LowRezJam2022
-to run just run `main.py`
+(Made for LowRezJam 2022)
 
-# Controls
+Waking up early from your cryo-sleep, you sense something is wrong with the space station you're on. Unfortunately, you don't realize just quite how right you are.
 
-left click - fire
+# Controls:
 
-right click - interact (if pointing at object), move player
+    Left Click - Shoot
+    Right Click - Move / Interact
+    A/D - Move
+    E - Interact
+    I - Inventory
+    1-8 - Quick Select Item
 
-A/D - move (debug)
+# Credits:
+
+    Programming by Baconinvader
+    Art by Ghast
+    Music by Ceiling Green
