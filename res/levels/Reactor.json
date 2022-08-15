@@ -3,6 +3,8 @@
     "position":[14,0],
     "show_space":false,
     "structures":[
+        ["EnemySpawn", 110, -32, "BasicEnemy"],
+
         ["Pickup", 119, null, "Medkit"],
         ["Pickup", 119, null, "RevolverAmmunition"],
 

@@ -6,6 +6,8 @@
         ["Door", null, -32, "Reactor"],
         ["EnemySpawn", 50, 8, "SpiderEnemy"],
         ["EnemySpawn", 64, 8, "SpiderEnemy"],
+        ["EnemySpawn", 70, -32, "RecoverEnemy"],
+        ["EnemySpawn", 78, -32, "RecoverEnemy"],
 
         ["Pickup", 28, null, "HealthDrink"],
         ["Pickup", 42, null, "HandgunAmmunition"]

@@ -354,6 +354,12 @@ class LargeEnemy(Enemy):
         super().__init__(rect, level, "large_enemy", max_health=50, speed=10, damage=5, collision_dict={"class_Enemy":False, "class_Player":False})
         self.regen = 0.2
         self.direction = "left"
+        self.attack_warmup_action = None
+
+    def level_entered(self):
+        super().level_entered()
+        #give the player a second to get away
+        self.attack_warmup_action = actions.Action(self.pipe, 3.5, blockable=False, blocking=False)
 
     def update(self):
         super().update()
@@ -391,7 +397,7 @@ class LargeEnemy(Enemy):
                 result = self.move(self.speed * g.dt, 0)
 
             if abs(g.player.rect.centerx-self.rect.centerx) <= (g.player.rect.w/2)+(self.rect.w/2):
-                if (self.direction == "left" and g.player.rect.centerx < self.rect.centerx) or (self.direction == "right" and g.player.rect.centerx > self.rect.centerx):
+                if (self.direction == "left" and g.player.rect.centerx < self.rect.centerx) or (self.direction == "right" and g.player.rect.centerx > self.rect.centerx) and (not self.attack_warmup_action or self.attack_warmup_action.progress >= 1):
                     if not self.attacking:
                         self.attacking = True
                         actions.FuncCallAction(self.pipe, self.attack_time, self, "attack", change_type=1, blocking=False, blockable=False)
