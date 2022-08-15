@@ -423,6 +423,7 @@ class TextInformation(Structure):
         
 
     def interact(self):
+        sounds.play_sound("terminal_interact")
         controls.TextScreenControl(g.screen_rect.copy(), self.font_name, self.text, set(("main",)), background_gfx=self.background_gfx)
 
 class PowerSwitch(Structure):
