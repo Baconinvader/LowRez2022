@@ -5,7 +5,8 @@
     "structures":[
         ["Pickup", 24, null, "Shotgun"],
         ["Pickup", 6, null, "ShotgunAmmunition"],
-        ["Pickup", 10, null, "HandgunAmmunition"]
+        ["Pickup", 10, null, "HandgunAmmunition"],
+        ["EnemySpawn", 2, -32, "BasicEnemy"]
     ],
 
     "comments": []

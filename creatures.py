@@ -198,7 +198,7 @@ class Enemy(Creature):
 
     def take_damage(self, amount, source=None):
         super().take_damage(amount)
-        stun_timer = amount*0.8
+        stun_timer = amount*0.7
 
         self.stunned += 1
         actions.FuncCallAction(self.pipe, stun_timer, self, "remove_stun", change_type=1, blocking=False, blockable=False)
@@ -309,7 +309,7 @@ class SpiderEnemy(Enemy):
             if self.on_ceiling:
                 if abs(g.player.rect.centerx - self.rect.centerx) < 30:
                     self.on_ceiling = False
-                    actions.VarChangeAction(self.pipe, 0.5, self, "y", self.level.rect.h-self.rect.h, blocking=False, blockable=False, force=False)
+                    actions.VarChangeAction(self.pipe, 0.5, self, "y", self.level.rect.h-self.rect.h+1, blocking=False, blockable=False, force=False)
 
             result = self.move_towards(g.player.x, self.y)
 

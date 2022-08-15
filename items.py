@@ -53,7 +53,7 @@ class Medkit(Consumable):
 
 class HealthDrink(Consumable):
     def __init__(self):
-        super().__init__("health drink")
+        super().__init__("vit drink")
 
     def consume(self):
         super().consume()
@@ -191,7 +191,7 @@ class Stungun(Gun):
 
 class Revolver(Gun):
     def __init__(self):
-        super().__init__("revolver", 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=15)
+        super().__init__("revolver", 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=6)
 
 #keys
 class BathroomKey(Item):

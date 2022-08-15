@@ -8,9 +8,8 @@
         ["EnemySpawn", 64, 8, "SpiderEnemy"],
 
         ["Pickup", 28, null, "HealthDrink"],
-        ["Pickup", 42, null, "HandgunAmmunition"],
+        ["Pickup", 42, null, "HandgunAmmunition"]
 
-        ["TextInformation", 48, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Chris: I've locked myself in storage to get away from those... things. If you knock, and I don't answer, don't open the door.", "text_screen_background"]
     ],
 
     "comments": []

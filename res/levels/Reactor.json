@@ -4,6 +4,8 @@
     "show_space":false,
     "structures":[
         ["Pickup", 119, null, "Medkit"],
+        ["Pickup", 119, null, "RevolverAmmunition"],
+
         ["Pickup", 24, null, "ShotgunAmmunition"],
         ["Pickup", 40, null, "HandgunAmmunition"],
 

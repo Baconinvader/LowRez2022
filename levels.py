@@ -195,6 +195,7 @@ class KeyPickup(LockedPickup):
 
                 controls.Popup(rect, "Used", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
                 self.unlock()
+                sounds.play_sound("success")
             else:
                 controls.Popup(rect, "You need", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
 
@@ -359,7 +360,8 @@ class KeyDoor(LockedDoor):
         rect.center = g.screen_rect.center
         if res:
             controls.Popup(rect, "Used", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
-            self.unlock(item=res)  
+            self.unlock(item=res)
+            sounds.play_sound("success")
         else:
             controls.Popup(rect, "You need", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
 
@@ -421,6 +423,7 @@ class TextInformation(Structure):
         
 
     def interact(self):
+        sounds.play_sound("terminal_interact")
         controls.TextScreenControl(g.screen_rect.copy(), self.font_name, self.text, set(("main",)), background_gfx=self.background_gfx)
 
 class PowerSwitch(Structure):
@@ -459,6 +462,8 @@ class PowerSwitch(Structure):
 
         action = actions.FuncCallAction(self.pipe, timer, self, "timer_end", change_type=1, blocking=False, blockable=False)
         self.timer_control = controls.Timer("font1_1", rect, action, (("main",)), colour="white", shadow_pos=(0,1))
+
+        sounds.play_sound("reactor_alarm", self.rect.center, level=self.level, volume=7)
         
         self.popup.delete()
 

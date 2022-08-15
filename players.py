@@ -249,10 +249,10 @@ class Player(creatures.Creature):
 
                     #recoil
                     recoil_magnitude = min(item.damage*item.projectiles, 4)
-                    if self.direction == "left":
+                    if g.tmx < self.rect.centerx:
                         self.move(recoil_magnitude, 0)
                         self.direction = "left"
-                    elif self.direction == "right":
+                    else:
                         self.move(-recoil_magnitude, 0)
                         self.direction = "right"
         else:
