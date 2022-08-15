@@ -53,7 +53,7 @@ class Medkit(Consumable):
 
 class HealthDrink(Consumable):
     def __init__(self):
-        super().__init__("Vit drink")
+        super().__init__("Vit Drink")
 
     def consume(self):
         super().consume()
