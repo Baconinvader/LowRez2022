@@ -282,8 +282,14 @@ def handle_input():
 
     if g.keys[p.K_a]:
         g.player.move(-g.player.speed*g.dt, 0)
+        if g.player.target_x:
+            g.player.set_target_x(None)
+            g.player_targeting = False
     if g.keys[p.K_d]:
         g.player.move(g.player.speed*g.dt, 0)
+        if g.player.target_x:
+            g.player.set_target_x(None)
+            g.player_targeting = False
 
     if g.mr and g.player_targeting:
         g.player.set_target_x(g.tmx)
