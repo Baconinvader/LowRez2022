@@ -195,6 +195,7 @@ class KeyPickup(LockedPickup):
 
                 controls.Popup(rect, "Used", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
                 self.unlock()
+                sounds.play_sound("success")
             else:
                 controls.Popup(rect, "You need", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
 
@@ -359,7 +360,8 @@ class KeyDoor(LockedDoor):
         rect.center = g.screen_rect.center
         if res:
             controls.Popup(rect, "Used", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_success_background")
-            self.unlock(item=res)  
+            self.unlock(item=res)
+            sounds.play_sound("success")
         else:
             controls.Popup(rect, "You need", self.key_name, None, set(("main",)), show_accept=False, background_gfx="popup_failure_background")
 
