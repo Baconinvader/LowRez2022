@@ -281,7 +281,7 @@ class Door(Structure):
             #same y, different x
             if self.change_level.world_y == self.level.world_y:
                 if self.change_level.world_x > self.level.world_x:
-                    self.x = self.level.rect.w - self.rect.w - door_offset 
+                    self.x = self.level.rect.w - self.rect.w - door_offset + 1
                 else:
                     self.x = door_offset
             else:
