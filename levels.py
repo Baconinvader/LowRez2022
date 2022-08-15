@@ -462,6 +462,8 @@ class PowerSwitch(Structure):
 
         action = actions.FuncCallAction(self.pipe, timer, self, "timer_end", change_type=1, blocking=False, blockable=False)
         self.timer_control = controls.Timer("font1_1", rect, action, (("main",)), colour="white", shadow_pos=(0,1))
+
+        sounds.play_sound("reactor_alarm", self.rect.center, level=self.level, volume=7)
         
         self.popup.delete()
 
