@@ -54,7 +54,7 @@ player_targeting = False
 #debug stuff
 # enable "dev mode" commands if there's a gitignore file~
 IS_DEV = os.path.exists(".gitignore")
-if IS_DEV:
+if IS_DEV and False:
     print("IS_DEV is enabled.")
 NO_ATTACK = True  # makes enemies not attack
 
