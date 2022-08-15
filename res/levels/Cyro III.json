@@ -3,7 +3,7 @@
     "position":[0,-1],
     "show_space":true,
     "structures":[
-        ["Pickup", 12, null, "HandgunAmmunition"],
+        ["Pickup", 38, null, "HandgunAmmunition"],
         ["TextInformation", 64, -24, ["structure_32_24_ss", 0, 0], "font1_1", "Attention: \nThe code for the Cyro wing has been changed. The new code is: \n  451", "text_screen_background"]
     ]
 }
