@@ -49,7 +49,7 @@ def start_game():
     reset()
     p.mixer.music.fadeout(500)
     g.active_states = set(("main",))
-    g.current_level = g.levels["Cryo I"]
+    g.current_level = g.levels["Cryo I"]# Cryo I"]
     levels.change_level(g.current_level, show_text=False)
 
     if not g.start_slides_shown:
@@ -91,6 +91,7 @@ def reset():
 
     #reset player
     g.player.health = g.player.max_health
+    g.player.dead = False
     g.player.fully_dead = False
     g.player.inventory.clear()
     #g.player.debug_set_inventory()
