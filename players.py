@@ -175,7 +175,7 @@ class Player(creatures.Creature):
         super().update()
 
         #kind of a hack, for when the player is damaged through doors
-        if not self.dead and not self.health:
+        if not self.dead and not int(self.health):
             self.die()
 
         if self.target_x is not None:
