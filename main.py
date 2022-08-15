@@ -394,8 +394,9 @@ while RUNNING:
     p.display.flip()
 
 
-quit()
-
-def quit():
+def quit_game():
+    p.display.quit()
     import sys
     sys.exit()
+
+quit_game()
