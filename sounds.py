@@ -91,7 +91,7 @@ def load_sounds():
     """
     path = g.SOUNDS_DIR
     for sound_file in os.listdir(path):
-        if sound_file.endswith(".wav"):
+        if sound_file.endswith(".ogg"):
             sound = p.mixer.Sound(os.path.join(g.SOUNDS_DIR, sound_file))
 
             g.sound_dict[sound_file[:-4]] = sound
@@ -115,6 +115,6 @@ def play_main_music():
     """
     Play the main music track for this game
     """
-    p.mixer.music.load(os.path.join(g.SOUNDS_DIR,"music.mp3"))
+    p.mixer.music.load(os.path.join(g.SOUNDS_DIR,"music.ogg"))
     p.mixer.music.play(-1)
     

@@ -2,6 +2,7 @@ import global_values as g
 import graphics as gfx
 import pygame as p
 import random
+import asyncio
 import os
 
 import levels
@@ -375,31 +376,34 @@ def draw():
 
 
 go_to_menu()
-
 RUNNING = True
-while RUNNING:
-    g.screen.fill(g.convert_colour(g.convert_colour("black")))
-    handle_input()
-    update()
-    draw()
+async def main():
+    
+    while RUNNING:
+        g.screen.fill(g.convert_colour(g.convert_colour("black")))
+        handle_input()
+        update()
+        draw()
 
-    g.dt = g.game_clock.tick(g.FPS) / 1000
-    g.dt = min(0.0333, g.dt)  # game will start slowing down if true FPS drops below 20
-    #print(g.dt)
+        g.dt = g.game_clock.tick(g.FPS) / 1000
+        g.dt = min(0.0333, g.dt)  # game will start slowing down if true FPS drops below 20
+        #print(g.dt)
 
-    # update FPS counter once per second
-    #cur_time = p.time.get_ticks()
-    #if int(cur_time / 1000 - g.dt) < int(cur_time / 1000):
-    #    p.display.set_caption(f"{g.CAPTION} (FPS={g.game_clock.get_fps():.2f})")
+        # update FPS counter once per second
+        #cur_time = p.time.get_ticks()
+        #if int(cur_time / 1000 - g.dt) < int(cur_time / 1000):
+        #    p.display.set_caption(f"{g.CAPTION} (FPS={g.game_clock.get_fps():.2f})")
 
-    #upscale and display
-    g.full_screen.blit(p.transform.scale(g.screen, (g.SCREEN_WIDTH, g.SCREEN_HEIGHT)), (0,0))
-    p.display.flip()
+        #upscale and display
+        g.full_screen.blit(p.transform.scale(g.screen, (g.SCREEN_WIDTH, g.SCREEN_HEIGHT)), (0,0))
+        p.display.flip()
 
 
-def quit_game():
-    p.display.quit()
-    import sys
-    sys.exit()
+    def quit_game():
+        p.display.quit()
+        import sys
+        sys.exit()
+    quit_game()
 
-quit_game()
+asyncio.run(main())
+
