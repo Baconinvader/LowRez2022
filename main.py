@@ -49,7 +49,7 @@ def start_game():
     reset()
     p.mixer.music.fadeout(500)
     g.active_states = set(("main",))
-    g.current_level = g.levels["Hallway"]
+    g.current_level = g.levels["Deck"]
     levels.change_level(g.current_level, show_text=False)
 
     if not g.start_slides_shown:
