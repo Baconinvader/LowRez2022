@@ -1,6 +1,7 @@
 import global_values as g
 import graphics as gfx
 import pygame as p
+import random
 import os
 
 import levels
@@ -43,6 +44,13 @@ g.fonts = {
 }
 
 g.game_clock = p.time.Clock()
+
+if random.random() < 0.2:
+    p.display.set_caption("Heckrostation")
+else:
+    p.display.set_caption("Necrostation")
+p.display.set_icon(gfx.load_image("icon"))
+
 
 #menu
 def start_game():
@@ -378,9 +386,9 @@ while RUNNING:
     #print(g.dt)
 
     # update FPS counter once per second
-    cur_time = p.time.get_ticks()
-    if int(cur_time / 1000 - g.dt) < int(cur_time / 1000):
-        p.display.set_caption(f"{g.CAPTION} (FPS={g.game_clock.get_fps():.2f})")
+    #cur_time = p.time.get_ticks()
+    #if int(cur_time / 1000 - g.dt) < int(cur_time / 1000):
+    #    p.display.set_caption(f"{g.CAPTION} (FPS={g.game_clock.get_fps():.2f})")
 
     #upscale and display
     g.full_screen.blit(p.transform.scale(g.screen, (g.SCREEN_WIDTH, g.SCREEN_HEIGHT)), (0,0))
