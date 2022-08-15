@@ -91,6 +91,7 @@ def reset():
 
     #reset player
     g.player.health = g.player.max_health
+    g.player.dead = False
     g.player.fully_dead = False
     g.player.inventory.clear()
     #g.player.debug_set_inventory()
