@@ -78,13 +78,13 @@ class Ammunition(Item):
 
 class HandgunAmmunition(Ammunition):
     def __init__(self):
-        super().__init__("H. ammo", "handgun", 10)
+        super().__init__("H. ammo", "Handgun", 10)
 class ShotgunAmmunition(Ammunition):
     def __init__(self):
-        super().__init__("S. ammo", "shotgun", 5)
+        super().__init__("S. ammo", "Shotgun", 5)
 class RevolverAmmunition(Ammunition):
     def __init__(self):
-        super().__init__("R. ammo", "revolver", 3)
+        super().__init__("R. ammo", "Revolver", 3)
          
         
 
@@ -178,20 +178,20 @@ class Gun(Item):
 #guns
 class Handgun(Gun):
     def __init__(self):
-        super().__init__("handgun", 1, 0.5, 200)
+        super().__init__("Handgun", 1, 0.5, 200)
 
 class Shotgun(Gun):
     def __init__(self):
-        super().__init__("shotgun", 0.8, 1, 100, projectiles=5, spread=0.5, max_ammunition=25, recharge=0)
+        super().__init__("Shotgun", 0.8, 1, 100, projectiles=5, spread=0.5, max_ammunition=25, recharge=0)
 
 class Stungun(Gun):
     def __init__(self):
-        super().__init__("stungun", 0.0, 1.5, 20, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
+        super().__init__("Stungun", 0.0, 1.5, 20, projectiles=1, spread=0, max_ammunition=3, recharge=0.4, stun=5, fire_effect=2)
         self.ammunition = self.max_ammunition
 
 class Revolver(Gun):
     def __init__(self):
-        super().__init__("revolver", 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=6)
+        super().__init__("Revolver", 5, 1.5, 300, projectiles=1, spread=0, max_ammunition=6)
 
 #keys
 class BathroomKey(Item):
