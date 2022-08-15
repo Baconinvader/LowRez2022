@@ -225,7 +225,7 @@ class Enemy(Creature):
         pass
 
     def die(self):
-        super.die()
+        super().die()
         Corpse(self, self.x, self.y, self.level)
         if self.played_encounter_sound:
             self.played_encounter_sound.stop()

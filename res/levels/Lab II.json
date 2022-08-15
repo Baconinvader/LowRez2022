@@ -9,9 +9,8 @@
         ["EnemySpawn", 164, -32, "BasicEnemy"],
         ["EnemySpawn", 128, -32, "BasicEnemy"],
 
-        ["Pickup", 80, null, "HealthDrink"],
         ["Pickup", 100, null, "HealthDrink"],
-        ["Pickup", 64, null, "Medkit"]
+        ["Pickup", 50, null, "Medkit"]
     ],
 
     "comments": []
