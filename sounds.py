@@ -30,7 +30,11 @@ class ChannelList():
 
 
         channel.play(sound)
+        check_count = 1
         self.next_available_channel = (self.next_available_channel + 1) % len(self.channel_list)
+        while check_count < len(self.channel_list) and self.channel_list[self.next_available_channel].get_busy():
+            check_count += 1
+            self.next_available_channel = (self.next_available_channel + 1) % len(self.channel_list)
 
     def update(self):
         #change sound volume based on distance
