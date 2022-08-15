@@ -368,7 +368,7 @@ go_to_menu()
 
 RUNNING = True
 while RUNNING:
-    g.screen.fill(g.convert_colour("black"))
+    g.screen.fill(g.convert_colour(g.convert_colour("black")))
     handle_input()
     update()
     draw()

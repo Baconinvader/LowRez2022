@@ -93,7 +93,7 @@ def change_level(new_level, show_text=True):
     if show_text:
         x = g.screen_rect.centerx
         y = 8
-        actions.TextEffectAction(g.global_pipe, 1.5, "font1_1", new_level.name, (x,y), colour="white")
+        actions.TextEffectAction(g.global_pipe, 1.5, "font1_1", new_level.name, (x,y), colour=g.convert_colour("white"))
  
 class Structure(entities.Entity):
     def __init__(self, level, rect, structure_gfx, solid=False, interaction_enabled=True):
@@ -461,7 +461,7 @@ class PowerSwitch(Structure):
         timer = (3*60) + 0
 
         action = actions.FuncCallAction(self.pipe, timer, self, "timer_end", change_type=1, blocking=False, blockable=False)
-        self.timer_control = controls.Timer("font1_1", rect, action, (("main",)), colour="white", shadow_pos=(0,1))
+        self.timer_control = controls.Timer("font1_1", rect, action, (("main",)), colour=g.convert_colour("white"), shadow_pos=(0,1))
 
         sounds.play_sound("reactor_alarm", self.rect.center, level=self.level, volume=7)
         

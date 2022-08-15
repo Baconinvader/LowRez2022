@@ -121,7 +121,7 @@ class SlidesControl(GraphicsControl):
     """
     Control for displaying a slideshow of images
     """
-    def __init__(self, rect, font_name, slides, end_func, active_states, background_colour="white", font_colour="black"):
+    def __init__(self, rect, font_name, slides, end_func, active_states, background_colour=g.convert_colour("white"), font_colour=g.convert_colour("black")):
         self.slides = slides
         #create slides
         for i,slide in enumerate(self.slides):
@@ -198,7 +198,7 @@ class StartScreenControl(SlidesControl):
             "The station was in disrepair, something was very wrong.",
             "I put on a nearby space suit, and went to investigate."
         ]
-        super().__init__(g.screen_rect, "font1_1", slides, self.finish, set(("main",)), background_colour="white", font_colour="black")
+        super().__init__(g.screen_rect, "font1_1", slides, self.finish, set(("main",)), background_colour="white", font_colour=g.convert_colour("black"))
 
     def update(self):
         super().update()
@@ -225,7 +225,7 @@ class EndScreenControl(SlidesControl):
             "Thanks for playing.",
             "Credits: Baconinv: Programming Ghast: Art"
         ]
-        super().__init__(g.screen_rect, "font1_1", slides, self.back_to_menu, set(("end",)), background_colour="white", font_colour="black")
+        super().__init__(g.screen_rect, "font1_1", slides, self.back_to_menu, set(("end",)), background_colour=g.convert_colour("white"), font_colour=g.convert_colour("black"))
 
     def back_to_menu(self):
         g.active_states = set(("mainmenu",))
@@ -290,7 +290,7 @@ class MapControl(Control):
 
     def draw(self):
         surf = p.Surface((self.rect.w, self.rect.h))
-        surf.fill("black")
+        surf.fill(g.convert_colour("black"))
         offset_x = (g.player.level.world_x) + (g.player.rect.centerx//self.pixel_size)
         offset_y = (g.player.level.world_y)
         for level in g.levels.values():
@@ -372,7 +372,7 @@ class InventoryControl(Control):
                 if cell.icon.get_width() == rect.w-2:
                     g.screen.blit(cell.icon, rect.move((1,1)))
                 else:
-                    p.draw.rect(g.screen, "white", rect.inflate((-2,-2)))
+                    p.draw.rect(g.screen, g.convert_colour("white"), rect.inflate((-2,-2)))
                     g.screen.blit(cell.icon, rect.move(( 1 + (rect.w/2) - (cell.icon.get_width()/2) , 1 + (rect.h/2) - (cell.icon.get_height()/2)  )))
                 #draw amount
                 if cell.amount > 1:
@@ -489,7 +489,7 @@ class TextScreenControl(Control):
 
         text_rect.y -= self.scroll
         text_rect.h -= 8
-        gfx.draw_wrapped_text(self.font_name, self.text, text_rect, colour="white", alpha=255, spacing=10)
+        gfx.draw_wrapped_text(self.font_name, self.text, text_rect, colour=g.convert_colour("white"), alpha=255, spacing=10)
 
         header_rect = p.Rect(self.rect.x, 0, self.rect.w, self.margin)
         g.screen.blit(self.background_gfx, header_rect, header_rect)
@@ -664,7 +664,7 @@ class Timer(Control):
     """
     Control for displaying a timer on screen associated with an action
     """
-    def __init__(self, font_name, rect, action, active_states, colour="black", shadow_pos=None):
+    def __init__(self, font_name, rect, action, active_states, colour=g.convert_colour("black"), shadow_pos=None):
         super().__init__(rect, active_states)
         self.font_name = font_name
         self.action = action

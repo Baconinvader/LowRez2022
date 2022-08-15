@@ -258,7 +258,7 @@ class TextEffectAction(Action):
     """
     Action for showing fading text
     """
-    def __init__(self, pipe, timer, font, text, pos, blocking=True, blockable=True, colour="black"):
+    def __init__(self, pipe, timer, font, text, pos, blocking=True, blockable=True, colour=g.convert_colour("black")):
         super().__init__(pipe, timer, blocking=blocking, blockable=blockable)
 
         self.font = font
