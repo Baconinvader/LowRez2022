@@ -6,10 +6,10 @@
         ["Door", 224, -32, "Cryo II"],
         ["TextInformation", 80, -24, ["structure_32_24_ss", 0, 0], "font1_1", "We are all going to die lol.", "text_screen_background"],
         ["KeypadDoor", 112, -32, "Cryo III", "451"],
-        ["KeyPickup", 32, -32, "Medkit", ["structure_16_32_ss", 1, 0], "medkit"],
+        ["KeyPickup", 32, -32, "Medkit", ["structure_16_32_ss", 1, 0], "Medkit"],
         ["EnemySpawn", 164, -32, "BasicEnemy"],
         
-        ["KeyDoor", 96, -32, "Cryo III", "medkit"]
+        ["KeyDoor", 96, -32, "Cryo III", "Medkit"]
     ],
 
     "comments": []
