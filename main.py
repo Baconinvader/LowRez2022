@@ -380,23 +380,19 @@ RUNNING = True
 async def main():
     
     while RUNNING:
-        g.screen.fill(g.convert_colour(g.convert_colour("black")))
+        g.screen.fill(g.convert_colour("black"))
         handle_input()
         update()
         draw()
 
-        g.dt = g.game_clock.tick(g.FPS) / 1000
-        g.dt = min(0.0333, g.dt)  # game will start slowing down if true FPS drops below 20
-        #print(g.dt)
-
-        # update FPS counter once per second
-        #cur_time = p.time.get_ticks()
-        #if int(cur_time / 1000 - g.dt) < int(cur_time / 1000):
-        #    p.display.set_caption(f"{g.CAPTION} (FPS={g.game_clock.get_fps():.2f})")
-
         #upscale and display
         g.full_screen.blit(p.transform.scale(g.screen, (g.SCREEN_WIDTH, g.SCREEN_HEIGHT)), (0,0))
         p.display.flip()
+
+        await asyncio.sleep(0)
+
+        g.dt = g.game_clock.tick(g.FPS) / 1000
+        g.dt = min(0.0333, g.dt)  # game will start slowing down if true FPS drops below 20
 
 
     def quit_game():
@@ -405,5 +401,7 @@ async def main():
         sys.exit()
     quit_game()
 
-asyncio.run(main())
+
+if __name__ == "__main__":
+    asyncio.run(main())
 
