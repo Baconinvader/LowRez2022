@@ -10,7 +10,8 @@
         ["EnemySpawn", 78, -32, "RecoverEnemy"],
 
         ["Pickup", 28, null, "HealthDrink"],
-        ["Pickup", 42, null, "HandgunAmmunition"]
+        ["Pickup", 42, null, "HandgunAmmunition"],
+        ["Pickup", 70, null, "ShotgunAmmunition"]
 
     ],
 

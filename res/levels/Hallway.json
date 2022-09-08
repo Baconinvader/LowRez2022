@@ -12,7 +12,9 @@
 
         ["EnemySpawn", 128, -32, "BasicEnemy"],
         ["EnemySpawn", 170, -48, "LargeEnemy"],
-        ["EnemySpawn", 224, -32, "BasicEnemy"]
+        ["EnemySpawn", 224, -32, "BasicEnemy"],
+
+        ["Pickup", 200, null, "HealthDrink"]
         
         
     ],
