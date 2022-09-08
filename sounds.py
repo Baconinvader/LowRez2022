@@ -9,37 +9,39 @@ class ChannelList():
     Class for list of channels
     """
     def __init__(self, channel_amount=16):
-        self.channel_list = []
+        self.channel_list = [None for _ in range(channel_amount)]
         
 
         self.sound_playing_list = [None for _ in range(channel_amount)]
-        p.mixer.set_num_channels(channel_amount)
-        for i in range(channel_amount):
-            channel = p.mixer.Channel(i)
-            self.channel_list.append(channel)
-            self.next_available_channel = 0
+        #p.mixer.set_num_channels(channel_amount)
+        #for i in range(channel_amount):
+        #    channel = p.mixer.Channel(i)
+        #    self.channel_list.append(channel)
+        self.next_available_channel = 0
 
     def play(self, sound):
-        channel = self.channel_list[self.next_available_channel]
+        #channel = self.channel_list[self.next_available_channel]
 
         self.sound_playing_list[self.next_available_channel] = sound
         if type(sound) == GameSound:
             sound = sound.sound
         elif type(sound) == p.mixer.Sound:
-            channel.set_volume(1)
+            sound.set_volume(1)
 
 
-        channel.play(sound)
+        #channel.play(sound)
+        sound.play()
         check_count = 1
+
         self.next_available_channel = (self.next_available_channel + 1) % len(self.channel_list)
-        while check_count < len(self.channel_list) and self.channel_list[self.next_available_channel].get_busy():
-            check_count += 1
-            self.next_available_channel = (self.next_available_channel + 1) % len(self.channel_list)
+        #while check_count < len(self.channel_list) and self.channel_list[self.next_available_channel].get_busy():
+        #    check_count += 1
+        #    self.next_available_channel = (self.next_available_channel + 1) % len(self.channel_list)
 
     def update(self):
         #change sound volume based on distance
         for i, channel in enumerate(self.channel_list):
-            if channel.get_busy():
+            if True:
                 sound = self.sound_playing_list[i]
 
                 if type(sound) == GameSound:
@@ -53,7 +55,7 @@ class ChannelList():
                             sx = sound.x + ((sound.level.world_x - g.current_level.world_x)*64)
                         else:
                             #too far away
-                            channel.set_volume(0)
+                            sound.sound.set_volume(0)
                             continue
 
                     dist = util.get_distance(g.player.rect.centerx, g.player.rect.centery, sound.x, sound.y)
@@ -61,11 +63,13 @@ class ChannelList():
                         dist = 1
 
                     vol = min(1, (1/dist)*sound.volume)
-                    channel.set_volume(vol)
+                    sound.sound.set_volume(vol)
 
     def stop_sounds(self):
+        for sound in g.sound_dict.values():
+            sound.stop()
         for i,channel in enumerate(self.channel_list):
-            channel.stop()
+            #channel.stop()
             self.sound_playing_list[i] = None
 
 
@@ -96,8 +100,6 @@ def load_sounds():
 
             g.sound_dict[sound_file[:-4]] = sound
 
-            print(sound_file)
-
 def play_sound(name, pos=None, level=None, volume=3):
     #print(name)
     """
@@ -108,6 +110,7 @@ def play_sound(name, pos=None, level=None, volume=3):
     else: #non-2D sound
         sound = g.sound_dict[name]
         sound.set_volume(volume)
+
     g.channel_list.play(sound)
     return sound
 
