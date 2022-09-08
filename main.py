@@ -198,15 +198,24 @@ controls.Button(rect, exit_menu, g.spritesheets["button_ss"].anims[1][0], g.spri
 def handle_input():
     global RUNNING
 
-    def interact():
+    def interact(closest=False):
         command_triggered = False
         clicked_structure = None
         #get smallest clicked structure
         if g.current_level:
-            for structure in g.current_level.structures:
-                if structure.can_interact and structure.rect.collidepoint((g.tmx, g.tmy)):
-                    if not clicked_structure or (clicked_structure.rect.w*clicked_structure.rect.h) > (structure.rect.w*structure.rect.h):
-                        clicked_structure = structure
+            if closest:
+                closest_dist = None
+                for structure in g.current_level.structures:
+                    if structure.can_interact:
+                        dist = abs(g.player.rect.centerx - structure.rect.centerx)
+                        if closest_dist is None or dist < closest_dist:
+                            closest_dist = dist
+                            clicked_structure = structure
+            else:
+                for structure in g.current_level.structures:
+                    if structure.can_interact and structure.rect.collidepoint((g.tmx, g.tmy)):
+                        if not clicked_structure or (clicked_structure.rect.w*clicked_structure.rect.h) > (structure.rect.w*structure.rect.h):
+                            clicked_structure = structure
                     
             if clicked_structure:
                 clicked_structure.interact()
@@ -214,7 +223,7 @@ def handle_input():
 
 
         #move player
-        if not command_triggered:
+        if not command_triggered and not closest:
             if not g.player.control_locks:
                 g.player_targeting = True
                 g.player.set_target_x(g.tmx)
@@ -268,7 +277,7 @@ def handle_input():
                         break
                 
                 if not button_pressed:
-                    interact()
+                    interact(closest=True)
 
             #select item
             elif p.K_1 <= event.key <= p.K_9:
