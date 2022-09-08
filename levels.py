@@ -156,7 +156,8 @@ class Pickup(Structure):
         #    g.camera.draw_rect("green", outline_rect, 1)
 
     def interact(self, delete_pickup=True):
-        controls.Item_Popup(self.item, pickup=self, delete_pickup=delete_pickup)
+        if not g.elements.get("class_Item_Popup"):
+            controls.Item_Popup(self.item, pickup=self, delete_pickup=delete_pickup)
 
 class LockedPickup(Pickup):
     """
