@@ -178,11 +178,11 @@ class Player(creatures.Creature):
         if not self.dead and not self.health:
             self.die()
 
-        if self.target_x is not None:
+        if self.target_x is not None and abs(self.target_x - self.x) > 4:
             result = self.move_towards(self.target_x, self.y, self.speed * g.dt)
             if result:
                 self.target_x = None
-            if self.x == self.target_x:
+            elif abs(self.target_x - self.x) <= 4:
                 self.target_x = None
 
         self.angle = util.get_angle(self.rect.centerx, self.rect.centery, g.tmx, g.tmy)
