@@ -67,7 +67,8 @@ class ChannelList():
 
     def stop_sounds(self):
         for sound in g.sound_dict.values():
-            sound.stop()
+            pass
+            #sound.stop()
         for i,channel in enumerate(self.channel_list):
             #channel.stop()
             self.sound_playing_list[i] = None
@@ -101,6 +102,7 @@ def load_sounds():
             g.sound_dict[sound_file[:-4]] = sound
 
 def play_sound(name, pos=None, level=None, volume=3):
+
     #print(name)
     """
     Play a sound, optional a 2D one
@@ -109,8 +111,9 @@ def play_sound(name, pos=None, level=None, volume=3):
         sound = GameSound(name, pos, level, volume=volume)
     else: #non-2D sound
         sound = g.sound_dict[name]
-        sound.set_volume(volume)
 
+        sound.set_volume(min(1,volume))
+    
     g.channel_list.play(sound)
     return sound
 
