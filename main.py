@@ -13,6 +13,10 @@ import entities
 import actions
 import sounds
 
+import platform
+if platform.system().lower() == "emscripten":
+    platform.window.onbeforeunload = None
+
 p.mixer.init()
 sounds.load_sounds()
 g.channel_list = sounds.ChannelList()
